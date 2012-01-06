@@ -38,7 +38,7 @@ namespace Client
 			containerBuilder.RegisterAssemblyTypes(Assembly.GetExecutingAssembly())
 				.AsImplementedInterfaces().AsSelf().PropertiesAutowired(
 					PropertyWiringFlags.PreserveSetValues);
-		    containerBuilder.RegisterInstance(new ServerConnection()).AsImplementedInterfaces();
+            containerBuilder.RegisterInstance(new ServerConnection()).AsImplementedInterfaces();
 
 			containerBuilder.RegisterType<EventAggregator>().As<IEventAggregator>().SingleInstance();
 			containerBuilder.RegisterType<WindowManager>().As<IWindowManager>();

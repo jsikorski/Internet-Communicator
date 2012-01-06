@@ -3,6 +3,7 @@ using System.Net.Sockets;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using Protocol;
+using Protocol.AccountCreation;
 using Protocol.Connection;
 using Protocol.Login;
 
@@ -42,10 +43,16 @@ namespace Client.Services
             responsesListener.Stop();
         }
 
-        public LoginResponse SendLoginRequest(LoginRequest loginRequest)
+        public LoginResponse SendLoginRequest(IRequest loginRequest)
         {
             SendRequest(loginRequest);
             return (LoginResponse) GetResponse();
+        }
+
+        public RegisterResponse SendRegisterRequest(IRequest registerRequest)
+        {
+            SendRequest(registerRequest);
+            return (RegisterResponse) GetResponse();
         }
 
         public void Disconnect()

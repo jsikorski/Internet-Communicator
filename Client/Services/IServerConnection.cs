@@ -1,4 +1,5 @@
 ﻿using Protocol;
+using Protocol.AccountCreation;
 using Protocol.Login;
 
 namespace Client.Services
@@ -6,7 +7,8 @@ namespace Client.Services
     public interface IServerConnection
     {
         void Connect(string serverAddress);
-        LoginResponse SendLoginRequest(LoginRequest loginRequest);
+        LoginResponse SendLoginRequest(IRequest loginRequest);
+        RegisterResponse SendRegisterRequest(IRequest registerRequest);
         void Disconnect();
     }
 }

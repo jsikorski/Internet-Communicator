@@ -40,8 +40,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AccountCreation\CreationRequest.cs" />
-    <Compile Include="AccountCreation\CreationResponse.cs" />
+    <Compile Include="AccountCreation\RegisterRequest.cs" />
+    <Compile Include="AccountCreation\RegisterResponse.cs" />
     <Compile Include="Addresses.cs" />
     <Compile Include="Connection\ConnectionRequest.cs" />
     <Compile Include="FileTransfer\FileUploadRequest.cs" />

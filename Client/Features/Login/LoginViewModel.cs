@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using Caliburn.Micro;
+using Client.Features.Ragistration;
 using Client.Services;
 using Protocol.Login;
 
@@ -9,6 +10,9 @@ namespace Client.Features.Login
     public class LoginViewModel : Screen
     {
         private readonly IServerConnection _serverConnection;
+        private readonly RegisterViewModel _registerViewModel;
+        private readonly IWindowManager _windowManager;
+
         private string _number;
         public string Number
         {
@@ -40,11 +44,16 @@ namespace Client.Features.Login
             }
         }
 
-        public LoginViewModel(IServerConnection serverConnection)
+        public LoginViewModel(
+            IServerConnection serverConnection, 
+            RegisterViewModel registerViewModel, 
+            IWindowManager windowManager)
         {
             base.DisplayName = "Internet communicator";
 
             _serverConnection = serverConnection;
+            _registerViewModel = registerViewModel;
+            _windowManager = windowManager;
         }
 
         public void Login()
@@ -63,6 +72,13 @@ namespace Client.Features.Login
             {
                 MessageBox.Show("Incorrect number or password.", "Login error");
             }
+        }
+
+        public void Register()
+        {
+            _registerViewModel.SetReturnViewModel(this);
+            _windowManager.ShowWindow(_registerViewModel);
+            TryClose();
         }
     }
 }
