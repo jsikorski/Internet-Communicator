@@ -67,10 +67,10 @@
     <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
-    <Compile Include="Features\Ragistration\RegisterView.xaml.cs">
+    <Compile Include="Features\Registration\RegisterView.xaml.cs">
       <DependentUpon>RegisterView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Features\Ragistration\RegisterViewModel.cs" />
+    <Compile Include="Features\Registration\RegisterViewModel.cs" />
     <Compile Include="Services\IServerConnection.cs" />
     <Compile Include="Services\ServerConnection.cs" />
     <Compile Include="ShellViewModel.cs" />
@@ -86,7 +86,7 @@
     <Compile Include="Features\Login\LoginView.xaml.cs">
       <DependentUpon>LoginView.xaml</DependentUpon>
     </Compile>
-    <Page Include="Features\Ragistration\RegisterView.xaml">
+    <Page Include="Features\Registration\RegisterView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
