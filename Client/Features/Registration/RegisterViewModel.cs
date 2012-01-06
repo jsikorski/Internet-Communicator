@@ -9,7 +9,7 @@ using Client.Features.Login;
 using Client.Services;
 using Protocol.AccountCreation;
 
-namespace Client.Features.Ragistration
+namespace Client.Features.Registration
 {
     public class RegisterViewModel : Screen
     {

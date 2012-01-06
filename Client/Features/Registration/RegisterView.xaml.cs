@@ -11,7 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace Client.Features.Ragistration
+namespace Client.Features.Registration
 {
     /// <summary>
     /// Interaction logic for RegisterView.xaml
