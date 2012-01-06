@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Protocol.Login
+namespace Protocol
 {
-    [Serializable]
-    public class LogoutRequest : IRequest
+    public interface IRequest
     {
     }
 }

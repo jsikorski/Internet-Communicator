@@ -5,7 +5,8 @@ using System.Text;
 
 namespace Protocol.Login
 {
-    public class LoginResponse
+    [Serializable]
+    public class LoginResponse : IResponse
     {
         public bool WasSuccessfull { get; set; }
     }

@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Client.Model
+namespace Protocol
 {
-    public interface IServerConnection
+    public interface IResponse
     {
-        void Connect(string serverAddress);
     }
 }

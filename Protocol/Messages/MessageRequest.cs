@@ -5,7 +5,8 @@ using System.Text;
 
 namespace Protocol.Messages
 {
-    public class MessageRequest
+    [Serializable]
+    public class MessageRequest : IRequest
     {
         public int Sender { get; set; }
         public IEnumerable<int> ReceiversNumbers { get; set; }

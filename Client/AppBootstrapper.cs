@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 using Autofac;
-using Client.Model;
+using Client.Services;
 
 namespace Client
 {

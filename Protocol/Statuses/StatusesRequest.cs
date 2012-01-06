@@ -5,7 +5,8 @@ using System.Text;
 
 namespace Protocol.Statuses
 {
-    public class StatusesRequest
+    [Serializable]
+    public class StatusesRequest : IRequest
     {
         public IEnumerable<int> Numbers { get; set; } 
     }

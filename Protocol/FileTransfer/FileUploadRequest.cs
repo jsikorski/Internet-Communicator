@@ -5,7 +5,8 @@ using System.Text;
 
 namespace Protocol.FileTransfer
 {
-    public class FileUploadRequest
+    [Serializable]
+    public class FileUploadRequest : IRequest
     {
     }
 }

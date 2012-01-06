@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-namespace Protocol
+namespace Protocol.Login
 {
-    public class LoginRequest
+    [Serializable]
+    public class LoginRequest : IRequest
     {
         public int Number { get; set; }
         public string PasswordHash { get; set; }

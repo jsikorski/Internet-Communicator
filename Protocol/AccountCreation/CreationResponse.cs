@@ -5,7 +5,8 @@ using System.Text;
 
 namespace Protocol.AccountCreation
 {
-    public class CreationResponse
+    [Serializable]
+    public class CreationResponse : IResponse
     {
         public bool WasSuccessfull { get; set; }
         public int AccountNumber { get; set; }

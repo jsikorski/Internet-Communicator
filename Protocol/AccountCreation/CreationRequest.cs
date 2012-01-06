@@ -5,7 +5,8 @@ using System.Text;
 
 namespace Protocol.AccountCreation
 {
-    public class CreationRequest
+    [Serializable]
+    public class CreationRequest : IRequest
     {
         public string Password { get; set; }
     }

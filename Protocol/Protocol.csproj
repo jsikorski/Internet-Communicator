@@ -42,11 +42,16 @@
   <ItemGroup>
     <Compile Include="AccountCreation\CreationRequest.cs" />
     <Compile Include="AccountCreation\CreationResponse.cs" />
+    <Compile Include="Addresses.cs" />
+    <Compile Include="Connection\ConnectionRequest.cs" />
     <Compile Include="FileTransfer\FileUploadRequest.cs" />
+    <Compile Include="IResponse.cs" />
+    <Compile Include="IRequest.cs" />
     <Compile Include="Login\LoginRequest.cs" />
     <Compile Include="Login\LoginResponse.cs" />
     <Compile Include="Login\LogoutRequest.cs" />
     <Compile Include="Messages\MessageRequest.cs" />
+    <Compile Include="Ports.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Statuses\StatusesRequest.cs" />
     <Compile Include="Statuses\StatusesResponse.cs" />
