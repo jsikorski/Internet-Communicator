@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using Caliburn.Micro;
+using Client.Features.Communicator;
 using Client.Features.Login;
 using Client.Services;
 using Client.Validators;
@@ -37,9 +38,11 @@ namespace Client
             IValidator addressValidator,
             IServerConnection serverConnection,
             IWindowManager windowManager,
-            LoginViewModel loginViewModel)
+            LoginViewModel loginViewModel,
+            CommunicatorViewModel communicatorViewModel)
         {
             base.DisplayName = "Internet communicator";
+            windowManager.ShowWindow(communicatorViewModel);
 
             _addressValidator = addressValidator;
             _serverConnection = serverConnection;

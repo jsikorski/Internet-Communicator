@@ -20,9 +20,9 @@
             </ribbon:Ribbon.ApplicationMenu>
 
             <ribbon:RibbonTab Header="Messages">
-                <ribbon:RibbonGroup Header="Operations">
-                    <ribbon:RibbonButton Label="Send message" LargeImageSource="./../../Images/32x32.png"/>
-                    <ribbon:RibbonButton Label="Send file" />
+                <ribbon:RibbonGroup Header="Sending">
+                    <ribbon:RibbonButton Label="Message" LargeImageSource="../../Images/send_message_icon.png"/>
+                    <ribbon:RibbonButton Label="File" LargeImageSource="../../Images/send_file_icon.png"/>
                 </ribbon:RibbonGroup>
             </ribbon:RibbonTab>
             <ribbon:RibbonTab Header="Contacts">
