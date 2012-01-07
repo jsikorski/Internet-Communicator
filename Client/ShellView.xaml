@@ -2,7 +2,14 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         WindowStartupLocation="CenterScreen"
-        SizeToContent="WidthAndHeight">
+        Style="{StaticResource SmallWindowStyle}">
 
-    <ContentControl x:Name="ActiveItem" />
+    <StackPanel Orientation="Vertical"
+                Margin="10">
+        <Label Content="Server address:" />
+        <TextBox Text="{Binding ServerAddress, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" />
+        <Button Name="Connect"
+                Content="Connect"
+                Margin="0 15 0 0" />
+    </StackPanel>
 </Window>

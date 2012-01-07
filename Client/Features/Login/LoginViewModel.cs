@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows;
 using Caliburn.Micro;
-using Client.Features.Registration;
+using Client.Features.Register;
 using Client.Services;
 using Protocol.Login;
 

@@ -75,14 +75,13 @@
       <DependentUpon>CommunicatorView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Features\Communicator\CommunicatorViewModel.cs" />
-    <Compile Include="Features\Connection\ConnectionView.xaml.cs">
-      <DependentUpon>ConnectionView.xaml</DependentUpon>
+    <Compile Include="Features\Login\LoginView.xaml.cs">
+      <DependentUpon>LoginView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Features\Connection\ConnectionViewModel.cs" />
-    <Compile Include="Features\Registration\RegisterView.xaml.cs">
+    <Compile Include="Features\Register\RegisterView.xaml.cs">
       <DependentUpon>RegisterView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Features\Registration\RegisterViewModel.cs" />
+    <Compile Include="Features\Register\RegisterViewModel.cs" />
     <Compile Include="Services\IServerConnection.cs" />
     <Compile Include="Services\ServerConnection.cs" />
     <Compile Include="ShellViewModel.cs" />
@@ -95,18 +94,15 @@
     <Compile Include="Validators\AddressValidator.cs" />
     <Compile Include="Validators\IValidator.cs" />
     <Compile Include="Features\Login\LoginViewModel.cs" />
-    <Compile Include="Features\Login\LoginView.xaml.cs">
-      <DependentUpon>LoginView.xaml</DependentUpon>
-    </Compile>
     <Page Include="Features\Communicator\CommunicatorView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Features\Connection\ConnectionView.xaml">
-      <Generator>MSBuild:Compile</Generator>
+    <Page Include="Features\Login\LoginView.xaml">
       <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Features\Registration\RegisterView.xaml">
+    <Page Include="Features\Register\RegisterView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -114,9 +110,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Features\Login\LoginView.xaml">
-      <SubType>Designer</SubType>
+    <Page Include="Styles\Styles.xaml">
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
   <ItemGroup>

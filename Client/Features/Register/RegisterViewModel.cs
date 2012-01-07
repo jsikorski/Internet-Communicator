@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text;
+﻿using System.Globalization;
 using System.Windows;
 using Caliburn.Micro;
 using Client.Features.Login;
 using Client.Services;
-using Protocol.Registration;
+using Protocol.Register;
 
-namespace Client.Features.Registration
+namespace Client.Features.Register
 {
     public class RegisterViewModel : Screen
     {

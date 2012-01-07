@@ -5,7 +5,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using Protocol;
 using Protocol.Connection;
 using Protocol.Login;
-using Protocol.Registration;
+using Protocol.Register;
 
 namespace Client.Services
 {

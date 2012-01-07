@@ -1,6 +1,6 @@
 ﻿using Protocol;
 using Protocol.Login;
-using Protocol.Registration;
+using Protocol.Register;
 
 namespace Client.Services
 {

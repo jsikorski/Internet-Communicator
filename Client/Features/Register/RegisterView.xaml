@@ -1,10 +1,8 @@
-﻿<Window x:Class="Client.Features.Registration.RegisterView"
+﻿<Window x:Class="Client.Features.Register.RegisterView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="RegisterView"
-        Width="300"
-        Height="260"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen"
+        Style="{StaticResource SmallWindowStyle}">
 
     <StackPanel Orientation="Vertical"
                 Margin="10">        
@@ -16,11 +14,9 @@
 
         <Button Name="Register"
                 Content="Register"
-                Height="40"
-                Margin="0, 10, 0, 0" />
+                Margin="0, 15, 0, 0" />
         <Button Name="Return"
                 Content="Return"
-                Height="40"
                 Margin="0, 10, 0, 0" />
     </StackPanel>
 </Window>

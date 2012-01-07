@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Protocol.Registration
+namespace Protocol.Register
 {
     [Serializable]
     public class RegisterRequest : IRequest
