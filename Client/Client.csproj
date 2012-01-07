@@ -75,6 +75,10 @@
       <DependentUpon>CommunicatorView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Features\Communicator\CommunicatorViewModel.cs" />
+    <Compile Include="Features\Connection\ConnectionView.xaml.cs">
+      <DependentUpon>ConnectionView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Features\Connection\ConnectionViewModel.cs" />
     <Compile Include="Features\Registration\RegisterView.xaml.cs">
       <DependentUpon>RegisterView.xaml</DependentUpon>
     </Compile>
@@ -97,6 +101,10 @@
     <Page Include="Features\Communicator\CommunicatorView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Features\Connection\ConnectionView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Features\Registration\RegisterView.xaml">
       <SubType>Designer</SubType>
