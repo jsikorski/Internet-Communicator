@@ -3,9 +3,9 @@ using System.Net.Sockets;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using Protocol;
-using Protocol.AccountCreation;
 using Protocol.Connection;
 using Protocol.Login;
+using Protocol.Registration;
 
 namespace Client.Services
 {

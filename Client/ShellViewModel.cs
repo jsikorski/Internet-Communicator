@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using Caliburn.Micro;
+using Client.Features.Communicator;
 using Client.Features.Login;
 using Client.Services;
 using Client.Validators;
@@ -31,12 +32,14 @@ namespace Client
         private readonly IServerConnection _serverConnection;
         private readonly IWindowManager _windowManager;
         private readonly LoginViewModel _loginViewModel;
+        private readonly CommunicatorViewModel _communicatorViewModel;
 
         public ShellViewModel(
             IValidator addressValidator,
             IServerConnection serverConnection,
             IWindowManager windowManager,
-            LoginViewModel loginViewModel)
+            LoginViewModel loginViewModel,
+            CommunicatorViewModel communicatorViewModel)
         {
             base.DisplayName = "Internet communicator";
 
@@ -44,10 +47,14 @@ namespace Client
             _serverConnection = serverConnection;
             _windowManager = windowManager;
             _loginViewModel = loginViewModel;
+            _communicatorViewModel = communicatorViewModel;
         }
 
         public void Connect()
         {
+            _windowManager.ShowWindow(_communicatorViewModel);
+            return;
+
             try
             {
                 _serverConnection.Connect(ServerAddress);

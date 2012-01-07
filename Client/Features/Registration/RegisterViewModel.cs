@@ -7,7 +7,7 @@ using System.Windows;
 using Caliburn.Micro;
 using Client.Features.Login;
 using Client.Services;
-using Protocol.AccountCreation;
+using Protocol.Registration;
 
 namespace Client.Features.Registration
 {

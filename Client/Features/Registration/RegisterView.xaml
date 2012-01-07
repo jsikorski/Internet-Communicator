@@ -7,7 +7,7 @@
         WindowStartupLocation="CenterScreen">
 
     <StackPanel Orientation="Vertical"
-                Margin="10">
+                Margin="10">        
         <Label Content="Password" />
         <TextBox Text="{Binding Password, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"/>
 

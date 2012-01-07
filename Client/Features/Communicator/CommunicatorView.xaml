@@ -1,0 +1,34 @@
+﻿<ribbon:RibbonWindow x:Class="Client.Features.Communicator.CommunicatorView"
+                     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                     Title="CommunicatorView"
+                     Width="300"
+                     Height="600"
+                     xmlns:ribbon="clr-namespace:Microsoft.Windows.Controls.Ribbon;assembly=RibbonControlsLibrary">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <ribbon:Ribbon Grid.Row="0">
+            <ribbon:Ribbon.ApplicationMenu>
+                <ribbon:RibbonApplicationMenu>
+                    <ribbon:RibbonApplicationMenuItem Header="Loggout" />
+                    <ribbon:RibbonApplicationMenuItem Header="Exit" />
+                </ribbon:RibbonApplicationMenu>
+            </ribbon:Ribbon.ApplicationMenu>
+
+            <ribbon:RibbonTab Header="Messages">
+                <ribbon:RibbonGroup Header="Operations">
+                    <ribbon:RibbonButton Label="Send message" LargeImageSource="./../../Images/32x32.png"/>
+                    <ribbon:RibbonButton Label="Send file" />
+                </ribbon:RibbonGroup>
+            </ribbon:RibbonTab>
+            <ribbon:RibbonTab Header="Contacts">
+                <ribbon:RibbonButton Label="Add contact" />
+                <ribbon:RibbonButton Label="Remove contact" />
+            </ribbon:RibbonTab>
+        </ribbon:Ribbon>
+    </Grid>
+</ribbon:RibbonWindow>
