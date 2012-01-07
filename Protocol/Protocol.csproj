@@ -42,7 +42,6 @@
   <ItemGroup>
     <Compile Include="Register\RegisterRequest.cs" />
     <Compile Include="Register\RegisterResponse.cs" />
-    <Compile Include="Addresses.cs" />
     <Compile Include="Connection\ConnectionRequest.cs" />
     <Compile Include="FileTransfer\FileUploadRequest.cs" />
     <Compile Include="IResponse.cs" />

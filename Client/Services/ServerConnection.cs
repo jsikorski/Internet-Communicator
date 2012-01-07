@@ -14,7 +14,6 @@ namespace Client.Services
         private TcpClient _server;
 
         private NetworkStream _serverStream;
-        private NetworkStream _responsesStream;
 
         private readonly IFormatter _formatter;
 
@@ -29,18 +28,7 @@ namespace Client.Services
             _server = new TcpClient();
             _server.Connect(serverEndPoint);
             _serverStream = _server.GetStream();
-            SendRequest(new ConnectionRequest
-                            {
-                                ClientListeningAddress = Addresses.ClientListeningAddress,
-                                ClientListenerPortNumber = Ports.ClientListeningPort
-                            });
-
-            var responsesListener = new TcpListener(
-                IPAddress.Parse(Addresses.ClientListeningAddress), Ports.ClientListeningPort);
-            responsesListener.Start();
-            var serverAsSender = responsesListener.AcceptTcpClient();
-            _responsesStream = serverAsSender.GetStream();
-            responsesListener.Stop();
+            SendRequest(new ConnectionRequest());
         }
 
         public LoginResponse SendLoginRequest(IRequest loginRequest)
@@ -67,7 +55,7 @@ namespace Client.Services
 
         private IResponse GetResponse()
         {
-            var response = (IResponse) _formatter.Deserialize(_responsesStream);
+            var response = (IResponse) _formatter.Deserialize(_serverStream);
             return response;
         }
     }
