@@ -1,40 +1,68 @@
 ﻿using System.Collections.Generic;
-using Autofac;
 using Caliburn.Micro;
 using Client.Commands;
+using Client.Features.Contacts;
+using Client.Messages;
 using Client.Services;
 using Common.Contacts;
 using System.Linq;
 
 namespace Client.Features.Communicator
 {
-    public class CommunicatorViewModel
+    public class CommunicatorViewModel : Screen, IHandle<ContactAdded>
     {
-        private readonly IServerConnection _serverConnection;
-        private readonly IContainer _container;
+        private readonly IEventAggregator _eventAggregator;
+        private readonly NewContactCommand _newContactCommand;
+        private readonly IContactsProvider _contactsProvider;
 
         public BindableCollection<Contact> Contacts { get; set; }
-        public Contact SelectedContact { get; set; }
+        private Contact _selectedContact;
+        public Contact SelectedContact
+        {
+            get { return _selectedContact; }
+            set
+            {
+                _selectedContact = value;
+                NotifyOfPropertyChange(() => CanRemoveContact);
+            }
+        }
+
+        public bool CanRemoveContact
+        {
+            get { return SelectedContact != null; }
+        }
 
         public CommunicatorViewModel(
-            IServerConnection serverConnection, 
-            IContainer container)
+            IEventAggregator eventAggregator, 
+            NewContactCommand newContactCommand,
+            IContactsProvider contactsProvider)
         {
-            _serverConnection = serverConnection;
-            _container = container;
+            base.DisplayName = "Internet communicator";
 
-            var contactses = new List<Contact>() { new Contact { Number = 5 }, new Contact { Number = 7 } };
-            Contacts = new BindableCollection<Contact>(contactses);
+            _eventAggregator = eventAggregator;
+            _eventAggregator.Subscribe(this);
+
+            _newContactCommand = newContactCommand;
+            _contactsProvider = contactsProvider;
+
+            var contacts = _contactsProvider.GetAll();
+            Contacts = new BindableCollection<Contact>(contacts);
+        }
+
+        public void NewContact()
+        {
+            _newContactCommand.Execute();
         }
 
         public void RemoveContact()
         {
-            Contacts.Remove(SelectedContact);
+            //_eventAggregator.Publish("Hello");
+            //Contacts.Remove(SelectedContact);
         }
 
-        public void ExecuteCommand(string buttonName)
+        public void Handle(ContactAdded message)
         {
-            //_container.Re
+            Contacts.Add(message.Contact);
         }
     }
 }

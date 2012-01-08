@@ -7,6 +7,7 @@ namespace Common.Contacts
 {
     public class Contact
     {
-        public int Number { get; set; }
+        public ContactStoredData ContactStoredData { get; set; }
+        public bool IsAvailable { get; set; }
     }
 }

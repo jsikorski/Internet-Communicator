@@ -90,6 +90,7 @@
     <Compile Include="Features\Contacts\NewContactView.xaml.cs">
       <DependentUpon>NewContactView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Features\Login\LoggedUser.cs" />
     <Compile Include="Features\Login\LoginView.xaml.cs">
       <DependentUpon>LoginView.xaml</DependentUpon>
     </Compile>
@@ -97,6 +98,11 @@
       <DependentUpon>RegisterView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Features\Register\RegisterViewModel.cs" />
+    <Compile Include="Messages\ContactAdded.cs" />
+    <Compile Include="Services\ContactsProvider.cs" />
+    <Compile Include="Services\ContactsStorageController.cs" />
+    <Compile Include="Services\IContactsProvider.cs" />
+    <Compile Include="Services\IContactsStorageController.cs" />
     <Compile Include="Services\IServerConnection.cs" />
     <Compile Include="Services\ServerConnection.cs" />
     <Compile Include="ShellViewModel.cs" />
@@ -106,6 +112,7 @@
     </Compile>
     <Compile Include="AppBootstrapper.cs" />
     <Compile Include="IShell.cs" />
+    <Compile Include="Utils\DigitOnlyTextBox.cs" />
     <Compile Include="Validators\AddressValidator.cs" />
     <Compile Include="Validators\IValidator.cs" />
     <Compile Include="Features\Login\LoginViewModel.cs" />
@@ -170,6 +177,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Images\add_contact_icon.png" />
+    <Resource Include="Images\remove_contact_icon.png" />
     <Content Include="Images\send_file_icon.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

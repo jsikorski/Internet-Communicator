@@ -3,16 +3,10 @@
                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                      Title="CommunicatorView"
                      Width="300"
-                     Height="600"
+                     SizeToContent="Height"
                      WindowStartupLocation="CenterScreen"
-                     xmlns:ribbon="clr-namespace:Microsoft.Windows.Controls.Ribbon;assembly=RibbonControlsLibrary"
-                     xmlns:cal="http://www.caliburnproject.org">
-    <ribbon:RibbonWindow.Resources>
-        <Style TargetType="ribbon:RibbonButton">
-            <Setter Property="cal:Message.Attach" Value="ExecuteCommand($this.Name)"/>
-        </Style>
-    </ribbon:RibbonWindow.Resources>
-    
+                     xmlns:ribbon="clr-namespace:Microsoft.Windows.Controls.Ribbon;assembly=RibbonControlsLibrary">
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -37,18 +31,26 @@
                 </ribbon:RibbonGroup>
             </ribbon:RibbonTab>
             <ribbon:RibbonTab Header="Contacts">
-                <ribbon:RibbonButton Label="Add contact" />
-                <ribbon:RibbonButton Name="RemoveContact"
-                                     Label="Remove contact" />
+                <ribbon:RibbonGroup Header="Contacts list">
+                    <ribbon:RibbonButton Name="NewContact"
+                                         Label="Add"
+                                         LargeImageSource="../../Images/add_contact_icon.png" />
+                    <ribbon:RibbonButton Name="RemoveContact"
+                                         Label="Remove"
+                                         LargeImageSource="../../Images/remove_contact_icon.png" />
+                </ribbon:RibbonGroup>
             </ribbon:RibbonTab>
         </ribbon:Ribbon>
 
         <ListView Grid.Row="1"
                   ItemsSource="{Binding Contacts}"
-                  SelectedItem="{Binding SelectedContact}">
+                  SelectedItem="{Binding SelectedContact, Mode=OneWayToSource}"
+                  Background="Red"
+                  Width="300"
+                  Height="500">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <Label Content="{Binding Number}"
+                    <Label Content="{Binding ContactStoredData.Name}"
                            Background="LightGreen"
                            Width="Auto" />
                 </DataTemplate>

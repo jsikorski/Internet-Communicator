@@ -13,13 +13,5 @@ namespace Client.Features.Login
         {
             InitializeComponent();
         }
-
-        private void NumberTextBoxPreviewInput(object sender, TextCompositionEventArgs textCompositionEventArgs)
-        {
-            if (!char.IsDigit(textCompositionEventArgs.Text.ToCharArray().First()))
-            {
-                textCompositionEventArgs.Handled = true;
-            }
-        }
     }
 }
