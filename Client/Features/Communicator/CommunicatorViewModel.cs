@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Caliburn.Micro;
 using Client.Commands;
 using Client.Features.Contacts;
@@ -13,6 +14,7 @@ namespace Client.Features.Communicator
     {
         private readonly IEventAggregator _eventAggregator;
         private readonly NewContactCommand _newContactCommand;
+        private readonly RemoveContactCommand _removeContactCommand;
         private readonly IContactsProvider _contactsProvider;
 
         public BindableCollection<Contact> Contacts { get; set; }
@@ -35,6 +37,7 @@ namespace Client.Features.Communicator
         public CommunicatorViewModel(
             IEventAggregator eventAggregator, 
             NewContactCommand newContactCommand,
+            RemoveContactCommand removeContactCommand,
             IContactsProvider contactsProvider)
         {
             base.DisplayName = "Internet communicator";
@@ -43,6 +46,7 @@ namespace Client.Features.Communicator
             _eventAggregator.Subscribe(this);
 
             _newContactCommand = newContactCommand;
+            _removeContactCommand = removeContactCommand;
             _contactsProvider = contactsProvider;
         }
 
@@ -61,8 +65,8 @@ namespace Client.Features.Communicator
 
         public void RemoveContact()
         {
-            //_eventAggregator.Publish("Hello");
-            //Contacts.Remove(SelectedContact);
+            _removeContactCommand.Execute(SelectedContact);
+            Contacts.Remove(SelectedContact);
         }
 
         public void Handle(ContactAdded message)

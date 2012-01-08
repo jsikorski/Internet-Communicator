@@ -10,5 +10,6 @@ namespace Client.Services
     {
         IEnumerable<Contact> GetAll();
         void Add(Contact contact);
+        void Remove(Contact contact);
     }
 }

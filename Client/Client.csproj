@@ -82,6 +82,7 @@
     <Compile Include="Commands\NewContactCommand.cs" />
     <Compile Include="Commands\NewRegisterCommand.cs" />
     <Compile Include="Commands\RegisterCommand.cs" />
+    <Compile Include="Commands\RemoveContactCommand.cs" />
     <Compile Include="Features\Communicator\CommunicatorView.xaml.cs">
       <DependentUpon>CommunicatorView.xaml</DependentUpon>
     </Compile>
