@@ -1,6 +1,9 @@
-﻿using Protocol;
+﻿using System.Collections.Generic;
+using Common.Contacts;
+using Protocol;
 using Protocol.Login;
 using Protocol.Register;
+using Protocol.Statuses;
 
 namespace Client.Services
 {
@@ -9,6 +12,7 @@ namespace Client.Services
         void Connect(string serverAddress);
         LoginResponse SendLoginRequest(IRequest loginRequest);
         RegisterResponse SendRegisterRequest(IRequest registerRequest);
+        StatusesResponse SendStatusesRequest(IRequest statusesRequest);
         void Disconnect();
     }
 }

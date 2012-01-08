@@ -1,11 +1,14 @@
-﻿using System.Net;
+﻿using System.Collections.Generic;
+using System.Net;
 using System.Net.Sockets;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
+using Common.Contacts;
 using Protocol;
 using Protocol.Connection;
 using Protocol.Login;
 using Protocol.Register;
+using Protocol.Statuses;
 
 namespace Client.Services
 {
@@ -40,6 +43,12 @@ namespace Client.Services
         {
             SendRequest(registerRequest);
             return (RegisterResponse) GetResponse();
+        }
+
+        public StatusesResponse SendStatusesRequest(IRequest statusesRequest)
+        {
+            SendRequest(statusesRequest);
+            return (StatusesResponse) GetResponse();
         }
 
         public void Disconnect()

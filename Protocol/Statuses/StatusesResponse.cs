@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Common.Contacts;
 
 namespace Protocol.Statuses
 {
     [Serializable]
     public class StatusesResponse : IResponse
     {
-        public IEnumerable<KeyValuePair<int, bool>> NumbersStatuses { get; set; }
+        public IEnumerable<Contact> NumbersStatuses { get; set; }
     }
 }

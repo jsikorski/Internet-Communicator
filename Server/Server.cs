@@ -135,10 +135,10 @@ namespace Server
 
                     foreach (var number in statusRequest.Numbers)
                     {
-                        list.Add(new KeyValuePair<int, bool>(number, _activeConnections.Any(ac => ac.Key == number)));
+                        //list.Add(new KeyValuePair<int, bool>(number, _activeConnections.Any(ac => ac.Key == number)));
                     }
 
-                    statusResponse.NumbersStatuses = list;
+                    //statusResponse.NumbersStatuses = list;
                     SendReponse(clientStream, statusResponse);
                 }
                 else if (request.ToString() == "Protocol.Login.LogoutRequest")

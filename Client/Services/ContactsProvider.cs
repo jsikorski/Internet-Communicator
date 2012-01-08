@@ -9,15 +9,20 @@ namespace Client.Services
     public class ContactsProvider : IContactsProvider
     {
         private readonly IContactsStorageController _contactsStorageController;
+        private readonly IServerConnection _serverConnection;
 
-        public ContactsProvider(IContactsStorageController contactsStorageController)
+        public ContactsProvider(IContactsStorageController contactsStorageController, 
+            IServerConnection serverConnection)
         {
             _contactsStorageController = contactsStorageController;
+            _serverConnection = serverConnection;
         }
 
         public IEnumerable<Contact> GetAll()
         {
-            return _contactsStorageController.Load().Select(storedData => new Contact {ContactStoredData = storedData});
+            var pureContacts = _contactsStorageController.Load().Select(storedData => new Contact {ContactStoredData = storedData});
+
+            return null;
         }
 
         public void Add(Contact contact)
