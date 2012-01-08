@@ -133,12 +133,12 @@ namespace Server
                     var statusResponse = new StatusesResponse();
                     var list = new HashSet<KeyValuePair<int, bool>>();
 
-                    foreach (var number in statusRequest.Numbers)
+                    foreach (var number in statusRequest.Contacts)
                     {
                         //list.Add(new KeyValuePair<int, bool>(number, _activeConnections.Any(ac => ac.Key == number)));
                     }
 
-                    //statusResponse.NumbersStatuses = list;
+                    //statusResponse.Contacts = list;
                     SendReponse(clientStream, statusResponse);
                 }
                 else if (request.ToString() == "Protocol.Login.LogoutRequest")

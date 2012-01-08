@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Common.Contacts;
+using Protocol;
+using Protocol.Statuses;
 
 namespace Client.Services
 {
@@ -21,8 +23,13 @@ namespace Client.Services
         public IEnumerable<Contact> GetAll()
         {
             var pureContacts = _contactsStorageController.Load().Select(storedData => new Contact {ContactStoredData = storedData});
+            var statusesRequest = new StatusesRequest()
+                                      {
+                                          Numbers = pureContacts
+                                      };
 
-            return null;
+            var response = _serverConnection.SendStatusesRequest(statusesRequest);
+            return response.NumbersStatuses;
         }
 
         public void Add(Contact contact)
