@@ -73,8 +73,6 @@ namespace Server
             var sqlConnection = new MySqlConnection("Server=mysql-stoinska.ogicom.pl;Port=3306;Database=db174700;Uid=db174700;password=rvcID4X4cV");
 
             // waiting for sucessfull logon or successfull registration
-            // after three unsuccessfull logon trys server disconnects
-            var times = 1;
             while (true)
             {
                 var request = GetRequest();
@@ -122,17 +120,7 @@ namespace Server
                     SendReponse(new RegisterResponse() { AccountNumber = (int) command.LastInsertedId, WasSuccessfull = true });
                     command.Dispose();
                     sqlConnection.Close();
-
-                    times = 1;
                 }
-
-                if (times == 3)
-                {
-                    sqlConnection.Close();
-                    throw new Exception("Three unsuccessfull trys");
-                }
-
-                times++;
             }
             sqlConnection.Close();
         }
