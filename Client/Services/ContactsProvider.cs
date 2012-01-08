@@ -22,14 +22,15 @@ namespace Client.Services
 
         public IEnumerable<Contact> GetAll()
         {
-            var pureContacts = _contactsStorageController.Load().Select(storedData => new Contact {ContactStoredData = storedData});
-            var statusesRequest = new StatusesRequest()
+            var pureContacts =
+                _contactsStorageController.Load().Select(storedData => new Contact {ContactStoredData = storedData});
+            var statusesRequest = new StatusesRequest
                                       {
-                                          Numbers = pureContacts
+                                          Contacts = pureContacts.ToList()
                                       };
 
             var response = _serverConnection.SendStatusesRequest(statusesRequest);
-            return response.NumbersStatuses;
+            return response.Contacts;
         }
 
         public void Add(Contact contact)

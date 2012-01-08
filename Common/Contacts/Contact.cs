@@ -5,6 +5,7 @@ using System.Text;
 
 namespace Common.Contacts
 {
+    [Serializable]
     public class Contact
     {
         public ContactStoredData ContactStoredData { get; set; }

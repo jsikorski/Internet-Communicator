@@ -9,6 +9,6 @@ namespace Protocol.Statuses
     [Serializable]
     public class StatusesRequest : IRequest
     {
-        public IEnumerable<Contact> Numbers { get; set; } 
+        public IEnumerable<Contact> Contacts { get; set; } 
     }
 }

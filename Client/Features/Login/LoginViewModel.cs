@@ -2,6 +2,7 @@
 using System.Windows;
 using Caliburn.Micro;
 using Client.Commands;
+using Client.Features.Communicator;
 using Protocol.Login;
 
 namespace Client.Features.Login
@@ -10,6 +11,8 @@ namespace Client.Features.Login
     {
         private readonly ICommand<LoginRequest> _loginCommand;
         private readonly ICommand<Screen> _newRegisterCommand;
+        private readonly IWindowManager _windowManager;
+        private readonly CommunicatorViewModel _communicatorViewModel;
 
         private string _number;
         public string Number
@@ -44,12 +47,16 @@ namespace Client.Features.Login
 
         public LoginViewModel(
             LoginCommand loginCommand, 
-            NewRegisterCommand newRegisterCommand)
+            NewRegisterCommand newRegisterCommand,
+            IWindowManager windowManager,
+            CommunicatorViewModel communicatorViewModel)
         {
             base.DisplayName = "Internet communicator";
 
             _loginCommand = loginCommand;
             _newRegisterCommand = newRegisterCommand;
+            _windowManager = windowManager;
+            _communicatorViewModel = communicatorViewModel;
         }
 
         public void Login()
@@ -68,6 +75,8 @@ namespace Client.Features.Login
             {
                 return;
             }
+
+            _windowManager.ShowWindow(_communicatorViewModel);
         }
 
         public void Register()

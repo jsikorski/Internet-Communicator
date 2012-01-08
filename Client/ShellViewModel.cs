@@ -3,7 +3,6 @@ using System.Diagnostics;
 using System.Windows;
 using Caliburn.Micro;
 using Client.Commands;
-using Client.Features.Communicator;
 using Client.Features.Login;
 using Client.Validators;
 
@@ -39,11 +38,9 @@ namespace Client
             IValidator addressValidator,
             IWindowManager windowManager,
             LoginViewModel loginViewModel,
-            ConnectCommand connectCommand,
-            CommunicatorViewModel communicatorViewModel)
+            ConnectCommand connectCommand)
         {
             base.DisplayName = "Internet communicator";
-            windowManager.ShowWindow(communicatorViewModel);
 
             _addressValidator = addressValidator;
             _windowManager = windowManager;
