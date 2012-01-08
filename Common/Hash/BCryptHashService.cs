@@ -7,7 +7,7 @@ using DevOne.Security.Cryptography.BCrypt;
 
 namespace Common.Hash
 {
-    class BCryptHashService : IHashService
+    public class BCryptHashService : IHashService
     {
         public string GetHash(string text)
         {
