@@ -2,6 +2,7 @@
 using System.Windows;
 using Caliburn.Micro;
 using Client.Commands;
+using Client.Utils;
 using Protocol.Register;
 
 namespace Client.Features.Register
@@ -9,7 +10,7 @@ namespace Client.Features.Register
     public class RegisterViewModel : Screen
     {
         private readonly IWindowManager _windowManager;
-        private readonly ICommand<Tuple<string, string>> _registerCommand;
+        private readonly RegisterCommand _registerCommand;
         private Screen _returnViewModel;
 
         private string _password;
@@ -55,14 +56,20 @@ namespace Client.Features.Register
 
         public void Register()
         {
+            int accountNumber;
             try
             {
-                _registerCommand.Execute(new Tuple<string, string>(Password, PasswordConfirmation));
+                accountNumber = _registerCommand.Execute(
+                    new RegisterInformations(Password, PasswordConfirmation));
             }
-            catch
+            catch (Exception exception)
             {
+                ErrorMessageBox.Show(exception);
                 return;
             }
+
+            MessageBox.Show(string.Format("Account was successfully created. Your number is {0}.",
+                                          accountNumber), "Registration completed");
 
             _windowManager.ShowWindow(_returnViewModel);
             TryClose();

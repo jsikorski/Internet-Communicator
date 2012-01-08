@@ -77,6 +77,7 @@
     </ApplicationDefinition>
     <Compile Include="Commands\AddContactCommand.cs" />
     <Compile Include="Commands\ConnectCommand.cs" />
+    <Compile Include="Commands\GetContactsCommand.cs" />
     <Compile Include="Commands\ICommand.cs" />
     <Compile Include="Commands\LoginCommand.cs" />
     <Compile Include="Commands\NewContactCommand.cs" />
@@ -92,9 +93,11 @@
       <DependentUpon>NewContactView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Features\Login\LoggedUser.cs" />
+    <Compile Include="Features\Login\LoginInformations.cs" />
     <Compile Include="Features\Login\LoginView.xaml.cs">
       <DependentUpon>LoginView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Features\Register\RegisterInformations.cs" />
     <Compile Include="Features\Register\RegisterView.xaml.cs">
       <DependentUpon>RegisterView.xaml</DependentUpon>
     </Compile>
@@ -114,6 +117,7 @@
     <Compile Include="AppBootstrapper.cs" />
     <Compile Include="IShell.cs" />
     <Compile Include="Utils\DigitOnlyTextBox.cs" />
+    <Compile Include="Utils\ErrorMessageBox.cs" />
     <Compile Include="Validators\AddressValidator.cs" />
     <Compile Include="Validators\IValidator.cs" />
     <Compile Include="Features\Login\LoginViewModel.cs" />

@@ -25,8 +25,7 @@ namespace Client.Commands
             }
             catch (Exception)
             {
-                MessageBox.Show("Cannot connect to server.", "Connection error");
-                throw;
+                throw new Exception("Cannot connect to server.");
             }
         }
     }

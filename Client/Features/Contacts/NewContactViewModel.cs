@@ -5,6 +5,7 @@ using System.Text;
 using Caliburn.Micro;
 using Client.Commands;
 using Client.Messages;
+using Client.Utils;
 using Common.Contacts;
 
 namespace Client.Features.Contacts
@@ -55,7 +56,16 @@ namespace Client.Features.Contacts
                                       Number = Int32.Parse(Number)
                                   };
 
-            _addContactCommand.Execute(contactData);
+            try
+            {
+                _addContactCommand.Execute(contactData);
+            }
+            catch (Exception exception)
+            {
+                ErrorMessageBox.Show(exception);
+                return;
+            }
+
             TryClose();
         }
     }

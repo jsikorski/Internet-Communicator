@@ -45,14 +45,16 @@
         <ListView Grid.Row="1"
                   ItemsSource="{Binding Contacts}"
                   SelectedItem="{Binding SelectedContact, Mode=OneWayToSource}"
-                  Background="Red"
-                  Width="300"
+                  Width="Auto"
                   Height="500">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <Label Content="{Binding ContactStoredData.Name}"
-                           Background="LightGreen"
-                           Width="Auto" />
+                    <StackPanel Margin="5 0 0 0" Orientation="Horizontal">
+                        <Ellipse Height="10"
+                                 Width="10"
+                                 Fill="Green" />
+                        <Label Content="{Binding ContactStoredData.Name}" />
+                    </StackPanel>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>

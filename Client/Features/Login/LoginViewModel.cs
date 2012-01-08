@@ -3,14 +3,15 @@ using System.Windows;
 using Caliburn.Micro;
 using Client.Commands;
 using Client.Features.Communicator;
+using Client.Utils;
 using Protocol.Login;
 
 namespace Client.Features.Login
 {
     public class LoginViewModel : Screen
     {
-        private readonly ICommand<LoginRequest> _loginCommand;
-        private readonly ICommand<Screen> _newRegisterCommand;
+        private readonly LoginCommand _loginCommand;
+        private readonly NewRegisterCommand _newRegisterCommand;
         private readonly IWindowManager _windowManager;
         private readonly CommunicatorViewModel _communicatorViewModel;
 
@@ -61,27 +62,38 @@ namespace Client.Features.Login
 
         public void Login()
         {
-            var loginRequest = new LoginRequest()
-            {
-                Number = Convert.ToInt32(Number),
-                PasswordHash = Password
-            };
+            var loginInformations = new LoginInformations()
+                                        {
+                                            Number = Int32.Parse(Number),
+                                            Password = Password
+                                        };
 
             try
             {
-                _loginCommand.Execute(loginRequest);
+                _loginCommand.Execute(loginInformations);
             }
-            catch
+            catch (Exception exception)
             {
+                ErrorMessageBox.Show(exception);
                 return;
             }
 
             _windowManager.ShowWindow(_communicatorViewModel);
+            TryClose();
         }
 
         public void Register()
         {
-            _newRegisterCommand.Execute(this);
+            try
+            {
+                _newRegisterCommand.Execute(this);
+            }
+            catch (Exception exception)
+            {
+                ErrorMessageBox.Show(exception);
+                return;    
+            }
+
             TryClose();
         }
     }

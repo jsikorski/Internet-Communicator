@@ -5,6 +5,7 @@ using Client.Commands;
 using Client.Features.Contacts;
 using Client.Messages;
 using Client.Services;
+using Client.Utils;
 using Common.Contacts;
 using System.Linq;
 
@@ -15,7 +16,7 @@ namespace Client.Features.Communicator
         private readonly IEventAggregator _eventAggregator;
         private readonly NewContactCommand _newContactCommand;
         private readonly RemoveContactCommand _removeContactCommand;
-        private readonly IContactsProvider _contactsProvider;
+        private readonly GetContactsCommand _getContactsCommand;
 
         public BindableCollection<Contact> Contacts { get; set; }
         private Contact _selectedContact;
@@ -38,7 +39,7 @@ namespace Client.Features.Communicator
             IEventAggregator eventAggregator, 
             NewContactCommand newContactCommand,
             RemoveContactCommand removeContactCommand,
-            IContactsProvider contactsProvider)
+            GetContactsCommand getContactsCommand)
         {
             base.DisplayName = "Internet communicator";
 
@@ -47,25 +48,51 @@ namespace Client.Features.Communicator
 
             _newContactCommand = newContactCommand;
             _removeContactCommand = removeContactCommand;
-            _contactsProvider = contactsProvider;
+            _getContactsCommand = getContactsCommand;
         }
 
         protected override void OnActivate()
         {
             base.OnActivate();
 
-            var contacts = _contactsProvider.GetAll();
+            IEnumerable<Contact> contacts;            
+            try
+            {
+                contacts = _getContactsCommand.Execute();
+            }
+            catch (Exception exception)
+            {
+                ErrorMessageBox.Show(exception);
+                return;
+            }
+
             Contacts = new BindableCollection<Contact>(contacts);
         }
 
         public void NewContact()
         {
-            _newContactCommand.Execute();
+            try
+            {
+                _newContactCommand.Execute();                
+            }
+            catch (Exception exception)
+            {
+                ErrorMessageBox.Show(exception);
+            }
         }
 
         public void RemoveContact()
         {
-            _removeContactCommand.Execute(SelectedContact);
+            try
+            {
+                _removeContactCommand.Execute(SelectedContact);
+            }
+            catch (Exception exception)
+            {
+                ErrorMessageBox.Show(exception);
+                return;                
+            }
+
             Contacts.Remove(SelectedContact);
         }
 

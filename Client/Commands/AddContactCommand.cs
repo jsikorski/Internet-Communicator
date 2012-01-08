@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows;
 using Caliburn.Micro;
 using Client.Messages;
 using Client.Services;
@@ -29,8 +30,16 @@ namespace Client.Commands
         public void Execute(ContactStoredData contactData)
         {
             var contact = new Contact { ContactStoredData = contactData };
-            _contactsProvider.Add(contact);
-            _serverConnection.SendStatusesRequest(new StatusesRequest { Contacts = new List<Contact> { contact } });
+
+            try
+            {
+                _contactsProvider.Add(contact);
+                _serverConnection.SendStatusesRequest(new StatusesRequest { Contacts = new List<Contact> { contact } });
+            }
+            catch (Exception)
+            {
+                throw new Exception("Cannot add new contact. Please try again later.");
+            }
 
             _eventAggregator.Publish(new ContactAdded(contact));
         }

@@ -14,4 +14,9 @@ namespace Client.Commands
     {
         void Execute(T param);
     }
+
+    public interface ICommand<T, K>
+    {
+        K Execute(T param);
+    }
 }

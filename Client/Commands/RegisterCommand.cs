@@ -3,44 +3,45 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows;
+using Client.Features.Register;
 using Client.Services;
+using Common.Hash;
 using Protocol.Register;
 
 namespace Client.Commands
 {
-    public class RegisterCommand : ICommand<Tuple<string, string>>
+    public class RegisterCommand : ICommand<RegisterInformations, int>
     {
         private readonly IServerConnection _serverConnection;
+        private readonly IHashService _hashService;
 
-        public RegisterCommand(IServerConnection serverConnection)
+        public RegisterCommand(
+            IServerConnection serverConnection,
+            IHashService hashService)
         {
             _serverConnection = serverConnection;
+            _hashService = hashService;
         }
 
-        public void Execute(Tuple<string, string> passwords)
+        public int Execute(RegisterInformations registerInformations)
         {
-            string password = passwords.Item1;
-            string passwordConfirmation = passwords.Item2;
+            string password = registerInformations.Password;
+            string passwordConfirmation = registerInformations.PasswordConfirmation;
 
             if (password != passwordConfirmation)
             {
-                MessageBox.Show("Password and password confirmation have to be equal.", "Password confirmation");
-                throw new Exception();
+                throw new Exception("Password and password confirmation have to be equal.");
             }
 
-            var registerRequest = new RegisterRequest {Password = password};
+            var registerRequest = new RegisterRequest { Password = _hashService.GetHash(password) };
             RegisterResponse registerResponse = _serverConnection.SendRegisterRequest(registerRequest);
 
-            if (registerResponse.WasSuccessfull)
+            if (!registerResponse.WasSuccessfull)
             {
-                MessageBox.Show(string.Format("Account was successfully created. Your number is {0}.",
-                                              registerResponse.AccountNumber), "Registration completed");
+                throw new Exception("Cannot create new account.");
             }
-            else
-            {
-                MessageBox.Show("Cannot create new account.", "Registration error");
-                throw new Exception();
-            }
+
+            return registerResponse.AccountNumber;
         }
     }
 }

@@ -1,32 +1,36 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
-using System.Windows;
 using Client.Services;
 using Common.Contacts;
 
 namespace Client.Commands
 {
-    public class RemoveContactCommand : ICommand<Contact>
+    public class GetContactsCommand
     {
         private readonly IContactsProvider _contactsProvider;
 
-        public RemoveContactCommand(IContactsProvider contactsProvider)
+        public GetContactsCommand(
+            IContactsProvider contactsProvider)
         {
             _contactsProvider = contactsProvider;
         }
 
-        public void Execute(Contact contact)
+        public IEnumerable<Contact> Execute()
         {
+            IEnumerable<Contact> contacts;
             try
             {
-                _contactsProvider.Remove(contact);
+                contacts = _contactsProvider.GetAll();                
             }
             catch (Exception)
             {
-                throw new Exception("Cannot remove contact. Please try again later.");
+                throw new Exception("Cannot get contacts from sever.");
             }
+
+            return contacts;
         }
     }
 }

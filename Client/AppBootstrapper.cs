@@ -2,6 +2,7 @@
 using Autofac;
 using Client.Features.Login;
 using Client.Services;
+using Common.Hash;
 
 namespace Client
 {
@@ -39,12 +40,13 @@ namespace Client
 			containerBuilder.RegisterAssemblyTypes(Assembly.GetExecutingAssembly())
 				.AsImplementedInterfaces().AsSelf().PropertiesAutowired(
 					PropertyWiringFlags.PreserveSetValues);
-            containerBuilder.RegisterInstance(new ServerConnection()).AsImplementedInterfaces();
-		    containerBuilder.RegisterInstance(new LoggedUser());
+			containerBuilder.RegisterInstance(new ServerConnection()).AsImplementedInterfaces();
+			containerBuilder.RegisterInstance(new LoggedUser());
 
 			containerBuilder.RegisterType<EventAggregator>().As<IEventAggregator>().SingleInstance();
 			containerBuilder.RegisterType<WindowManager>().As<IWindowManager>();
-		    containerBuilder.Register(cc => _container).ExternallyOwned();
+			containerBuilder.RegisterType<BCryptHashService>().AsImplementedInterfaces();
+			containerBuilder.Register(cc => _container).ExternallyOwned();
 			return containerBuilder.Build();
 		}
 	}
