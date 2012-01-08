@@ -19,15 +19,14 @@ namespace Server
     {
         private readonly IFormatter _formatter;
         private readonly TcpListener _tcpListener;
-
         private readonly Thread _listenThread;
-        private readonly HashSet<KeyValuePair<int, NetworkStream>> _activeConnections;
+        private readonly Dictionary<int, NetworkStream> _activeConnections;
 
         public Server()
         {
             _formatter = new BinaryFormatter();
             _tcpListener = new TcpListener(IPAddress.Any, Ports.ServerListeningPort);
-            _activeConnections = new HashSet<KeyValuePair<int, NetworkStream>>();
+            _activeConnections = new Dictionary<int, NetworkStream>();
             _listenThread = new Thread(new ThreadStart(ListenForClients));
             _listenThread.Start();
         }
@@ -79,7 +78,7 @@ namespace Server
 
                     // temporary mockup
                     clientNumber = loginRequest.Number;
-                    _activeConnections.Add(new KeyValuePair<int, NetworkStream>(loginRequest.Number, clientStream));
+                    _activeConnections.Add(loginRequest.Number, clientStream);
                     SendReponse(clientStream, new LoginResponse() { WasSuccessfull = true });
                     // end
 
@@ -123,27 +122,25 @@ namespace Server
 
                     foreach (var receiver in messageRequest.ReceiversNumbers)
                     {
-                        var connection = _activeConnections.Where(activeConnection => activeConnection.Key == receiver).First().Value; // spaghetti code :D
+                        var connection = _activeConnections[receiver];
                         SendReponse(connection, messageResponse);
                     }
                 }
                 else if (request.ToString() == "Protocol.Statuses.StatusesRequest")
                 {
                     var statusRequest = (StatusesRequest)request;
-                    var statusResponse = new StatusesResponse();
-                    var list = new HashSet<KeyValuePair<int, bool>>();
+                    var statusResponse = new StatusesResponse {Contacts = statusRequest.Contacts};
 
-                    foreach (var number in statusRequest.Contacts)
+                    foreach (var contact in statusResponse.Contacts)
                     {
-                        //list.Add(new KeyValuePair<int, bool>(number, _activeConnections.Any(ac => ac.Key == number)));
+                        contact.IsAvailable = _activeConnections.Any(ac => ac.Key == contact.ContactStoredData.Number);
                     }
 
-                    //statusResponse.Contacts = list;
                     SendReponse(clientStream, statusResponse);
                 }
                 else if (request.ToString() == "Protocol.Login.LogoutRequest")
                 {
-                    _activeConnections.RemoveWhere(activeConnection => activeConnection.Key == clientNumber);
+                    _activeConnections.Remove(clientNumber);
                     tcpClient.Close();
                     break;
                 }
