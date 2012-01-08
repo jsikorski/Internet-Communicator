@@ -75,10 +75,21 @@
     <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
+    <Compile Include="Commands\AddContactCommand.cs" />
+    <Compile Include="Commands\ConnectCommand.cs" />
+    <Compile Include="Commands\ICommand.cs" />
+    <Compile Include="Commands\LoginCommand.cs" />
+    <Compile Include="Commands\NewContactCommand.cs" />
+    <Compile Include="Commands\NewRegisterCommand.cs" />
+    <Compile Include="Commands\RegisterCommand.cs" />
     <Compile Include="Features\Communicator\CommunicatorView.xaml.cs">
       <DependentUpon>CommunicatorView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Features\Communicator\CommunicatorViewModel.cs" />
+    <Compile Include="Features\Contacts\NewContactViewModel.cs" />
+    <Compile Include="Features\Contacts\NewContactView.xaml.cs">
+      <DependentUpon>NewContactView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Features\Login\LoginView.xaml.cs">
       <DependentUpon>LoginView.xaml</DependentUpon>
     </Compile>
@@ -99,6 +110,10 @@
     <Compile Include="Validators\IValidator.cs" />
     <Compile Include="Features\Login\LoginViewModel.cs" />
     <Page Include="Features\Communicator\CommunicatorView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Features\Contacts\NewContactView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -162,6 +177,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

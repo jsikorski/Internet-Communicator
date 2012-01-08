@@ -1,8 +1,7 @@
-﻿using System.Globalization;
+﻿using System;
 using System.Windows;
 using Caliburn.Micro;
-using Client.Features.Login;
-using Client.Services;
+using Client.Commands;
 using Protocol.Register;
 
 namespace Client.Features.Register
@@ -10,8 +9,8 @@ namespace Client.Features.Register
     public class RegisterViewModel : Screen
     {
         private readonly IWindowManager _windowManager;
-        private readonly IServerConnection _serverConnection;
-        private LoginViewModel _returnViewModel;
+        private readonly ICommand<Tuple<string, string>> _registerCommand;
+        private Screen _returnViewModel;
 
         private string _password;
         public string Password
@@ -46,38 +45,27 @@ namespace Client.Features.Register
 
         public RegisterViewModel(
             IWindowManager windowManager,
-            IServerConnection serverConnection)
+            RegisterCommand registerCommand)
         {
             base.DisplayName = "Internet communicator";
 
             _windowManager = windowManager;
-            _serverConnection = serverConnection;
+            _registerCommand = registerCommand;
         }
 
         public void Register()
         {
-            if (Password != PasswordConfirmation)
+            try
             {
-                MessageBox.Show("Password and password confirmation have to be equal.", "Password confirmation");
+                _registerCommand.Execute(new Tuple<string, string>(Password, PasswordConfirmation));
+            }
+            catch
+            {
                 return;
             }
 
-            var registerRequest = new RegisterRequest { Password = Password };
-            RegisterResponse registerResponse = _serverConnection.SendRegisterRequest(registerRequest);
-
-            if (registerResponse.WasSuccessfull)
-            {
-                MessageBox.Show(string.Format("Account was successfully created. Your number is {0}.",
-                                              registerResponse.AccountNumber), "Registration completed");
-                _returnViewModel.Number = registerResponse.AccountNumber.ToString(CultureInfo.InvariantCulture);
-                _returnViewModel.Password = Password;
-                _windowManager.ShowWindow(_returnViewModel);
-                TryClose();
-            }
-            else
-            {
-                MessageBox.Show("Cannot create new account.", "Registration error");
-            }
+            _windowManager.ShowWindow(_returnViewModel);
+            TryClose();
         }
 
         public void Return()
@@ -86,7 +74,7 @@ namespace Client.Features.Register
             TryClose();
         }
 
-        public void SetReturnViewModel(LoginViewModel returnViewModel)
+        public void SetReturnViewModel(Screen returnViewModel)
         {
             _returnViewModel = returnViewModel;
         }

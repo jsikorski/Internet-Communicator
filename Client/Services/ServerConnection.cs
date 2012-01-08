@@ -12,7 +12,6 @@ namespace Client.Services
     public class ServerConnection : IServerConnection
     {
         private TcpClient _server;
-
         private NetworkStream _serverStream;
 
         private readonly IFormatter _formatter;

@@ -5,7 +5,14 @@
                      Width="300"
                      Height="600"
                      WindowStartupLocation="CenterScreen"
-                     xmlns:ribbon="clr-namespace:Microsoft.Windows.Controls.Ribbon;assembly=RibbonControlsLibrary">
+                     xmlns:ribbon="clr-namespace:Microsoft.Windows.Controls.Ribbon;assembly=RibbonControlsLibrary"
+                     xmlns:cal="http://www.caliburnproject.org">
+    <ribbon:RibbonWindow.Resources>
+        <Style TargetType="ribbon:RibbonButton">
+            <Setter Property="cal:Message.Attach" Value="ExecuteCommand($this.Name)"/>
+        </Style>
+    </ribbon:RibbonWindow.Resources>
+    
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -22,7 +29,8 @@
 
             <ribbon:RibbonTab Header="Messages">
                 <ribbon:RibbonGroup Header="Sending">
-                    <ribbon:RibbonButton Label="Message"
+                    <ribbon:RibbonButton Name="SendMessage"
+                                         Label="Message"
                                          LargeImageSource="../../Images/send_message_icon.png" />
                     <ribbon:RibbonButton Label="File"
                                          LargeImageSource="../../Images/send_file_icon.png" />

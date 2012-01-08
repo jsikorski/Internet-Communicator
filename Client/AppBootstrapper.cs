@@ -42,6 +42,7 @@ namespace Client
 
 			containerBuilder.RegisterType<EventAggregator>().As<IEventAggregator>().SingleInstance();
 			containerBuilder.RegisterType<WindowManager>().As<IWindowManager>();
+		    containerBuilder.Register(cc => _container).ExternallyOwned();
 			return containerBuilder.Build();
 		}
 	}

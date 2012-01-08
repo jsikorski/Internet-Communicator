@@ -1,17 +1,15 @@
 ﻿using System;
 using System.Windows;
 using Caliburn.Micro;
-using Client.Features.Register;
-using Client.Services;
+using Client.Commands;
 using Protocol.Login;
 
 namespace Client.Features.Login
 {
     public class LoginViewModel : Screen
     {
-        private readonly IServerConnection _serverConnection;
-        private readonly RegisterViewModel _registerViewModel;
-        private readonly IWindowManager _windowManager;
+        private readonly ICommand<LoginRequest> _loginCommand;
+        private readonly ICommand<Screen> _newRegisterCommand;
 
         private string _number;
         public string Number
@@ -45,39 +43,36 @@ namespace Client.Features.Login
         }
 
         public LoginViewModel(
-            IServerConnection serverConnection, 
-            RegisterViewModel registerViewModel, 
-            IWindowManager windowManager)
+            LoginCommand loginCommand, 
+            NewRegisterCommand newRegisterCommand)
         {
             base.DisplayName = "Internet communicator";
 
-            _serverConnection = serverConnection;
-            _registerViewModel = registerViewModel;
-            _windowManager = windowManager;
+            _loginCommand = loginCommand;
+            _newRegisterCommand = newRegisterCommand;
         }
 
         public void Login()
         {
             var loginRequest = new LoginRequest()
-                                   {
-                                       Number = Convert.ToInt32(Number),
-                                       PasswordHash = Password
-                                   };
+            {
+                Number = Convert.ToInt32(Number),
+                PasswordHash = Password
+            };
 
-            if (_serverConnection.SendLoginRequest(loginRequest).WasSuccessfull)
+            try
             {
-                MessageBox.Show("Success");
+                _loginCommand.Execute(loginRequest);
             }
-            else
+            catch
             {
-                MessageBox.Show("Incorrect number or password.", "Login error");
+                return;
             }
         }
 
         public void Register()
         {
-            _registerViewModel.SetReturnViewModel(this);
-            _windowManager.ShowWindow(_registerViewModel);
+            _newRegisterCommand.Execute(this);
             TryClose();
         }
     }

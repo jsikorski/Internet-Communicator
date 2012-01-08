@@ -1,15 +1,21 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Windows;
 using Caliburn.Micro;
+using Client.Commands;
 using Client.Features.Communicator;
 using Client.Features.Login;
-using Client.Services;
 using Client.Validators;
 
 namespace Client
 {
     public class ShellViewModel : Screen, IShell
     {
+        private readonly IValidator _addressValidator;
+        private readonly IWindowManager _windowManager;
+        private readonly LoginViewModel _loginViewModel;
+        private readonly ICommand<string> _connectCommand;
+
         private string _serverAddress;
         public string ServerAddress
         {
@@ -29,36 +35,30 @@ namespace Client
             }
         }
 
-        private readonly IValidator _addressValidator;
-        private readonly IServerConnection _serverConnection;
-        private readonly IWindowManager _windowManager;
-        private readonly LoginViewModel _loginViewModel;
-
         public ShellViewModel(
             IValidator addressValidator,
-            IServerConnection serverConnection,
             IWindowManager windowManager,
             LoginViewModel loginViewModel,
+            ConnectCommand connectCommand,
             CommunicatorViewModel communicatorViewModel)
         {
             base.DisplayName = "Internet communicator";
             windowManager.ShowWindow(communicatorViewModel);
 
             _addressValidator = addressValidator;
-            _serverConnection = serverConnection;
             _windowManager = windowManager;
             _loginViewModel = loginViewModel;
+            _connectCommand = connectCommand;
         }
 
         public void Connect()
         {
             try
             {
-                _serverConnection.Connect(ServerAddress);
+                _connectCommand.Execute(ServerAddress);
             }
-            catch (Exception)
+            catch
             {
-                MessageBox.Show("Cannot connect to server.", "Connection error");
                 return;
             }
 
