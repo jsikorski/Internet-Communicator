@@ -44,15 +44,14 @@ namespace Client.Features.Communicator
 
             _newContactCommand = newContactCommand;
             _contactsProvider = contactsProvider;
-
-            
         }
 
         protected override void OnActivate()
         {
+            base.OnActivate();
+
             var contacts = _contactsProvider.GetAll();
             Contacts = new BindableCollection<Contact>(contacts);
-            //base.OnActivate();
         }
 
         public void NewContact()
