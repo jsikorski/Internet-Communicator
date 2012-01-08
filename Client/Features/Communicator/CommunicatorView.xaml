@@ -47,17 +47,19 @@
                   ItemsSource="{Binding Contacts}"
                   SelectedItem="{Binding SelectedContact, Mode=OneWayToSource}"
                   Width="Auto"
-                  Height="500">
+                  Height="500"
+                  Padding="3">
             <ListView.Resources>
-                <Converters:AvailabilityToBrushConverter x:Key="AvailabilityToBrushConverter"/>
+                <Converters:AvailabilityToBrushConverter x:Key="AvailabilityToBrushConverter" />
             </ListView.Resources>
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <StackPanel Margin="5 0 0 0" Orientation="Horizontal">
+                    <StackPanel Margin="5 0 0 0"
+                                Orientation="Horizontal">
                         <Ellipse Height="10"
                                  Width="10"
-                                 Fill="{Binding IsAvailable, Converter={StaticResource AvailabilityToBrushConverter}}"/>
-                        <Label Content="{Binding ContactStoredData.Name}" />
+                                 Fill="{Binding IsAvailable, Converter={StaticResource AvailabilityToBrushConverter}}" />
+                        <Label Content="{Binding ContactStoredData.Name}" FontSize="12" />
                     </StackPanel>
                 </DataTemplate>
             </ListView.ItemTemplate>
