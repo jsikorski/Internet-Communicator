@@ -29,6 +29,7 @@ namespace Client.Services
                                       };
 
             var response = _serverConnection.SendStatusesRequest(statusesRequest);
+
             return response.Contacts;
         }
 

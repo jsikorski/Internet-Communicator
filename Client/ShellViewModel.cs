@@ -1,10 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Windows;
 using Caliburn.Micro;
 using Client.Commands;
 using Client.Features.Login;
 using Client.Validators;
+using Common.Contacts;
 
 namespace Client
 {
@@ -41,7 +45,7 @@ namespace Client
             ConnectCommand connectCommand)
         {
             base.DisplayName = "Internet communicator";
-
+            
             _addressValidator = addressValidator;
             _windowManager = windowManager;
             _loginViewModel = loginViewModel;

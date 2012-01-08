@@ -31,17 +31,19 @@ namespace Client.Commands
         {
             var contact = new Contact { ContactStoredData = contactData };
 
+            Contact responseContact;
             try
             {
                 _contactsProvider.Add(contact);
-                _serverConnection.SendStatusesRequest(new StatusesRequest { Contacts = new List<Contact> { contact } });
+                responseContact = _serverConnection.SendStatusesRequest(
+                    new StatusesRequest { Contacts = new List<Contact> { contact } }).Contacts.First();
             }
             catch (Exception)
             {
                 throw new Exception("Cannot add new contact. Please try again later.");
             }
 
-            _eventAggregator.Publish(new ContactAdded(contact));
+            _eventAggregator.Publish(new ContactAdded(responseContact));
         }
     }
 }
