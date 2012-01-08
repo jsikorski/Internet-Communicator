@@ -71,7 +71,6 @@ namespace Server
         private void LogonAndRegister()
         {
             var sqlConnection = new MySqlConnection("Server=mysql-stoinska.ogicom.pl;Port=3306;Database=db174700;Uid=db174700;password=rvcID4X4cV");
-            sqlConnection.Open();
 
             // waiting for sucessfull logon or successfull registration
             // after three unsuccessfull logon trys server disconnects
@@ -83,9 +82,11 @@ namespace Server
 
                 if (request.ToString() == "Protocol.Login.LoginRequest")
                 {
+                    sqlConnection.Open();
                     var loginRequest = (LoginRequest)request;
                     var command = sqlConnection.CreateCommand();
                     command.CommandText = "SELECT PasswordHash FROM users WHERE Number=" + loginRequest.Number;
+                    
                     var reader = command.ExecuteReader();
 
                     if (reader.HasRows)
@@ -97,15 +98,21 @@ namespace Server
                             _activeConnections.Add(loginRequest.Number, _clientStream);
                             SendReponse(new LoginResponse() { WasSuccessfull = true });
                             reader.Close();
+                            command.Dispose();
+                            sqlConnection.Close();
                             break;
                         }
-                        reader.Close();
                     }
+
+                    reader.Close();
+                    command.Dispose();
+                    sqlConnection.Close();
 
                     SendReponse(new LoginResponse() { WasSuccessfull = false });
                 }
                 else if (request.ToString() == "Protocol.Register.RegisterRequest")
                 {
+                    sqlConnection.Open();
                     var registerRequest = (RegisterRequest)request;
                     var command = sqlConnection.CreateCommand();
 
@@ -113,6 +120,9 @@ namespace Server
                     command.ExecuteNonQuery();
                     
                     SendReponse(new RegisterResponse() { AccountNumber = (int) command.LastInsertedId, WasSuccessfull = true });
+                    command.Dispose();
+                    sqlConnection.Close();
+
                     times = 1;
                 }
 
