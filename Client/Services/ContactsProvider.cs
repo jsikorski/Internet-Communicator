@@ -22,8 +22,7 @@ namespace Client.Services
 
         public IEnumerable<Contact> GetAll()
         {
-            var pureContacts =
-                _contactsStorageController.Load().Select(storedData => new Contact {ContactStoredData = storedData});
+            var pureContacts = LoadContacts();
             var statusesRequest = new StatusesRequest
                                       {
                                           Contacts = pureContacts.ToList()
@@ -38,7 +37,26 @@ namespace Client.Services
             var contacts = GetAll().ToList();
             contacts.Add(contact);
 
-            _contactsStorageController.Store(contacts.Select(c => c.ContactStoredData));
+            StoreContacts(contacts);
+        }
+
+        public void Remove(Contact contact)
+        {
+            var contacts = LoadContacts().ToList();
+            contacts.Remove(contact);
+
+            StoreContacts(contacts);
+        }
+
+        private IEnumerable<Contact> LoadContacts()
+        {
+            return _contactsStorageController.Load()
+                .Select(storedData => new Contact {ContactStoredData = storedData});
+        }
+
+        private void StoreContacts(IEnumerable<Contact> contacts)
+        {
+            _contactsStorageController.Store(contacts.Select(contact => contact.ContactStoredData));
         }
     }
 }
