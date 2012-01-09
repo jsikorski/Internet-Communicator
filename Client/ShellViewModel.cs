@@ -7,6 +7,7 @@ using System.Windows;
 using Caliburn.Micro;
 using Client.Commands;
 using Client.Features.Login;
+using Client.Utils;
 using Client.Validators;
 using Common.Contacts;
 
@@ -58,8 +59,9 @@ namespace Client
             {
                 _connectCommand.Execute(ServerAddress);
             }
-            catch
+            catch (Exception exception)
             {
+                ErrorMessageBox.Show(exception);
                 return;
             }
 
