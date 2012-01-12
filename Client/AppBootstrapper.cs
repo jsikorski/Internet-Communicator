@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using System.Windows;
 using Autofac;
+using Client.Context;
 using Client.Features.Login;
 using Client.Services;
 using Client.Utils;
@@ -50,6 +51,7 @@ namespace Client
 					PropertyWiringFlags.PreserveSetValues);
 			containerBuilder.RegisterInstance(new ServerConnection()).AsImplementedInterfaces();
 			containerBuilder.RegisterInstance(new LoggedUser());
+		    containerBuilder.RegisterInstance(new CurrentContext()).AsImplementedInterfaces();
 
 			containerBuilder.RegisterType<EventAggregator>().As<IEventAggregator>().SingleInstance();
 			containerBuilder.RegisterType<WindowManager>().As<IWindowManager>();

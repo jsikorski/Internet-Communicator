@@ -11,12 +11,14 @@ using System.Linq;
 
 namespace Client.Features.Communicator
 {
-    public class CommunicatorViewModel : Screen, IHandle<ContactAdded>
+    public class CommunicatorViewModel : Screen, IHandle<ContactAdded>, IHandle<ContactsDataReceived>
     {
         private readonly IEventAggregator _eventAggregator;
         private readonly NewContactCommand _newContactCommand;
         private readonly RemoveContactCommand _removeContactCommand;
         private readonly GetContactsCommand _getContactsCommand;
+        private readonly StartRequestingForContactsCommand _startRequestingForContactsCommand;
+        private readonly StopRequestingForContacts _stopRequestingForContacts;
 
         public BindableCollection<Contact> Contacts { get; set; }
         private Contact _selectedContact;
@@ -39,7 +41,9 @@ namespace Client.Features.Communicator
             IEventAggregator eventAggregator,
             NewContactCommand newContactCommand,
             RemoveContactCommand removeContactCommand,
-            GetContactsCommand getContactsCommand)
+            GetContactsCommand getContactsCommand,
+            StartRequestingForContactsCommand startRequestingForContactsCommand,
+            StopRequestingForContacts stopRequestingForContacts)
         {
             base.DisplayName = "Internet communicator";
 
@@ -49,6 +53,8 @@ namespace Client.Features.Communicator
             _newContactCommand = newContactCommand;
             _removeContactCommand = removeContactCommand;
             _getContactsCommand = getContactsCommand;
+            _startRequestingForContactsCommand = startRequestingForContactsCommand;
+            _stopRequestingForContacts = stopRequestingForContacts;
         }
 
         protected override void OnActivate()
@@ -57,6 +63,14 @@ namespace Client.Features.Communicator
 
             IEnumerable<Contact> contacts = _getContactsCommand.Execute();
             Contacts = new BindableCollection<Contact>(contacts);
+            
+            _startRequestingForContactsCommand.Execute();
+        }
+
+        protected override void OnDeactivate(bool close)
+        {
+            _stopRequestingForContacts.Execute();
+            base.OnDeactivate(close);
         }
 
         public void NewContact()
@@ -73,6 +87,12 @@ namespace Client.Features.Communicator
         public void Handle(ContactAdded message)
         {
             Contacts.Add(message.Contact);
+        }
+
+        public void Handle(ContactsDataReceived message)
+        {
+            Contacts.Clear();
+            Contacts.AddRange(message.Contacts);
         }
     }
 }

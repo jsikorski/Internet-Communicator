@@ -84,6 +84,10 @@
     <Compile Include="Commands\NewRegisterCommand.cs" />
     <Compile Include="Commands\RegisterCommand.cs" />
     <Compile Include="Commands\RemoveContactCommand.cs" />
+    <Compile Include="Commands\StartRequestingForContactsCommand.cs" />
+    <Compile Include="Commands\StopRequestingForContacts.cs" />
+    <Compile Include="Context\CurrentContext.cs" />
+    <Compile Include="Context\ICurrentContext.cs" />
     <Compile Include="Converters\AvailabilityToBrushConverter.cs" />
     <Compile Include="Features\Communicator\CommunicatorView.xaml.cs">
       <DependentUpon>CommunicatorView.xaml</DependentUpon>
@@ -104,6 +108,7 @@
     </Compile>
     <Compile Include="Features\Register\RegisterViewModel.cs" />
     <Compile Include="Messages\ContactAdded.cs" />
+    <Compile Include="Messages\ContactsDataReceived.cs" />
     <Compile Include="Services\ContactsProvider.cs" />
     <Compile Include="Services\ContactsStorageController.cs" />
     <Compile Include="Services\IContactsProvider.cs" />
