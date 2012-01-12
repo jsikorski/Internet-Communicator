@@ -58,7 +58,7 @@
                         <Ellipse Height="10"
                                  Width="10"
                                  Fill="{Binding IsAvailable, Converter={StaticResource AvailabilityToBrushConverter}}" />
-                        <Label Content="{Binding ContactStoredData.Name}" FontSize="12" />
+                        <Label Content="{Binding Name}" FontSize="12" />
                     </StackPanel>
                 </DataTemplate>
             </ListView.ItemTemplate>

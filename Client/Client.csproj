@@ -93,6 +93,7 @@
       <DependentUpon>CommunicatorView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Features\Communicator\CommunicatorViewModel.cs" />
+    <Compile Include="Features\Communicator\ContactViewModel.cs" />
     <Compile Include="Features\Contacts\NewContactViewModel.cs" />
     <Compile Include="Features\Contacts\NewContactView.xaml.cs">
       <DependentUpon>NewContactView.xaml</DependentUpon>

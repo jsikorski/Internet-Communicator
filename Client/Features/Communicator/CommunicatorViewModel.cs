@@ -20,9 +20,9 @@ namespace Client.Features.Communicator
         private readonly StartRequestingForContacts _startRequestingForContacts;
         private readonly StopRequestingForContacts _stopRequestingForContacts;
 
-        public BindableCollection<Contact> Contacts { get; set; }
-        private Contact _selectedContact;
-        public Contact SelectedContact
+        public BindableCollection<ContactViewModel> Contacts { get; set; }
+        private ContactViewModel _selectedContact;
+        public ContactViewModel SelectedContact
         {
             get { return _selectedContact; }
             set
@@ -62,7 +62,8 @@ namespace Client.Features.Communicator
             base.OnActivate();
 
             IEnumerable<Contact> contacts = _getContacts.Execute();
-            Contacts = new BindableCollection<Contact>(contacts);
+            Contacts = new BindableCollection<ContactViewModel>(
+                contacts.Select(contact => new ContactViewModel(contact)));
             
             _startRequestingForContacts.Execute();
         }
@@ -80,19 +81,22 @@ namespace Client.Features.Communicator
 
         public void RemoveContact()
         {
-            _removeContact.Execute(SelectedContact);
+            _removeContact.Execute(SelectedContact.Contact);
             Contacts.Remove(SelectedContact);
         }
 
         public void Handle(ContactAdded message)
         {
-            Contacts.Add(message.Contact);
+            Contacts.Add(new ContactViewModel(message.Contact));
         }
 
         public void Handle(ContactsDataReceived message)
         {
-            Contacts.Clear();
-            Contacts.AddRange(message.Contacts);
+            foreach (var contactViewModel in Contacts)
+            {
+                contactViewModel.IsAvailable =
+                    message.Contacts.First(c => c.ContactStoredData.Number == contactViewModel.Number).IsAvailable;
+            }
         }
     }
 }
