@@ -51,20 +51,15 @@ namespace Client
             _windowManager = windowManager;
             _loginViewModel = loginViewModel;
             _connectCommand = connectCommand;
+
+            #if DEBUG
+                ServerAddress = "127.0.0.1";            
+            #endif
         }
 
         public void Connect()
         {
-            try
-            {
-                _connectCommand.Execute(ServerAddress);
-            }
-            catch (Exception exception)
-            {
-                ErrorMessageBox.Show(exception);
-                return;
-            }
-
+            _connectCommand.Execute(ServerAddress);
             _windowManager.ShowWindow(_loginViewModel);
             TryClose();
         }

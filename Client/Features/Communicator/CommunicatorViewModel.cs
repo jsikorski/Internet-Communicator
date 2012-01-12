@@ -36,7 +36,7 @@ namespace Client.Features.Communicator
         }
 
         public CommunicatorViewModel(
-            IEventAggregator eventAggregator, 
+            IEventAggregator eventAggregator,
             NewContactCommand newContactCommand,
             RemoveContactCommand removeContactCommand,
             GetContactsCommand getContactsCommand)
@@ -55,44 +55,18 @@ namespace Client.Features.Communicator
         {
             base.OnActivate();
 
-            IEnumerable<Contact> contacts;            
-            try
-            {
-                contacts = _getContactsCommand.Execute();
-            }
-            catch (Exception exception)
-            {
-                ErrorMessageBox.Show(exception);
-                return;
-            }
-
+            IEnumerable<Contact> contacts = _getContactsCommand.Execute();
             Contacts = new BindableCollection<Contact>(contacts);
         }
 
         public void NewContact()
         {
-            try
-            {
-                _newContactCommand.Execute();                
-            }
-            catch (Exception exception)
-            {
-                ErrorMessageBox.Show(exception);
-            }
+            _newContactCommand.Execute();
         }
 
         public void RemoveContact()
         {
-            try
-            {
-                _removeContactCommand.Execute(SelectedContact);
-            }
-            catch (Exception exception)
-            {
-                ErrorMessageBox.Show(exception);
-                return;                
-            }
-
+            _removeContactCommand.Execute(SelectedContact);
             Contacts.Remove(SelectedContact);
         }
 

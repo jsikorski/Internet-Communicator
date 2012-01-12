@@ -47,7 +47,7 @@ namespace Client.Features.Login
         }
 
         public LoginViewModel(
-            LoginCommand loginCommand, 
+            LoginCommand loginCommand,
             NewRegisterCommand newRegisterCommand,
             IWindowManager windowManager,
             CommunicatorViewModel communicatorViewModel)
@@ -68,32 +68,14 @@ namespace Client.Features.Login
                                             Password = Password
                                         };
 
-            try
-            {
-                _loginCommand.Execute(loginInformations);
-            }
-            catch (Exception exception)
-            {
-                ErrorMessageBox.Show(exception);
-                return;
-            }
-
+            _loginCommand.Execute(loginInformations);
             _windowManager.ShowWindow(_communicatorViewModel);
             TryClose();
         }
 
         public void Register()
         {
-            try
-            {
-                _newRegisterCommand.Execute(this);
-            }
-            catch (Exception exception)
-            {
-                ErrorMessageBox.Show(exception);
-                return;    
-            }
-
+            _newRegisterCommand.Execute(this);
             TryClose();
         }
     }

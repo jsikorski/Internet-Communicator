@@ -7,7 +7,7 @@
     <StackPanel Orientation="Vertical"
                 Margin="10">
         <Label Content="Server address:" />
-        <TextBox Text="{Binding ServerAddress, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" />
+        <TextBox Text="{Binding ServerAddress, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         <Button Name="Connect"
                 Content="Connect"
                 Margin="0 15 0 0" />

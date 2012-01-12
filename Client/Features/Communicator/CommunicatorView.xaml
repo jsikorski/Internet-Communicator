@@ -7,7 +7,6 @@
                      WindowStartupLocation="CenterScreen"
                      xmlns:ribbon="clr-namespace:Microsoft.Windows.Controls.Ribbon;assembly=RibbonControlsLibrary"
                      xmlns:Converters="clr-namespace:Client.Converters">
-
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -24,7 +23,7 @@
 
             <ribbon:RibbonTab Header="Messages">
                 <ribbon:RibbonGroup Header="Sending">
-                    <ribbon:RibbonButton Name="SendMessage"
+                    <ribbon:RibbonButton Name="Invoke"
                                          Label="Message"
                                          LargeImageSource="../../Images/send_message_icon.png" />
                     <ribbon:RibbonButton Label="File"

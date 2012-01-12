@@ -1,7 +1,9 @@
 ﻿using System.Reflection;
+using System.Windows;
 using Autofac;
 using Client.Features.Login;
 using Client.Services;
+using Client.Utils;
 using Common.Hash;
 
 namespace Client
@@ -32,6 +34,12 @@ namespace Client
 		{
 			return _container.Resolve(serviceType.MakeArrayType()) as IEnumerable<object>;
 		}
+
+        protected override void OnUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
+        {
+            ErrorMessageBox.Show(e.Exception.InnerException);
+            e.Handled = true;
+        }
 
 		private IContainer CreateContainer()
 		{

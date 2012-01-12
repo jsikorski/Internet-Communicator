@@ -56,17 +56,8 @@ namespace Client.Features.Register
 
         public void Register()
         {
-            int accountNumber;
-            try
-            {
-                accountNumber = _registerCommand.Execute(
-                    new RegisterInformations(Password, PasswordConfirmation));
-            }
-            catch (Exception exception)
-            {
-                ErrorMessageBox.Show(exception);
-                return;
-            }
+            int accountNumber = _registerCommand.Execute(
+                new RegisterInformations(Password, PasswordConfirmation));
 
             MessageBox.Show(string.Format("Account was successfully created. Your number is {0}.",
                                           accountNumber), "Registration completed");
