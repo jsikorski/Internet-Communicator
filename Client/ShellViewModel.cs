@@ -18,7 +18,7 @@ namespace Client
         private readonly IValidator _addressValidator;
         private readonly IWindowManager _windowManager;
         private readonly LoginViewModel _loginViewModel;
-        private readonly ICommand<string> _connectCommand;
+        private readonly ICommand<string> _connect;
 
         private string _serverAddress;
         public string ServerAddress
@@ -43,14 +43,14 @@ namespace Client
             IValidator addressValidator,
             IWindowManager windowManager,
             LoginViewModel loginViewModel,
-            ConnectCommand connectCommand)
+            Connect connect)
         {
             base.DisplayName = "Internet communicator";
             
             _addressValidator = addressValidator;
             _windowManager = windowManager;
             _loginViewModel = loginViewModel;
-            _connectCommand = connectCommand;
+            _connect = connect;
 
             #if DEBUG
                 ServerAddress = "127.0.0.1";            
@@ -59,7 +59,7 @@ namespace Client
 
         public void Connect()
         {
-            _connectCommand.Execute(ServerAddress);
+            _connect.Execute(ServerAddress);
             _windowManager.ShowWindow(_loginViewModel);
             TryClose();
         }

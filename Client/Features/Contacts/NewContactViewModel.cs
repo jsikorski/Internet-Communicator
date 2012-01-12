@@ -12,7 +12,7 @@ namespace Client.Features.Contacts
 {
     public class NewContactViewModel : Screen
     {
-        private readonly AddContactCommand _addContactCommand;
+        private readonly AddContact _addContact;
 
         private string _name;
         public string Name
@@ -42,10 +42,10 @@ namespace Client.Features.Contacts
                 !string.IsNullOrEmpty(Number); }
         }
 
-        public NewContactViewModel(AddContactCommand addContactCommand)
+        public NewContactViewModel(AddContact addContact)
         {
             base.DisplayName = "Add new contact";
-            _addContactCommand = addContactCommand;
+            _addContact = addContact;
         }
 
         public void Add()
@@ -58,7 +58,7 @@ namespace Client.Features.Contacts
 
             try
             {
-                _addContactCommand.Execute(contactData);
+                _addContact.Execute(contactData);
             }
             catch (Exception exception)
             {

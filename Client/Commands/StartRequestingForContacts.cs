@@ -12,18 +12,18 @@ using Timer = System.Timers.Timer;
 
 namespace Client.Commands
 {
-    public class StartRequestingForContactsCommand : ICommand
+    public class StartRequestingForContacts : ICommand
     {
-        private readonly GetContactsCommand _getContactsCommand;
+        private readonly GetContacts _getContacts;
         private readonly ICurrentContext _currentContext;
         private readonly IEventAggregator _eventAggregator;
 
-        public StartRequestingForContactsCommand(
-            GetContactsCommand getContactsCommand,
+        public StartRequestingForContacts(
+            GetContacts getContacts,
             ICurrentContext currentContext,
             IEventAggregator eventAggregator)
         {
-            _getContactsCommand = getContactsCommand;
+            _getContacts = getContacts;
             _currentContext = currentContext;
             _eventAggregator = eventAggregator;
         }
@@ -39,7 +39,7 @@ namespace Client.Commands
 
         private void UpdateContacts(object sender, ElapsedEventArgs elapsedEventArgs)
         {
-            IEnumerable<Contact> contacts = _getContactsCommand.Execute();
+            IEnumerable<Contact> contacts = _getContacts.Execute();
             _eventAggregator.Publish(new ContactsDataReceived(contacts));
         }
     }
