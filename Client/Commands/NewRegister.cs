@@ -3,12 +3,12 @@ using Client.Features.Register;
 
 namespace Client.Commands
 {
-    public class NewRegisterCommand : ICommand<Screen>
+    public class NewRegister : ICommand<Screen>
     {
         private readonly RegisterViewModel _registerViewModel;
         private readonly IWindowManager _windowManager;
 
-        public NewRegisterCommand(
+        public NewRegister(
             RegisterViewModel registerViewModel, 
             IWindowManager windowManager)
         {

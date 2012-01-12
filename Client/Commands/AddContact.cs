@@ -11,13 +11,13 @@ using Protocol.Statuses;
 
 namespace Client.Commands
 {
-    public class AddContactCommand : ICommand<ContactStoredData>
+    public class AddContact : ICommand<ContactStoredData>
     {
         private readonly IEventAggregator _eventAggregator;
         private readonly IContactsProvider _contactsProvider;
         private readonly IServerConnection _serverConnection;
 
-        public AddContactCommand(
+        public AddContact(
             IEventAggregator eventAggregator,
             IContactsProvider contactsProvider,
             IServerConnection serverConnection)

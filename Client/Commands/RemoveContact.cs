@@ -8,11 +8,11 @@ using Common.Contacts;
 
 namespace Client.Commands
 {
-    public class RemoveContactCommand : ICommand<Contact>
+    public class RemoveContact : ICommand<Contact>
     {
         private readonly IContactsProvider _contactsProvider;
 
-        public RemoveContactCommand(IContactsProvider contactsProvider)
+        public RemoveContact(IContactsProvider contactsProvider)
         {
             _contactsProvider = contactsProvider;
         }

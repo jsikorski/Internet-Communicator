@@ -8,11 +8,11 @@ using Common.Contacts;
 
 namespace Client.Commands
 {
-    public class ConnectCommand : ICommand<string>
+    public class Connect : ICommand<string>
     {
         private readonly IServerConnection _serverConnection;
 
-        public ConnectCommand(IServerConnection serverConnection)
+        public Connect(IServerConnection serverConnection)
         {
             _serverConnection = serverConnection;
         }

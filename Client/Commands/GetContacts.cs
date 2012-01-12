@@ -8,11 +8,11 @@ using Common.Contacts;
 
 namespace Client.Commands
 {
-    public class GetContactsCommand
+    public class GetContacts
     {
         private readonly IContactsProvider _contactsProvider;
 
-        public GetContactsCommand(
+        public GetContacts(
             IContactsProvider contactsProvider)
         {
             _contactsProvider = contactsProvider;

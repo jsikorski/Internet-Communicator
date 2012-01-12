@@ -7,12 +7,12 @@ using Client.Features.Contacts;
 
 namespace Client.Commands
 {
-    public class NewContactCommand : ICommand
+    public class NewContact : ICommand
     {
         private readonly IWindowManager _windowManager;
         private readonly NewContactViewModel _newContactViewModel;
 
-        public NewContactCommand(
+        public NewContact(
             IWindowManager windowManager, 
             NewContactViewModel newContactViewModel)
         {

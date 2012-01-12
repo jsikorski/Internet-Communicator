@@ -75,16 +75,16 @@
     <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
-    <Compile Include="Commands\AddContactCommand.cs" />
-    <Compile Include="Commands\ConnectCommand.cs" />
-    <Compile Include="Commands\GetContactsCommand.cs" />
+    <Compile Include="Commands\AddContact.cs" />
+    <Compile Include="Commands\Connect.cs" />
+    <Compile Include="Commands\GetContacts.cs" />
     <Compile Include="Commands\ICommand.cs" />
-    <Compile Include="Commands\LoginCommand.cs" />
-    <Compile Include="Commands\NewContactCommand.cs" />
-    <Compile Include="Commands\NewRegisterCommand.cs" />
-    <Compile Include="Commands\RegisterCommand.cs" />
-    <Compile Include="Commands\RemoveContactCommand.cs" />
-    <Compile Include="Commands\StartRequestingForContactsCommand.cs" />
+    <Compile Include="Commands\Login.cs" />
+    <Compile Include="Commands\NewContact.cs" />
+    <Compile Include="Commands\NewRegister.cs" />
+    <Compile Include="Commands\Register.cs" />
+    <Compile Include="Commands\RemoveContact.cs" />
+    <Compile Include="Commands\StartRequestingForContacts.cs" />
     <Compile Include="Commands\StopRequestingForContacts.cs" />
     <Compile Include="Context\CurrentContext.cs" />
     <Compile Include="Context\ICurrentContext.cs" />

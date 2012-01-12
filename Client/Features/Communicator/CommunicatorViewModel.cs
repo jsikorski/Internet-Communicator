@@ -14,10 +14,10 @@ namespace Client.Features.Communicator
     public class CommunicatorViewModel : Screen, IHandle<ContactAdded>, IHandle<ContactsDataReceived>
     {
         private readonly IEventAggregator _eventAggregator;
-        private readonly NewContactCommand _newContactCommand;
-        private readonly RemoveContactCommand _removeContactCommand;
-        private readonly GetContactsCommand _getContactsCommand;
-        private readonly StartRequestingForContactsCommand _startRequestingForContactsCommand;
+        private readonly NewContact _newContact;
+        private readonly RemoveContact _removeContact;
+        private readonly GetContacts _getContacts;
+        private readonly StartRequestingForContacts _startRequestingForContacts;
         private readonly StopRequestingForContacts _stopRequestingForContacts;
 
         public BindableCollection<Contact> Contacts { get; set; }
@@ -39,10 +39,10 @@ namespace Client.Features.Communicator
 
         public CommunicatorViewModel(
             IEventAggregator eventAggregator,
-            NewContactCommand newContactCommand,
-            RemoveContactCommand removeContactCommand,
-            GetContactsCommand getContactsCommand,
-            StartRequestingForContactsCommand startRequestingForContactsCommand,
+            NewContact newContact,
+            RemoveContact removeContact,
+            GetContacts getContacts,
+            StartRequestingForContacts startRequestingForContacts,
             StopRequestingForContacts stopRequestingForContacts)
         {
             base.DisplayName = "Internet communicator";
@@ -50,10 +50,10 @@ namespace Client.Features.Communicator
             _eventAggregator = eventAggregator;
             _eventAggregator.Subscribe(this);
 
-            _newContactCommand = newContactCommand;
-            _removeContactCommand = removeContactCommand;
-            _getContactsCommand = getContactsCommand;
-            _startRequestingForContactsCommand = startRequestingForContactsCommand;
+            _newContact = newContact;
+            _removeContact = removeContact;
+            _getContacts = getContacts;
+            _startRequestingForContacts = startRequestingForContacts;
             _stopRequestingForContacts = stopRequestingForContacts;
         }
 
@@ -61,10 +61,10 @@ namespace Client.Features.Communicator
         {
             base.OnActivate();
 
-            IEnumerable<Contact> contacts = _getContactsCommand.Execute();
+            IEnumerable<Contact> contacts = _getContacts.Execute();
             Contacts = new BindableCollection<Contact>(contacts);
             
-            _startRequestingForContactsCommand.Execute();
+            _startRequestingForContacts.Execute();
         }
 
         protected override void OnDeactivate(bool close)
@@ -75,12 +75,12 @@ namespace Client.Features.Communicator
 
         public void NewContact()
         {
-            _newContactCommand.Execute();
+            _newContact.Execute();
         }
 
         public void RemoveContact()
         {
-            _removeContactCommand.Execute(SelectedContact);
+            _removeContact.Execute(SelectedContact);
             Contacts.Remove(SelectedContact);
         }
 

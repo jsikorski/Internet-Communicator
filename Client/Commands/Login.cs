@@ -10,13 +10,13 @@ using Protocol.Login;
 
 namespace Client.Commands
 {
-    public class LoginCommand : ICommand<LoginInformations>
+    public class Login : ICommand<LoginInformations>
     {
         private readonly IServerConnection _serverConnection;
         private readonly LoggedUser _loggedUser;
         private readonly IHashService _hashService;
 
-        public LoginCommand(
+        public Login(
             IServerConnection serverConnection,
             LoggedUser loggedUser,
             IHashService hashService)

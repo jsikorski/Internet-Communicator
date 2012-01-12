@@ -10,8 +10,8 @@ namespace Client.Features.Login
 {
     public class LoginViewModel : Screen
     {
-        private readonly LoginCommand _loginCommand;
-        private readonly NewRegisterCommand _newRegisterCommand;
+        private readonly Commands.Login _login;
+        private readonly NewRegister _newRegister;
         private readonly IWindowManager _windowManager;
         private readonly CommunicatorViewModel _communicatorViewModel;
 
@@ -47,15 +47,15 @@ namespace Client.Features.Login
         }
 
         public LoginViewModel(
-            LoginCommand loginCommand,
-            NewRegisterCommand newRegisterCommand,
+            Commands.Login login,
+            NewRegister newRegister,
             IWindowManager windowManager,
             CommunicatorViewModel communicatorViewModel)
         {
             base.DisplayName = "Internet communicator";
 
-            _loginCommand = loginCommand;
-            _newRegisterCommand = newRegisterCommand;
+            _login = login;
+            _newRegister = newRegister;
             _windowManager = windowManager;
             _communicatorViewModel = communicatorViewModel;
         }
@@ -68,14 +68,14 @@ namespace Client.Features.Login
                                             Password = Password
                                         };
 
-            _loginCommand.Execute(loginInformations);
+            _login.Execute(loginInformations);
             _windowManager.ShowWindow(_communicatorViewModel);
             TryClose();
         }
 
         public void Register()
         {
-            _newRegisterCommand.Execute(this);
+            _newRegister.Execute(this);
             TryClose();
         }
     }

@@ -10,7 +10,7 @@ namespace Client.Features.Register
     public class RegisterViewModel : Screen
     {
         private readonly IWindowManager _windowManager;
-        private readonly RegisterCommand _registerCommand;
+        private readonly Commands.Register _register;
         private Screen _returnViewModel;
 
         private string _password;
@@ -46,17 +46,17 @@ namespace Client.Features.Register
 
         public RegisterViewModel(
             IWindowManager windowManager,
-            RegisterCommand registerCommand)
+            Commands.Register register)
         {
             base.DisplayName = "Internet communicator";
 
             _windowManager = windowManager;
-            _registerCommand = registerCommand;
+            _register = register;
         }
 
         public void Register()
         {
-            int accountNumber = _registerCommand.Execute(
+            int accountNumber = _register.Execute(
                 new RegisterInformations(Password, PasswordConfirmation));
 
             MessageBox.Show(string.Format("Account was successfully created. Your number is {0}.",

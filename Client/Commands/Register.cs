@@ -10,12 +10,12 @@ using Protocol.Register;
 
 namespace Client.Commands
 {
-    public class RegisterCommand : ICommand<RegisterInformations, int>
+    public class Register : ICommand<RegisterInformations, int>
     {
         private readonly IServerConnection _serverConnection;
         private readonly IHashService _hashService;
 
-        public RegisterCommand(
+        public Register(
             IServerConnection serverConnection,
             IHashService hashService)
         {
