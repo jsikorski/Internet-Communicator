@@ -27,6 +27,7 @@ namespace Client.Features.Communicator
             {
                 _selectedContact = value;
                 NotifyOfPropertyChange(() => CanRemoveContact);
+                NotifyOfPropertyChange(() => SelectedContact);
             }
         }
         public int SelectedContactIndex { get; set; }

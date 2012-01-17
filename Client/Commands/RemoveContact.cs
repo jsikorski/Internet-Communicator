@@ -12,7 +12,6 @@ namespace Client.Commands
     {
         private readonly IContactsProvider _contactsProvider;
         private readonly int _contactIndex;
-        private readonly Contact _contact;
 
         public RemoveContact(
             IContactsProvider contactsProvider,
