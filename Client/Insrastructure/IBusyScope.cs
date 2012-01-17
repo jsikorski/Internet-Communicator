@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Client.Commands
+namespace Client.Insrastructure
 {
-    public interface ICommand
+    public interface IBusyScope
     {
-        void Execute();
+        bool IsBusy { get; set; }
     }
 }

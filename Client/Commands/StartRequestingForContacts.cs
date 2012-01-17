@@ -7,6 +7,7 @@ using System.Timers;
 using Caliburn.Micro;
 using Client.Context;
 using Client.Messages;
+using Client.Services;
 using Common.Contacts;
 using Timer = System.Timers.Timer;
 
@@ -14,18 +15,18 @@ namespace Client.Commands
 {
     public class StartRequestingForContacts : ICommand
     {
-        private readonly GetContacts _getContacts;
         private readonly ICurrentContext _currentContext;
         private readonly IEventAggregator _eventAggregator;
+        private readonly IContactsProvider _contactsProvider;
 
         public StartRequestingForContacts(
-            GetContacts getContacts,
             ICurrentContext currentContext,
-            IEventAggregator eventAggregator)
+            IEventAggregator eventAggregator,
+            IContactsProvider contactsProvider)
         {
-            _getContacts = getContacts;
             _currentContext = currentContext;
             _eventAggregator = eventAggregator;
+            _contactsProvider = contactsProvider;
         }
 
         public void Execute()
@@ -39,8 +40,8 @@ namespace Client.Commands
 
         private void UpdateContacts(object sender, ElapsedEventArgs elapsedEventArgs)
         {
-            IEnumerable<Contact> contacts = _getContacts.Execute();
-            _eventAggregator.Publish(new ContactsDataReceived(contacts));
+            IEnumerable<Contact> contacts = _contactsProvider.GetAll();
+            _eventAggregator.Publish(new ContactsDataReceived(contacts, false));
         }
     }
 }

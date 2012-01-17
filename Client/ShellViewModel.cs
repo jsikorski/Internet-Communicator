@@ -1,24 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Windows;
+﻿using Autofac;
 using Caliburn.Micro;
 using Client.Commands;
 using Client.Features.Login;
+using Client.Insrastructure;
+using Client.Messages;
 using Client.Utils;
 using Client.Validators;
-using Common.Contacts;
 
 namespace Client
 {
-    public class ShellViewModel : Screen, IShell
+    public class ShellViewModel : Screen, IShell, IBusyScope, IHandle<Connected>
     {
         private readonly IValidator _addressValidator;
         private readonly IWindowManager _windowManager;
         private readonly LoginViewModel _loginViewModel;
-        private readonly ICommand<string> _connect;
+        private readonly IContainer _container;
+        private readonly IEventAggregator _eventAggregator;
 
         private string _serverAddress;
         public string ServerAddress
@@ -28,6 +25,17 @@ namespace Client
             {
                 _serverAddress = value;
                 NotifyOfPropertyChange(() => CanConnect);
+            }
+        }
+
+        private bool _isBusy;
+        public bool IsBusy
+        {
+            get { return _isBusy; }
+            set
+            {
+                _isBusy = value;
+                NotifyOfPropertyChange(() => IsBusy);
             }
         }
 
@@ -43,23 +51,32 @@ namespace Client
             IValidator addressValidator,
             IWindowManager windowManager,
             LoginViewModel loginViewModel,
-            Connect connect)
+            IContainer container, 
+            IEventAggregator eventAggregator)
         {
             base.DisplayName = "Internet communicator";
-            
+
             _addressValidator = addressValidator;
             _windowManager = windowManager;
             _loginViewModel = loginViewModel;
-            _connect = connect;
+            _container = container;
+            _eventAggregator = eventAggregator;
 
             #if DEBUG
-                ServerAddress = "127.0.0.1";            
+                ServerAddress = "127.0.0.1";
             #endif
         }
 
         public void Connect()
         {
-            _connect.Execute(ServerAddress);
+            _eventAggregator.Subscribe(this);
+            ICommand connect = _container.Resolve<Connect>(new UniqueTypeParameter(ServerAddress));
+            CommandInvoker.InvokeBusy(connect, this);
+        }
+
+        public void Handle(Connected message)
+        {
+            _eventAggregator.Unsubscribe(this);
             _windowManager.ShowWindow(_loginViewModel);
             TryClose();
         }

@@ -8,20 +8,25 @@ using Common.Contacts;
 
 namespace Client.Commands
 {
-    public class RemoveContact : ICommand<Contact>
+    public class RemoveContact : ICommand
     {
         private readonly IContactsProvider _contactsProvider;
+        private readonly int _contactIndex;
+        private readonly Contact _contact;
 
-        public RemoveContact(IContactsProvider contactsProvider)
+        public RemoveContact(
+            IContactsProvider contactsProvider,
+            int contactIndex)
         {
             _contactsProvider = contactsProvider;
+            _contactIndex = contactIndex;
         }
 
-        public void Execute(Contact contact)
+        public void Execute()
         {
             try
             {
-                _contactsProvider.Remove(contact);
+                _contactsProvider.Remove(_contactIndex);
             }
             catch (Exception)
             {

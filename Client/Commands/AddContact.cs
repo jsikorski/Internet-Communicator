@@ -11,25 +11,28 @@ using Protocol.Statuses;
 
 namespace Client.Commands
 {
-    public class AddContact : ICommand<ContactStoredData>
+    public class AddContact : ICommand
     {
         private readonly IEventAggregator _eventAggregator;
         private readonly IContactsProvider _contactsProvider;
         private readonly IServerConnection _serverConnection;
+        private readonly ContactStoredData _contactData;
 
         public AddContact(
             IEventAggregator eventAggregator,
             IContactsProvider contactsProvider,
-            IServerConnection serverConnection)
+            IServerConnection serverConnection,
+            ContactStoredData contactData)
         {
             _eventAggregator = eventAggregator;
             _contactsProvider = contactsProvider;
             _serverConnection = serverConnection;
+            _contactData = contactData;
         }
 
-        public void Execute(ContactStoredData contactData)
+        public void Execute()
         {
-            var contact = new Contact { ContactStoredData = contactData };
+            var contact = new Contact { ContactStoredData = _contactData };
 
             Contact responseContact;
             try

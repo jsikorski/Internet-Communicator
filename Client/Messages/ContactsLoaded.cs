@@ -6,15 +6,13 @@ using Common.Contacts;
 
 namespace Client.Messages
 {
-    public class ContactsDataReceived
+    public class ContactsLoaded
     {
         public IEnumerable<Contact> Contacts { get; private set; }
-        public bool FirstTime { get; private set; }
-
-        public ContactsDataReceived(IEnumerable<Contact> contacts, bool firstTime)
+ 
+        public ContactsLoaded(IEnumerable<Contact> contacts)
         {
             Contacts = contacts;
-            FirstTime = firstTime;            
         }
     }
 }

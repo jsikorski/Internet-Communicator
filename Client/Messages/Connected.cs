@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Client.Commands
+namespace Client.Messages
 {
-    public interface ICommand
+    public class Connected
     {
-        void Execute();
     }
 }

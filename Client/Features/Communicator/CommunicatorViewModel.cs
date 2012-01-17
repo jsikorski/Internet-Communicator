@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using Autofac;
 using Caliburn.Micro;
 using Client.Commands;
 using Client.Features.Contacts;
+using Client.Insrastructure;
 using Client.Messages;
 using Client.Services;
 using Client.Utils;
@@ -11,14 +13,10 @@ using System.Linq;
 
 namespace Client.Features.Communicator
 {
-    public class CommunicatorViewModel : Screen, IHandle<ContactAdded>, IHandle<ContactsDataReceived>
+    public class CommunicatorViewModel : Screen, IHandle<ContactAdded>, IHandle<ContactsDataReceived>, IHandle<ContactsLoaded>
     {
         private readonly IEventAggregator _eventAggregator;
-        private readonly NewContact _newContact;
-        private readonly RemoveContact _removeContact;
-        private readonly GetContacts _getContacts;
-        private readonly StartRequestingForContacts _startRequestingForContacts;
-        private readonly StopRequestingForContacts _stopRequestingForContacts;
+        private readonly IContainer _container;
 
         public BindableCollection<ContactViewModel> Contacts { get; set; }
         private ContactViewModel _selectedContact;
@@ -31,6 +29,7 @@ namespace Client.Features.Communicator
                 NotifyOfPropertyChange(() => CanRemoveContact);
             }
         }
+        public int SelectedContactIndex { get; set; }
 
         public bool CanRemoveContact
         {
@@ -39,55 +38,51 @@ namespace Client.Features.Communicator
 
         public CommunicatorViewModel(
             IEventAggregator eventAggregator,
-            NewContact newContact,
-            RemoveContact removeContact,
-            GetContacts getContacts,
-            StartRequestingForContacts startRequestingForContacts,
-            StopRequestingForContacts stopRequestingForContacts)
+            IContainer container)
         {
             base.DisplayName = "Internet communicator";
 
             _eventAggregator = eventAggregator;
             _eventAggregator.Subscribe(this);
 
-            _newContact = newContact;
-            _removeContact = removeContact;
-            _getContacts = getContacts;
-            _startRequestingForContacts = startRequestingForContacts;
-            _stopRequestingForContacts = stopRequestingForContacts;
+            _container = container;
+            Contacts = new BindableCollection<ContactViewModel>();
         }
 
         protected override void OnActivate()
         {
             base.OnActivate();
-
-            IEnumerable<Contact> contacts = _getContacts.Execute();
-            Contacts = new BindableCollection<ContactViewModel>(
-                contacts.Select(contact => new ContactViewModel(contact)));
-            
-            _startRequestingForContacts.Execute();
+            ExecutePureCommand<LoadContacts>();
+            ExecutePureCommand<StartRequestingForContacts>();
         }
 
         protected override void OnDeactivate(bool close)
         {
-            _stopRequestingForContacts.Execute();
+            ExecutePureCommand<StopRequestingForContacts>();
             base.OnDeactivate(close);
         }
 
         public void NewContact()
         {
-            _newContact.Execute();
+            ExecutePureCommand<NewContact>();
         }
 
-        public void RemoveContact()
+        public IEnumerable<IResult> RemoveContact()
         {
-            _removeContact.Execute(SelectedContact.Contact);
+            ICommand removeContact = _container.Resolve<RemoveContact>(
+                new UniqueTypeParameter(SelectedContactIndex));
+            yield return new CommandResult(removeContact);
             Contacts.Remove(SelectedContact);
         }
 
         public void Handle(ContactAdded message)
         {
             Contacts.Add(new ContactViewModel(message.Contact));
+        }
+
+        public void Handle(ContactsLoaded message)
+        {
+            Contacts.AddRange(message.Contacts.Select(contact => new ContactViewModel(contact)));
         }
 
         public void Handle(ContactsDataReceived message)
@@ -97,6 +92,12 @@ namespace Client.Features.Communicator
                 contactViewModel.IsAvailable =
                     message.Contacts.First(c => c.ContactStoredData.Number == contactViewModel.Number).IsAvailable;
             }
+        }
+
+        private void ExecutePureCommand<T>() where T : ICommand
+        {
+            ICommand command = _container.Resolve<T>();
+            CommandInvoker.Execute(command);
         }
     }
 }

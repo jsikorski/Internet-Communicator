@@ -44,6 +44,7 @@
 
         <ListView Grid.Row="1"
                   ItemsSource="{Binding Contacts}"
+                  SelectedIndex="{Binding SelectedContactIndex, Mode=OneWayToSource}"
                   SelectedItem="{Binding SelectedContact, Mode=OneWayToSource}"
                   Width="Auto"
                   Height="500"

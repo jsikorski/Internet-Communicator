@@ -2,17 +2,20 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Autofac;
 using Caliburn.Micro;
 using Client.Commands;
+using Client.Insrastructure;
 using Client.Messages;
 using Client.Utils;
 using Common.Contacts;
 
 namespace Client.Features.Contacts
 {
-    public class NewContactViewModel : Screen
+    public class NewContactViewModel : Screen, IBusyScope, IHandle<ContactAdded>
     {
-        private readonly AddContact _addContact;
+        private readonly IEventAggregator _eventAggregator;
+        private readonly IContainer _container;
 
         private string _name;
         public string Name
@@ -36,36 +39,47 @@ namespace Client.Features.Contacts
             }
         }
 
+        private bool _isBusy;
+        public bool IsBusy
+        {
+            get { return _isBusy; }
+            set
+            {
+                _isBusy = value;
+                NotifyOfPropertyChange(() => IsBusy);
+            }
+        }
+
         public bool CanAdd
         {
             get { return !string.IsNullOrEmpty(Name) && 
                 !string.IsNullOrEmpty(Number); }
         }
 
-        public NewContactViewModel(AddContact addContact)
+        public NewContactViewModel(
+            IEventAggregator eventAggregator,
+            IContainer container)
         {
             base.DisplayName = "Add new contact";
-            _addContact = addContact;
+            _eventAggregator = eventAggregator;
+            _container = container;
         }
 
         public void Add()
         {
+            _eventAggregator.Subscribe(this);
             var contactData = new ContactStoredData
                                   {
                                       Name = Name,
                                       Number = Int32.Parse(Number)
                                   };
+            ICommand addContact = _container.Resolve<AddContact>(new UniqueTypeParameter(contactData));
+            CommandInvoker.InvokeBusy(addContact, this);
+        }
 
-            try
-            {
-                _addContact.Execute(contactData);
-            }
-            catch (Exception exception)
-            {
-                ErrorMessageBox.Show(exception);
-                return;
-            }
-
+        public void Handle(ContactAdded message)
+        {
+            _eventAggregator.Unsubscribe(this);
             TryClose();
         }
     }

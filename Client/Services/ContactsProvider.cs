@@ -29,7 +29,6 @@ namespace Client.Services
                                       };
 
             var response = _serverConnection.SendStatusesRequest(statusesRequest);
-
             return response.Contacts;
         }
 
@@ -41,10 +40,10 @@ namespace Client.Services
             StoreContacts(contacts);
         }
 
-        public void Remove(Contact contact)
+        public void Remove(int contactIndex)
         {
             var contacts = LoadContacts().ToList();
-            contacts.Remove(contact);
+            contacts.RemoveAt(contactIndex);
 
             StoreContacts(contacts);
         }
