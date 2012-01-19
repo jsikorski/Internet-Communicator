@@ -56,7 +56,7 @@ namespace Client.Features.Communicator
             base.OnActivate();
             ExecutePureCommand<LoadContacts>();
             ExecutePureCommand<StartRequestingForContacts>();
-            //ExecutePureCommand<StartRequestingForMessages>();
+            ExecutePureCommand<StartRequestingForMessages>();
         }
 
         protected override void OnDeactivate(bool close)

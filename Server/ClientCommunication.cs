@@ -97,6 +97,7 @@ namespace Server
                         {
                             _clientNumber = loginRequest.Number;
                             _activeConnections.Add(loginRequest.Number, _clientStream);
+                            _messages.Add(_clientNumber, null);
                             SendReponse(new LoginResponse() { WasSuccessfull = true });
                             reader.Close();
                             command.Dispose();
@@ -168,8 +169,7 @@ namespace Server
         private void MessagesHandler()
         {
             var messages = _messages[_clientNumber];
-            _messages[_clientNumber] = null;
-
+            _messages[_clientNumber] = new List<Message>();
             var response = new MessagesResponse(messages);
             SendReponse(response);
         }
@@ -184,6 +184,7 @@ namespace Server
             var messageRequest = (MessageRequest)request;
             SendReponse(new MessageResponse());
 
+<<<<<<< HEAD
             if (messageRequest.ReceiversNumbers.Count() == 1)
             {
                 var receiver = messageRequest.ReceiversNumbers.First();
@@ -200,20 +201,19 @@ namespace Server
             {
                 // tu będzie inaczej, bo obsługa konferencji wymaga od nas albo
                 // zmiany w message, albo innego typu message
+=======
+>>>>>>> 08938b65c9d3141315f7166da30036e8597caca1
                 foreach (var receiver in messageRequest.ReceiversNumbers)
                 {
-                    if (_messages[receiver] == null)
+                    if(!_messages.ContainsKey(receiver))
                     {
-                        _messages[receiver] = new List<Message>();
+                        _messages.Add(receiver, new List<Message>());
                     }
 
                     var message = new Message(_clientNumber, DateTime.UtcNow, messageRequest.Text);
 
                     _messages[receiver].Add(message);
                 }
-            }
-                
-            
         }
 
         private void StatusHandler(IRequest request)
