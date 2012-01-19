@@ -10,7 +10,6 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
@@ -25,7 +24,7 @@
 
             <ribbon:RibbonTab Header="Messages">
                 <ribbon:RibbonGroup Header="Sending">
-                    <ribbon:RibbonButton Name="Invoke"
+                    <ribbon:RibbonButton Name="NewMessageWindow"
                                          Label="Message"
                                          LargeImageSource="../../Images/send_message_icon.png" />
                     <ribbon:RibbonButton Label="File"
@@ -43,12 +42,8 @@
                 </ribbon:RibbonGroup>
             </ribbon:RibbonTab>
         </ribbon:Ribbon>
-
-        <ComboBox Grid.Row="1" >
-            
-        </ComboBox>
         
-        <ListView Grid.Row="2"
+        <ListView Grid.Row="1"
                   ItemsSource="{Binding Contacts}"
                   SelectedIndex="{Binding SelectedContactIndex, Mode=OneWayToSource}"
                   SelectedItem="{Binding SelectedContact, Mode=OneWayToSource}"
@@ -71,7 +66,7 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-        <StackPanel Grid.Row="3"
+        <StackPanel Grid.Row="2"
                     Orientation="Horizontal"
                     HorizontalAlignment="Right"
                     Margin="0 0 5 0">

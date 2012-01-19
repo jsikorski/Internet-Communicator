@@ -1,0 +1,49 @@
+﻿<Window x:Class="Client.Features.Messages.MessageView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:extToolkit="http://schemas.microsoft.com/winfx/2006/xaml/presentation/toolkit/extended"
+        Title="MessageView"
+        Height="520"
+        Width="430">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="130" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <ListView Grid.Row="0"
+                  ItemsSource="{Binding Messages}"
+                  HorizontalContentAlignment="Stretch">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Vertical" Margin="10 0">
+
+                        <StackPanel Orientation="Horizontal"
+                                    HorizontalAlignment="Right">
+                            <Label HorizontalAlignment="Right"
+                                   Content="Date:" />
+                            <Label HorizontalAlignment="Right"
+                                   Content="{Binding Date}" />
+                            <Label HorizontalAlignment="Right"
+                                   Content="Sender number:" />
+                            <Label HorizontalAlignment="Right"
+                                   Content="{Binding SenderNumber}" />
+                        </StackPanel>
+
+                        <TextBlock Text="{Binding Content, Mode=OneWay}"
+                                   TextWrapping="WrapWithOverflow"
+                                   Width="385"/>
+                    </StackPanel>
+
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+        <TextBox Grid.Row="1"
+                 TextWrapping="Wrap" />
+
+        <Button Grid.Row="2"
+                Content="Send" />
+    </Grid>
+</Window>

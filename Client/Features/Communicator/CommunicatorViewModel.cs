@@ -4,6 +4,7 @@ using Autofac;
 using Caliburn.Micro;
 using Client.Commands;
 using Client.Features.Contacts;
+using Client.Features.Messages;
 using Client.Insrastructure;
 using Client.Messages;
 using Client.Services;
@@ -13,7 +14,7 @@ using System.Linq;
 
 namespace Client.Features.Communicator
 {
-    public class CommunicatorViewModel : Screen, IHandle<ContactAdded>, IHandle<ContactsDataReceived>, IHandle<ContactsLoaded>
+    public class CommunicatorViewModel : Screen, IHandle<ContactAdded>, IHandle<ContactsDataReceived>, IHandle<ContactsLoaded>, IHandle<MessagesFounded>
     {
         private readonly IEventAggregator _eventAggregator;
         private readonly IContainer _container;
@@ -55,12 +56,23 @@ namespace Client.Features.Communicator
             base.OnActivate();
             ExecutePureCommand<LoadContacts>();
             ExecutePureCommand<StartRequestingForContacts>();
+            //ExecutePureCommand<StartRequestingForMessages>();
         }
 
         protected override void OnDeactivate(bool close)
         {
             ExecutePureCommand<StopRequestingForContacts>();
+            ExecutePureCommand<StopRequestingForMessages>();
             base.OnDeactivate(close);
+        }
+
+        public void NewMessageWindow()
+        {
+            var messageViewModel =
+                _container.Resolve<MessageViewModel>(
+                    new UniqueTypeParameter(SelectedContact.Contact.ContactStoredData.Number));
+            ICommand command = _container.Resolve<NewMessageWindow>(new UniqueTypeParameter(messageViewModel));
+            CommandInvoker.Execute(command);
         }
 
         public void NewContact()
@@ -93,6 +105,13 @@ namespace Client.Features.Communicator
                 contactViewModel.IsAvailable =
                     message.Contacts.First(c => c.ContactStoredData.Number == contactViewModel.Number).IsAvailable;
             }
+        }
+
+        public void Handle(MessagesFounded message)
+        {
+            ICommand command = _container.Resolve<ServiceNewMessages>(
+                new UniqueTypeParameter(message.Messages));
+            CommandInvoker.Execute(command);
         }
 
         private void ExecutePureCommand<T>() where T : ICommand

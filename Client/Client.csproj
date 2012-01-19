@@ -84,11 +84,15 @@
     <Compile Include="Commands\ICommand.cs" />
     <Compile Include="Commands\Login.cs" />
     <Compile Include="Commands\NewContact.cs" />
+    <Compile Include="Commands\NewMessageWindow.cs" />
     <Compile Include="Commands\NewRegister.cs" />
     <Compile Include="Commands\Register.cs" />
     <Compile Include="Commands\RemoveContact.cs" />
+    <Compile Include="Commands\ServiceNewMessages.cs" />
     <Compile Include="Commands\StartRequestingForContacts.cs" />
+    <Compile Include="Commands\StartRequestingForMessages.cs" />
     <Compile Include="Commands\StopRequestingForContacts.cs" />
+    <Compile Include="Commands\StopRequestingForMessages.cs" />
     <Compile Include="Context\CurrentContext.cs" />
     <Compile Include="Context\ICurrentContext.cs" />
     <Compile Include="Converters\AvailabilityToBrushConverter.cs" />
@@ -106,6 +110,10 @@
     <Compile Include="Features\Login\LoginView.xaml.cs">
       <DependentUpon>LoginView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Features\Messages\MessageView.xaml.cs">
+      <DependentUpon>MessageView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Features\Messages\MessageViewModel.cs" />
     <Compile Include="Features\Register\RegisterInformations.cs" />
     <Compile Include="Features\Register\RegisterView.xaml.cs">
       <DependentUpon>RegisterView.xaml</DependentUpon>
@@ -122,6 +130,7 @@
     <Compile Include="Messages\ContactsDataReceived.cs" />
     <Compile Include="Messages\ContactsLoaded.cs" />
     <Compile Include="Messages\Logged.cs" />
+    <Compile Include="Messages\MessagesFounded.cs" />
     <Compile Include="Messages\Registered.cs" />
     <Compile Include="Services\ContactsProvider.cs" />
     <Compile Include="Services\ContactsStorageController.cs" />
@@ -151,6 +160,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Features\Login\LoginView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Features\Messages\MessageView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

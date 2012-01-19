@@ -2,6 +2,7 @@
 using Caliburn.Micro;
 using Client.Commands;
 using Client.Features.Login;
+using Client.Features.Messages;
 using Client.Insrastructure;
 using Client.Messages;
 using Client.Utils;

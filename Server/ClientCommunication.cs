@@ -21,7 +21,7 @@ namespace Server
         private readonly NetworkStream _clientStream;
         private readonly IFormatter _formatter;
         private readonly Dictionary<int, NetworkStream> _activeConnections;
-        private Dictionary<int, List<Message>> _messages;
+        private readonly Dictionary<int, List<Message>> _messages;
         private int _clientNumber = -1;
 
         public ClientCommunication(TcpClient client, Dictionary<int, NetworkStream> connections, Dictionary<int, List<Message>> messages)
@@ -192,7 +192,7 @@ namespace Server
                     _messages[receiver] = new List<Message>();
                 }
 
-                var message = new Message(_clientNumber, receiver, DateTime.UtcNow, messageRequest.Text);
+                var message = new Message(_clientNumber, DateTime.UtcNow, messageRequest.Text);
                 
                 _messages[receiver].Add(message);
             }
@@ -207,7 +207,7 @@ namespace Server
                         _messages[receiver] = new List<Message>();
                     }
 
-                    var message = new Message(_clientNumber, receiver, DateTime.UtcNow, messageRequest.Text);
+                    var message = new Message(_clientNumber, DateTime.UtcNow, messageRequest.Text);
 
                     _messages[receiver].Add(message);
                 }

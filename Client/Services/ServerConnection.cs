@@ -9,6 +9,7 @@ using Common.Contacts;
 using Protocol;
 using Protocol.Connection;
 using Protocol.Login;
+using Protocol.Messages;
 using Protocol.Register;
 using Protocol.Statuses;
 
@@ -51,6 +52,12 @@ namespace Client.Services
         {
             SendRequest(statusesRequest);
             return (StatusesResponse) GetResponse();
+        }
+
+        public MessagesResponse SendMessagesRequest(IRequest messagesRequest)
+        {
+            SendRequest(messagesRequest);
+            return (MessagesResponse) GetResponse();
         }
 
         public void Disconnect()
