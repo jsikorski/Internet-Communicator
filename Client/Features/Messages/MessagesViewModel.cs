@@ -65,6 +65,11 @@ namespace Client.Features.Messages
             MessageContent = string.Empty;
         }
 
+        public void ClearMessages()
+        {
+            Messages.Clear();
+        }
+
         protected override void OnDeactivate(bool close)
         {
             _currentContext.MessageWindows.Remove(ConnectedContactNumber);
