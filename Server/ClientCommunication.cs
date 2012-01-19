@@ -97,7 +97,8 @@ namespace Server
                         {
                             _clientNumber = loginRequest.Number;
                             _activeConnections.Add(loginRequest.Number, _clientStream);
-                            _messages.Add(_clientNumber, new List<Message>());
+                            if(!_messages.ContainsKey(_clientNumber))
+                                _messages.Add(_clientNumber, new List<Message>());
                             SendReponse(new LoginResponse() { WasSuccessfull = true });
                             reader.Close();
                             command.Dispose();
