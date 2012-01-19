@@ -6,15 +6,15 @@ using System.Text;
 namespace Protocol.FileTransfer
 {
     [Serializable]
-    public class FileUploadRequest : IRequest
+    class FilesDownloadResponse : IResponse
     {
         public string OriginalName { get; private set; }
         public byte[] FileBytes { get; private set; }
 
-        public FileUploadRequest(string originalName, byte[] fileBytes)
+        public FilesDownloadResponse(byte[] fileBytes, string originalName)
         {
-            FileBytes = fileBytes;
             OriginalName = originalName;
+            FileBytes = fileBytes;
         }
     }
 }
