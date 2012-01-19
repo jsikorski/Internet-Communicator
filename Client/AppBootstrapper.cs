@@ -51,7 +51,6 @@ namespace Client
 				.AsImplementedInterfaces().AsSelf().PropertiesAutowired(
 					PropertyWiringFlags.PreserveSetValues);
 			containerBuilder.RegisterInstance(new ServerConnection()).AsImplementedInterfaces();
-			containerBuilder.RegisterInstance(new LoggedUser());
 		    containerBuilder.RegisterInstance(new CurrentContext()).AsImplementedInterfaces();
            
 			containerBuilder.RegisterType<EventAggregator>().As<IEventAggregator>().SingleInstance();

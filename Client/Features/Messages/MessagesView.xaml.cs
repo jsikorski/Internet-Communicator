@@ -14,11 +14,11 @@ using System.Windows.Shapes;
 namespace Client.Features.Messages
 {
     /// <summary>
-    /// Interaction logic for MessageView.xaml
+    /// Interaction logic for MessagesView.xaml
     /// </summary>
-    public partial class MessageView : Window
+    public partial class MessagesView : Window
     {
-        public MessageView()
+        public MessagesView()
         {
             InitializeComponent();
         }

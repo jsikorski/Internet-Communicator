@@ -28,12 +28,18 @@ namespace Client.Features.Communicator
             {
                 _selectedContact = value;
                 NotifyOfPropertyChange(() => CanRemoveContact);
+                NotifyOfPropertyChange(() => CanNewMessagesWindow);
                 NotifyOfPropertyChange(() => SelectedContact);
             }
         }
         public int SelectedContactIndex { get; set; }
 
         public bool CanRemoveContact
+        {
+            get { return SelectedContact != null; }
+        }
+
+        public bool CanNewMessagesWindow
         {
             get { return SelectedContact != null; }
         }
@@ -66,12 +72,12 @@ namespace Client.Features.Communicator
             base.OnDeactivate(close);
         }
 
-        public void NewMessageWindow()
+        public void NewMessagesWindow()
         {
             var messageViewModel =
-                _container.Resolve<MessageViewModel>(
+                _container.Resolve<MessagesViewModel>(
                     new UniqueTypeParameter(SelectedContact.Contact.ContactStoredData.Number));
-            ICommand command = _container.Resolve<NewMessageWindow>(new UniqueTypeParameter(messageViewModel));
+            ICommand command = _container.Resolve<NewMessagesWindow>(new UniqueTypeParameter(messageViewModel));
             CommandInvoker.Execute(command);
         }
 

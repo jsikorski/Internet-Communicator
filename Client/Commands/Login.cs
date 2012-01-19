@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Windows;
 using Caliburn.Micro;
+using Client.Context;
 using Client.Features.Login;
 using Client.Messages;
 using Client.Services;
@@ -15,20 +16,20 @@ namespace Client.Commands
     public class Login : ICommand
     {
         private readonly IServerConnection _serverConnection;
-        private readonly LoggedUser _loggedUser;
+        private readonly ICurrentContext _currentContext;
         private readonly IHashService _hashService;
         private readonly LoginInformations _loginInformations;
         private readonly IEventAggregator _eventAggregator;
 
         public Login(
             IServerConnection serverConnection,
-            LoggedUser loggedUser,
+            ICurrentContext currentContext,
             IHashService hashService,
             LoginInformations loginInformations,
             IEventAggregator eventAggregator)
         {
             _serverConnection = serverConnection;
-            _loggedUser = loggedUser;
+            _currentContext = currentContext;
             _hashService = hashService;
             _loginInformations = loginInformations;
             _eventAggregator = eventAggregator;
@@ -44,7 +45,7 @@ namespace Client.Commands
 
             if (_serverConnection.SendLoginRequest(loginRequest).WasSuccessfull)
             {
-                _loggedUser.Number = loginRequest.Number;
+                _currentContext.LoggedUserNumber = loginRequest.Number;
             }
             else
             {

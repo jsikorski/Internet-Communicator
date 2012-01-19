@@ -24,7 +24,7 @@
 
             <ribbon:RibbonTab Header="Messages">
                 <ribbon:RibbonGroup Header="Sending">
-                    <ribbon:RibbonButton Name="NewMessageWindow"
+                    <ribbon:RibbonButton Name="NewMessagesWindow"
                                          Label="Message"
                                          LargeImageSource="../../Images/send_message_icon.png" />
                     <ribbon:RibbonButton Label="File"

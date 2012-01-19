@@ -40,6 +40,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FileTransfer\FilesDownloadRequest.cs" />
+    <Compile Include="FileTransfer\FilesDownloadResponse.cs" />
+    <Compile Include="FileTransfer\FileUploadResponse.cs" />
     <Compile Include="Messages\MessageResponse.cs" />
     <Compile Include="Messages\MessagesRequest.cs" />
     <Compile Include="Messages\MessagesResponse.cs" />

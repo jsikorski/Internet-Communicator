@@ -84,7 +84,7 @@
     <Compile Include="Commands\ICommand.cs" />
     <Compile Include="Commands\Login.cs" />
     <Compile Include="Commands\NewContact.cs" />
-    <Compile Include="Commands\NewMessageWindow.cs" />
+    <Compile Include="Commands\NewMessagesWindow.cs" />
     <Compile Include="Commands\NewRegister.cs" />
     <Compile Include="Commands\Register.cs" />
     <Compile Include="Commands\RemoveContact.cs" />
@@ -106,15 +106,14 @@
     <Compile Include="Features\Contacts\NewContactView.xaml.cs">
       <DependentUpon>NewContactView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Features\Login\LoggedUser.cs" />
     <Compile Include="Features\Login\LoginInformations.cs" />
     <Compile Include="Features\Login\LoginView.xaml.cs">
       <DependentUpon>LoginView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Features\Messages\MessageView.xaml.cs">
-      <DependentUpon>MessageView.xaml</DependentUpon>
+    <Compile Include="Features\Messages\MessagesView.xaml.cs">
+      <DependentUpon>MessagesView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Features\Messages\MessageViewModel.cs" />
+    <Compile Include="Features\Messages\MessagesViewModel.cs" />
     <Compile Include="Features\Register\RegisterInformations.cs" />
     <Compile Include="Features\Register\RegisterView.xaml.cs">
       <DependentUpon>RegisterView.xaml</DependentUpon>
@@ -164,7 +163,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Features\Messages\MessageView.xaml">
+    <Page Include="Features\Messages\MessagesView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

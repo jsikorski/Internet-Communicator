@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
+using Client.Context;
 using Client.Features.Login;
 using Common.Contacts;
 
@@ -11,18 +13,19 @@ namespace Client.Services
 {
     public class ContactsStorageController : IContactsStorageController
     {
+        private readonly ICurrentContext _currentContext;
         private const string FilesPathFormat = "{0}.cdat";
 
-        private readonly LoggedUser _loggedUser;
 
-        public ContactsStorageController(LoggedUser loggedUser)
+        public ContactsStorageController(ICurrentContext currentContext)
         {
-            _loggedUser = loggedUser;
+            _currentContext = currentContext;
         }
 
         public IEnumerable<ContactStoredData> Load()
         {
-            string path = string.Format(FilesPathFormat, _loggedUser.Number.ToString());
+            string path = string.Format(FilesPathFormat, 
+                _currentContext.LoggedUserNumber.ToString(CultureInfo.InvariantCulture));
 
             if (!File.Exists(path))
             {
@@ -40,7 +43,8 @@ namespace Client.Services
 
         public void Store(IEnumerable<ContactStoredData> contactsData)
         {
-            string path = string.Format(FilesPathFormat, _loggedUser.Number.ToString());
+            string path = string.Format(FilesPathFormat, 
+                _currentContext.LoggedUserNumber.ToString(CultureInfo.InvariantCulture));
 
             using (var fileStream = new FileStream(path, FileMode.OpenOrCreate))
             {

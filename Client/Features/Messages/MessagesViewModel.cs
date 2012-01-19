@@ -17,28 +17,34 @@ using Message = Common.Messages.Message;
 
 namespace Client.Features.Messages
 {
-    public class MessageViewModel : Screen
+    public class MessagesViewModel : Screen
     {
         private readonly ICurrentContext _currentContext;
-        private readonly LoggedUser _loggedUser;
         private readonly IContainer _container;
 
         public BindableCollection<Message> Messages { get; set; }
         public int ConnectedContactNumber { get; private set; }
 
-        public string MessageContent { get; set; }
+        private string _messageContent;
+        public string MessageContent
+        {
+            get { return _messageContent; }
+            set
+            {
+                _messageContent = value;
+                NotifyOfPropertyChange(() => MessageContent);
+            }
+        }
 
-        public MessageViewModel(
+        public MessagesViewModel(
             ICurrentContext currentContext,
             int connectedContactNumber,
-            LoggedUser loggedUser,
             IContainer container)
         {
             base.DisplayName = connectedContactNumber.ToString(CultureInfo.InvariantCulture);
 
             ConnectedContactNumber = connectedContactNumber;
             _currentContext = currentContext;
-            _loggedUser = loggedUser;
             _container = container;
             Messages = new BindableCollection<Message>();
         }
@@ -51,9 +57,12 @@ namespace Client.Features.Messages
         public void SendMessage()
         {
             var messageRequest = new MessageRequest(
-                _loggedUser.Number, new List<int> { ConnectedContactNumber }, MessageContent);
+                _currentContext.LoggedUserNumber, new List<int> { ConnectedContactNumber }, MessageContent);
             ICommand command = _container.Resolve<SendMessage>(new UniqueTypeParameter(messageRequest));
             CommandInvoker.Invoke(command);
+
+            Messages.Add(new Message(_currentContext.LoggedUserNumber, DateTime.Now, MessageContent));
+            MessageContent = string.Empty;
         }
 
         protected override void OnDeactivate(bool close)

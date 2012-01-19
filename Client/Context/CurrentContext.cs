@@ -12,15 +12,17 @@ namespace Client.Context
         public Timer GettingContactsTimer { get; set; }
         public Timer GettingMessagesTimer { get; set; }
 
-        private readonly Dictionary<int, MessageViewModel> _messageWindows;
-        public Dictionary<int, MessageViewModel> MessageWindows
+        private readonly Dictionary<int, MessagesViewModel> _messageWindows;
+        public Dictionary<int, MessagesViewModel> MessageWindows
         {
             get { return _messageWindows; }
         }
 
+        public int LoggedUserNumber { get; set; }
+
         public CurrentContext()
         {
-            _messageWindows = new Dictionary<int, MessageViewModel>();            
+            _messageWindows = new Dictionary<int, MessagesViewModel>();            
         }
     }
 }
