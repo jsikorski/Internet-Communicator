@@ -21,7 +21,7 @@ namespace Server
         private readonly NetworkStream _clientStream;
         private readonly IFormatter _formatter;
         private readonly Dictionary<int, NetworkStream> _activeConnections;
-        private readonly Dictionary<int, List<Message>> _messages;
+        private Dictionary<int, List<Message>> _messages;
         private int _clientNumber = -1;
 
         public ClientCommunication(TcpClient client, Dictionary<int, NetworkStream> connections, Dictionary<int, List<Message>> messages)
@@ -87,7 +87,7 @@ namespace Server
                     var loginRequest = (LoginRequest)request;
                     var command = sqlConnection.CreateCommand();
                     command.CommandText = "SELECT PasswordHash FROM users WHERE Number=" + loginRequest.Number;
-                    
+
                     var reader = command.ExecuteReader();
 
                     if (reader.HasRows)
@@ -98,7 +98,7 @@ namespace Server
                             _clientNumber = loginRequest.Number;
                             _activeConnections.Add(loginRequest.Number, _clientStream);
                             if(!_messages.ContainsKey(_clientNumber))
-                                _messages.Add(_clientNumber, new List<Message>());
+                                _messages.Add(_clientNumber, null);
                             SendReponse(new LoginResponse() { WasSuccessfull = true });
                             reader.Close();
                             command.Dispose();
@@ -121,8 +121,8 @@ namespace Server
 
                     command.CommandText = "INSERT INTO users (Number, PasswordHash) values (null, \"" + registerRequest.Password + "\")";
                     command.ExecuteNonQuery();
-                    
-                    SendReponse(new RegisterResponse() { AccountNumber = (int) command.LastInsertedId, WasSuccessfull = true });
+
+                    SendReponse(new RegisterResponse() { AccountNumber = (int)command.LastInsertedId, WasSuccessfull = true });
                     command.Dispose();
                     sqlConnection.Close();
                 }
@@ -185,33 +185,16 @@ namespace Server
             var messageRequest = (MessageRequest)request;
             SendReponse(new MessageResponse());
 
-            if (messageRequest.ReceiversNumbers.Count() == 1)
+            foreach (var receiver in messageRequest.ReceiversNumbers)
             {
-                var receiver = messageRequest.ReceiversNumbers.First();
-                if(_messages[receiver] == null)
+                if (!_messages.ContainsKey(receiver))
                 {
-                    _messages[receiver] = new List<Message>();
+                    _messages.Add(receiver, new List<Message>());
                 }
 
                 var message = new Message(_clientNumber, DateTime.UtcNow, messageRequest.Text);
-                
+
                 _messages[receiver].Add(message);
-            }
-            else if (messageRequest.ReceiversNumbers.Count() > 1)
-            {
-                // tu będzie inaczej, bo obsługa konferencji wymaga od nas albo
-                // zmiany w message, albo innego typu message
-                foreach (var receiver in messageRequest.ReceiversNumbers)
-                {
-                    if (!_messages.ContainsKey(receiver))
-                    {
-                        _messages.Add(receiver, new List<Message>());
-                    }
-
-                    var message = new Message(_clientNumber, DateTime.UtcNow, messageRequest.Text);
-
-                    _messages[receiver].Add(message);
-                }
             }
         }
 
