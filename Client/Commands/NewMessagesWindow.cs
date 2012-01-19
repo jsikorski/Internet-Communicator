@@ -2,36 +2,42 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Autofac;
 using Caliburn.Micro;
 using Client.Context;
 using Client.Features.Messages;
+using Client.Utils;
 
 namespace Client.Commands
 {
     public class NewMessagesWindow : ICommand
     {
         private readonly IWindowManager _windowManager;
-        private readonly MessagesViewModel _messagesViewModel;
         private readonly ICurrentContext _currentContext;
+        private readonly int _connectedContactNumber;
+        private readonly IContainer _container;
 
         public NewMessagesWindow(
-            IWindowManager windowManager, 
-            MessagesViewModel messagesViewModel,
-            ICurrentContext currentContext)
+            IWindowManager windowManager,
+            ICurrentContext currentContext,
+            int connectedContactNumber,
+            IContainer container)
         {
             _windowManager = windowManager;
-            _messagesViewModel = messagesViewModel;
             _currentContext = currentContext;
+            _connectedContactNumber = connectedContactNumber;
+            _container = container;
         }
 
         public void Execute()
         {
-            int contactNumber = _messagesViewModel.ConnectedContactNumber;
+            var messagesViewModel = _container.Resolve<MessagesViewModel>(
+                new UniqueTypeParameter(_connectedContactNumber));
 
-            if (!_currentContext.MessageWindows.ContainsKey(contactNumber))
+            if (!_currentContext.MessageWindows.ContainsKey(_connectedContactNumber))
             {
-                _currentContext.MessageWindows.Add(contactNumber, _messagesViewModel);
-                _windowManager.ShowWindow(_messagesViewModel);
+                _currentContext.MessageWindows.Add(_connectedContactNumber, messagesViewModel);
+                _windowManager.ShowWindow(messagesViewModel);
             }
         }
     }

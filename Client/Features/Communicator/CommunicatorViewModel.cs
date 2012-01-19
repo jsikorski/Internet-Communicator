@@ -14,7 +14,8 @@ using System.Linq;
 
 namespace Client.Features.Communicator
 {
-    public class CommunicatorViewModel : Screen, IHandle<ContactAdded>, IHandle<ContactsDataReceived>, IHandle<ContactsLoaded>, IHandle<MessagesFounded>
+    public class CommunicatorViewModel : Screen, IHandle<ContactAdded>,
+        IHandle<ContactsDataReceived>, IHandle<ContactsLoaded>, IHandle<MessagesFounded>
     {
         private readonly IEventAggregator _eventAggregator;
         private readonly IContainer _container;
@@ -34,12 +35,12 @@ namespace Client.Features.Communicator
         }
         public int SelectedContactIndex { get; set; }
 
-        public bool CanRemoveContact
+        public bool CanNewMessagesWindow
         {
             get { return SelectedContact != null; }
         }
 
-        public bool CanNewMessagesWindow
+        public bool CanRemoveContact
         {
             get { return SelectedContact != null; }
         }
@@ -74,10 +75,8 @@ namespace Client.Features.Communicator
 
         public void NewMessagesWindow()
         {
-            var messageViewModel =
-                _container.Resolve<MessagesViewModel>(
-                    new UniqueTypeParameter(SelectedContact.Contact.ContactStoredData.Number));
-            ICommand command = _container.Resolve<NewMessagesWindow>(new UniqueTypeParameter(messageViewModel));
+            ICommand command = _container.Resolve<NewMessagesWindow>(
+                new UniqueTypeParameter(SelectedContact.Number));
             CommandInvoker.Execute(command);
         }
 

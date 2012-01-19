@@ -33,18 +33,14 @@ namespace Client.Commands
             {
                 int senderNumber = message.SenderNumber;
 
-                MessagesViewModel messagesViewModel;
-                if (_currentContext.MessageWindows.ContainsKey(senderNumber))
+                if (!_currentContext.MessageWindows.ContainsKey(senderNumber))
                 {
-                    messagesViewModel = _currentContext.MessageWindows[senderNumber];
-                }
-                else
-                {
-                    messagesViewModel = _container.Resolve<MessagesViewModel>(new UniqueTypeParameter(senderNumber));
-                    ICommand command = _container.Resolve<NewMessagesWindow>(new UniqueTypeParameter(messagesViewModel));
+                    ICommand command = _container.Resolve<NewMessagesWindow>(
+                        new UniqueTypeParameter(senderNumber));
                     CommandInvoker.Execute(command);
                 }
 
+                MessagesViewModel messagesViewModel = _currentContext.MessageWindows[senderNumber];
                 messagesViewModel.AddMessage(message);
             }
         }
