@@ -10,6 +10,7 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
@@ -43,7 +44,11 @@
             </ribbon:RibbonTab>
         </ribbon:Ribbon>
 
-        <ListView Grid.Row="1"
+        <ComboBox Grid.Row="1" >
+            
+        </ComboBox>
+        
+        <ListView Grid.Row="2"
                   ItemsSource="{Binding Contacts}"
                   SelectedIndex="{Binding SelectedContactIndex, Mode=OneWayToSource}"
                   SelectedItem="{Binding SelectedContact, Mode=OneWayToSource}"
@@ -66,13 +71,13 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-        <StackPanel Grid.Row="2"
+        <StackPanel Grid.Row="3"
                     Orientation="Horizontal"
                     HorizontalAlignment="Right"
                     Margin="0 0 5 0">
             <Label Content="Name:" />
             <Label Content="{Binding SelectedContact.Name}" />
-            
+
             <Label Content="Number:" />
             <Label Content="{Binding SelectedContact.Number}" />
         </StackPanel>

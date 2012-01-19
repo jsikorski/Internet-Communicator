@@ -115,6 +115,7 @@
     <Compile Include="Insrastructure\CommandInvoker.cs" />
     <Compile Include="Insrastructure\CommandResult.cs" />
     <Compile Include="Insrastructure\IBusyScope.cs" />
+    <Compile Include="Insrastructure\IProgressScope.cs" />
     <Compile Include="Messages\Connected.cs" />
     <Compile Include="Messages\ContactAdded.cs" />
     <Compile Include="Messages\ContactRemoved.cs" />

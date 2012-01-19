@@ -8,8 +8,16 @@ namespace Protocol.Messages
     [Serializable]
     public class MessageRequest : IRequest
     {
-        public int Sender { get; set; }
-        public IEnumerable<int> ReceiversNumbers { get; set; }
-        public string Text { get; set; }
+        public int Sender { get; private set; }
+        public IEnumerable<int> ReceiversNumbers { get; private set; }
+        public string Text { get; private set; }
+
+        public MessageRequest(int sender, 
+            IEnumerable<int> receiversNumbers, string text)
+        {
+            Text = text;
+            ReceiversNumbers = receiversNumbers;
+            Sender = sender;
+        }
     }
 }
