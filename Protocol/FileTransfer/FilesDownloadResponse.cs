@@ -2,19 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Common.Files;
 
 namespace Protocol.FileTransfer
 {
     [Serializable]
     class FilesDownloadResponse : IResponse
     {
-        public string OriginalName { get; private set; }
-        public byte[] FileBytes { get; private set; }
+        public IEnumerable<File> Files { get; private set; }
 
-        public FilesDownloadResponse(byte[] fileBytes, string originalName)
+        public FilesDownloadResponse(IEnumerable<File> files)
         {
-            OriginalName = originalName;
-            FileBytes = fileBytes;
+            Files = files;
         }
     }
 }
