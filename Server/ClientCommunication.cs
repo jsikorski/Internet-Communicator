@@ -184,7 +184,6 @@ namespace Server
             var messageRequest = (MessageRequest)request;
             SendReponse(new MessageResponse());
 
-<<<<<<< HEAD
             if (messageRequest.ReceiversNumbers.Count() == 1)
             {
                 var receiver = messageRequest.ReceiversNumbers.First();
@@ -201,11 +200,9 @@ namespace Server
             {
                 // tu będzie inaczej, bo obsługa konferencji wymaga od nas albo
                 // zmiany w message, albo innego typu message
-=======
->>>>>>> 08938b65c9d3141315f7166da30036e8597caca1
                 foreach (var receiver in messageRequest.ReceiversNumbers)
                 {
-                    if(!_messages.ContainsKey(receiver))
+                    if (!_messages.ContainsKey(receiver))
                     {
                         _messages.Add(receiver, new List<Message>());
                     }
@@ -214,6 +211,7 @@ namespace Server
 
                     _messages[receiver].Add(message);
                 }
+            }
         }
 
         private void StatusHandler(IRequest request)
