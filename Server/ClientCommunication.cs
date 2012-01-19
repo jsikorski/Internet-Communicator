@@ -5,9 +5,11 @@ using System.Net;
 using System.Net.Sockets;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
+using Common.Files;
 using Common.Messages;
 using MySql.Data.MySqlClient;
 using Protocol;
+using Protocol.FileTransfer;
 using Protocol.Login;
 using Protocol.Messages;
 using Protocol.Register;
@@ -22,15 +24,17 @@ namespace Server
         private readonly IFormatter _formatter;
         private readonly Dictionary<int, NetworkStream> _activeConnections;
         private Dictionary<int, List<Message>> _messages;
+        private Dictionary<int, List<File>> _files;
         private int _clientNumber = -1;
 
-        public ClientCommunication(TcpClient client, Dictionary<int, NetworkStream> connections, Dictionary<int, List<Message>> messages)
+        public ClientCommunication(TcpClient client, Dictionary<int, NetworkStream> connections, Dictionary<int, List<Message>> messages, Dictionary<int, List<File>> files)
         {
             _tcpClient = client;
             _clientStream = _tcpClient.GetStream();
             _activeConnections = connections;
             _formatter = new BinaryFormatter();
             _messages = messages;
+            _files = files;
 
             Communication();
         }
@@ -97,9 +101,14 @@ namespace Server
                         {
                             _clientNumber = loginRequest.Number;
                             _activeConnections.Add(loginRequest.Number, _clientStream);
+
                             if (!_messages.ContainsKey(_clientNumber))
                                 _messages.Add(_clientNumber, new List<Message>());
+                            if (!_files.ContainsKey(_clientNumber))
+                                _files.Add(_clientNumber, new List<File>());
+                            
                             SendReponse(new LoginResponse() { WasSuccessfull = true });
+                            
                             reader.Close();
                             command.Dispose();
                             sqlConnection.Close();
@@ -141,6 +150,10 @@ namespace Server
                 {
                     FileUploadHandler(request);
                 }
+                else if (request.ToString() == "Protocol.FileTransfer.FileDownloadRequest")
+                {
+                    FileDownloadHandler();
+                }
                 else if (request.ToString() == "Protocol.Messages.MessageRequest")
                 {
                     MessageHandler(request);
@@ -167,6 +180,14 @@ namespace Server
             }
         }
 
+        private void FileDownloadHandler()
+        {
+            var files = _files[_clientNumber];
+            _files[_clientNumber] = new List<File>();
+            var response = new FilesDownloadResponse(files);
+            SendReponse(response);
+        }
+
         private void MessagesHandler()
         {
             var messages = _messages[_clientNumber];
@@ -177,7 +198,16 @@ namespace Server
 
         private void FileUploadHandler(IRequest request)
         {
-            throw new NotImplementedException();
+            var uploadRequest = (FileUploadRequest) request;
+            SendReponse(new FileUploadResponse());
+            
+            if (!_files.ContainsKey(uploadRequest.Receiver))
+            {
+                _files.Add(uploadRequest.Receiver, new List<File>());
+            }
+
+            var file = new File(uploadRequest.OriginalName, uploadRequest.FileBytes, _clientNumber);
+            _files[uploadRequest.Receiver].Add(file);
         }
 
         private void MessageHandler(IRequest request)
@@ -185,15 +215,14 @@ namespace Server
             var messageRequest = (MessageRequest)request;
             SendReponse(new MessageResponse());
 
-            int receiverNumber = messageRequest.ReciverNumber;
+            var receiverNumber = messageRequest.ReciverNumber;
 
             if (!_messages.ContainsKey(receiverNumber))
             {
                 _messages.Add(receiverNumber, new List<Message>());
             }
-
+            
             var message = new Message(_clientNumber, DateTime.UtcNow, messageRequest.Text);
-
             _messages[receiverNumber].Add(message);
         }
 

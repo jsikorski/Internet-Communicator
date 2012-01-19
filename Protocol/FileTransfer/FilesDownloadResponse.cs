@@ -7,7 +7,7 @@ using Common.Files;
 namespace Protocol.FileTransfer
 {
     [Serializable]
-    class FilesDownloadResponse : IResponse
+    public class FilesDownloadResponse : IResponse
     {
         public IEnumerable<File> Files { get; private set; }
 
