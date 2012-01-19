@@ -22,7 +22,7 @@ namespace Client.Features.Messages
         private readonly ICurrentContext _currentContext;
         private readonly IContainer _container;
 
-        public BindableCollection<Message> Messages { get; set; }
+        public BindableCollection<MessageViewModel> Messages { get; set; }
         public int ConnectedContactNumber { get; private set; }
 
         private string _messageContent;
@@ -46,22 +46,24 @@ namespace Client.Features.Messages
             ConnectedContactNumber = connectedContactNumber;
             _currentContext = currentContext;
             _container = container;
-            Messages = new BindableCollection<Message>();
+            Messages = new BindableCollection<MessageViewModel>();
         }
 
         public void AddMessage(Message message)
         {
-            Messages.Add(message);
+            Messages.Add(new MessageViewModel(message));
         }
 
         public void SendMessage()
         {
-            var messageRequest = new MessageRequest(
-                _currentContext.LoggedUserNumber, new List<int> { ConnectedContactNumber }, MessageContent);
+            int loggedUserNumber = _currentContext.LoggedUserNumber;
+
+            var messageRequest = new MessageRequest(loggedUserNumber, ConnectedContactNumber, MessageContent);
             ICommand command = _container.Resolve<SendMessage>(new UniqueTypeParameter(messageRequest));
             CommandInvoker.Invoke(command);
 
-            Messages.Add(new Message(_currentContext.LoggedUserNumber, DateTime.Now, MessageContent));
+            var myMessage = new Message(0, DateTime.Now, MessageContent);
+            Messages.Add(new MessageViewModel(myMessage, "Me"));
             MessageContent = string.Empty;
         }
 

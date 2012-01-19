@@ -9,14 +9,13 @@ namespace Protocol.Messages
     public class MessageRequest : IRequest
     {
         public int Sender { get; private set; }
-        public IEnumerable<int> ReceiversNumbers { get; private set; }
+        public int ReciverNumber { get; private set; }
         public string Text { get; private set; }
 
-        public MessageRequest(int sender, 
-            IEnumerable<int> receiversNumbers, string text)
+        public MessageRequest(int sender, int receiverNumber, string text)
         {
             Text = text;
-            ReceiversNumbers = receiversNumbers;
+            ReciverNumber = receiverNumber;
             Sender = sender;
         }
     }

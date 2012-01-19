@@ -114,6 +114,7 @@
       <DependentUpon>MessagesView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Features\Messages\MessagesViewModel.cs" />
+    <Compile Include="Features\Messages\MessageViewModel.cs" />
     <Compile Include="Features\Register\RegisterInformations.cs" />
     <Compile Include="Features\Register\RegisterView.xaml.cs">
       <DependentUpon>RegisterView.xaml</DependentUpon>

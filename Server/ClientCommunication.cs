@@ -97,7 +97,7 @@ namespace Server
                         {
                             _clientNumber = loginRequest.Number;
                             _activeConnections.Add(loginRequest.Number, _clientStream);
-                            if(!_messages.ContainsKey(_clientNumber))
+                            if (!_messages.ContainsKey(_clientNumber))
                                 _messages.Add(_clientNumber, new List<Message>());
                             SendReponse(new LoginResponse() { WasSuccessfull = true });
                             reader.Close();
@@ -185,17 +185,16 @@ namespace Server
             var messageRequest = (MessageRequest)request;
             SendReponse(new MessageResponse());
 
-            foreach (var receiver in messageRequest.ReceiversNumbers)
+            int receiverNumber = messageRequest.ReciverNumber;
+
+            if (!_messages.ContainsKey(receiverNumber))
             {
-                if (!_messages.ContainsKey(receiver))
-                {
-                    _messages.Add(receiver, new List<Message>());
-                }
-
-                var message = new Message(_clientNumber, DateTime.UtcNow, messageRequest.Text);
-
-                _messages[receiver].Add(message);
+                _messages.Add(receiverNumber, new List<Message>());
             }
+
+            var message = new Message(_clientNumber, DateTime.UtcNow, messageRequest.Text);
+
+            _messages[receiverNumber].Add(message);
         }
 
         private void StatusHandler(IRequest request)

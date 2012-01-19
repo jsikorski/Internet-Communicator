@@ -1,8 +1,6 @@
 ﻿<Window x:Class="Client.Features.Messages.MessagesView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:extToolkit="http://schemas.microsoft.com/winfx/2006/xaml/presentation/toolkit/extended"
-        Title="MessagesView"
         Height="470"
         Width="370">
     <Grid Margin="5">
@@ -17,30 +15,27 @@
                   Margin="0 0 0 3">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <Border BorderBrush="CornflowerBlue">
-                        <StackPanel Orientation="Vertical"
-                                    Margin="10 0">
+                    <StackPanel Orientation="Vertical"
+                                Margin="10 0">
 
-                            <StackPanel Orientation="Horizontal"
-                                        HorizontalAlignment="Right">
-                                <Label HorizontalAlignment="Right"
-                                       Content="Date:" />
-                                <Label HorizontalAlignment="Right"
-                                       Content="{Binding Date}" />
-                                <Label HorizontalAlignment="Right"
-                                       Content="Sender number:" />
-                                <Label HorizontalAlignment="Right"
-                                       Content="{Binding SenderNumber}" />
-                            </StackPanel>
-
-                            <TextBlock Text="{Binding Content, Mode=OneWay}"
-                                       TextWrapping="WrapWithOverflow"
-                                       Width="315" />
-
-                            <Line Width="1" />
+                        <StackPanel Orientation="Horizontal"
+                                    HorizontalAlignment="Right">
+                            <Label HorizontalAlignment="Right"
+                                   Content="Date:" />
+                            <Label HorizontalAlignment="Right"
+                                   Content="{Binding Date}" />
+                            <Label HorizontalAlignment="Right"
+                                   Content="Sender number:" />
+                            <Label HorizontalAlignment="Right"
+                                   Content="{Binding SenderNumber}" />
                         </StackPanel>
-                    </Border>
 
+                        <TextBlock Text="{Binding Content, Mode=OneWay}"
+                                   TextWrapping="Wrap"
+                                   Width="315" />
+
+                        <Line Width="1" />
+                    </StackPanel>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
@@ -57,13 +52,11 @@
 
             <StackPanel Grid.Column="1"
                         Margin="10">
-                <Button Grid.Column="1"
-                        Name="SendMessage"
+                <Button Name="SendMessage"
                         Height="30"
                         Content="Send"
                         Margin="0 10 0 0" />
-                <Button Grid.Column="1"
-                        Name="ClearMessages"
+                <Button Name="ClearMessages"
                         Height="30"
                         Content="Clear"
                         Margin="0 10 0 0" />
