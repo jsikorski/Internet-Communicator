@@ -222,7 +222,7 @@ namespace Server
                 _messages.Add(receiverNumber, new List<Message>());
             }
             
-            var message = new Message(_clientNumber, DateTime.UtcNow, messageRequest.Text);
+            var message = new Message(_clientNumber, DateTime.Now, messageRequest.Text);
             _messages[receiverNumber].Add(message);
         }
 
