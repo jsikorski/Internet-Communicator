@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Common.Contacts;
 using Protocol;
+using Protocol.FileTransfer;
 using Protocol.Login;
 using Protocol.Messages;
 using Protocol.Register;
@@ -16,6 +17,8 @@ namespace Client.Services
         StatusesResponse SendStatusesRequest(IRequest statusesRequest);
         MessageResponse SendMessageRequest(IRequest messageRequest);
         MessagesResponse SendMessagesRequest(IRequest messagesRequest);
+        FileUploadResponse SendFileUploadRequest(IRequest uploadRequest);
+        FilesDownloadResponse SendFileDownloadRequest(IRequest downloadRequest);
         void Disconnect();
     }
 }

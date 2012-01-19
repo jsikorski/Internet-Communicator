@@ -80,6 +80,7 @@
     </ApplicationDefinition>
     <Compile Include="Commands\AddContact.cs" />
     <Compile Include="Commands\Connect.cs" />
+    <Compile Include="Commands\DownloadFile.cs" />
     <Compile Include="Commands\LoadContacts.cs" />
     <Compile Include="Commands\ICommand.cs" />
     <Compile Include="Commands\Login.cs" />
@@ -89,11 +90,15 @@
     <Compile Include="Commands\Register.cs" />
     <Compile Include="Commands\RemoveContact.cs" />
     <Compile Include="Commands\SendMessage.cs" />
+    <Compile Include="Commands\ServiceNewFiles.cs" />
     <Compile Include="Commands\ServiceNewMessages.cs" />
     <Compile Include="Commands\StartRequestingForContacts.cs" />
+    <Compile Include="Commands\StartRequestingForFiles.cs" />
     <Compile Include="Commands\StartRequestingForMessages.cs" />
     <Compile Include="Commands\StopRequestingForContacts.cs" />
+    <Compile Include="Commands\StopRequestingForFiles.cs" />
     <Compile Include="Commands\StopRequestingForMessages.cs" />
+    <Compile Include="Commands\UploadFile.cs" />
     <Compile Include="Context\CurrentContext.cs" />
     <Compile Include="Context\ICurrentContext.cs" />
     <Compile Include="Converters\AvailabilityToBrushConverter.cs" />
@@ -130,6 +135,7 @@
     <Compile Include="Messages\ContactRemoved.cs" />
     <Compile Include="Messages\ContactsDataReceived.cs" />
     <Compile Include="Messages\ContactsLoaded.cs" />
+    <Compile Include="Messages\FileFounded.cs" />
     <Compile Include="Messages\Logged.cs" />
     <Compile Include="Messages\MessagesFounded.cs" />
     <Compile Include="Messages\Registered.cs" />
@@ -147,7 +153,7 @@
     <Compile Include="AppBootstrapper.cs" />
     <Compile Include="IShell.cs" />
     <Compile Include="Utils\DigitOnlyTextBox.cs" />
-    <Compile Include="Utils\ErrorMessageBox.cs" />
+    <Compile Include="Utils\MessageBoxService.cs" />
     <Compile Include="Utils\UniqueTypeParameter.cs" />
     <Compile Include="Validators\AddressValidator.cs" />
     <Compile Include="Validators\IValidator.cs" />

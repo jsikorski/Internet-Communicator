@@ -21,7 +21,7 @@ namespace Client.Insrastructure
                                                  }
                                                  catch (Exception exception)
                                                  {
-                                                     ErrorMessageBox.Show(exception);
+                                                     MessageBoxService.ShowError(exception);
                                                      error = exception;
                                                  }
 
@@ -52,7 +52,7 @@ namespace Client.Insrastructure
             }
             catch (Exception exception)
             {
-                ErrorMessageBox.Show(exception);
+                MessageBoxService.ShowError(exception);
             }
         }
     }

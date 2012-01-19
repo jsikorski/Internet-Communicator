@@ -11,6 +11,7 @@ namespace Client.Context
     {
         public Timer GettingContactsTimer { get; set; }
         public Timer GettingMessagesTimer { get; set; }
+        public Timer GettingFilesTimer { get; set; }
 
         private readonly Dictionary<int, MessagesViewModel> _messageWindows;
         public Dictionary<int, MessagesViewModel> MessageWindows

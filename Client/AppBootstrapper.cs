@@ -39,7 +39,7 @@ namespace Client
 
         protected override void OnUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
         {
-            ErrorMessageBox.Show(e.Exception.InnerException);
+            MessageBoxService.ShowError(e.Exception.InnerException);
             e.Handled = true;
         }
 

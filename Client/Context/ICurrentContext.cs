@@ -12,6 +12,7 @@ namespace Client.Context
     {
         Timer GettingContactsTimer { get; set; }
         Timer GettingMessagesTimer { get; set; }
+        Timer GettingFilesTimer { get; set; }
         Dictionary<int, MessagesViewModel> MessageWindows { get; }
         int LoggedUserNumber { get; set; }
     }

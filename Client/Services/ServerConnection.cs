@@ -9,6 +9,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using Common.Contacts;
 using Protocol;
 using Protocol.Connection;
+using Protocol.FileTransfer;
 using Protocol.Login;
 using Protocol.Messages;
 using Protocol.Register;
@@ -27,7 +28,7 @@ namespace Client.Services
         {
             _formatter = new BinaryFormatter();
         }
-        
+
         public void Connect(string serverAddress)
         {
             var serverEndPoint = new IPEndPoint(IPAddress.Parse(serverAddress), Ports.ServerListeningPort);
@@ -39,27 +40,37 @@ namespace Client.Services
 
         public LoginResponse SendLoginRequest(IRequest loginRequest)
         {
-            return (LoginResponse) SendAndGet(loginRequest);
+            return (LoginResponse)SendAndGet(loginRequest);
         }
 
         public RegisterResponse SendRegisterRequest(IRequest registerRequest)
         {
-            return (RegisterResponse) SendAndGet(registerRequest);
+            return (RegisterResponse)SendAndGet(registerRequest);
         }
 
         public StatusesResponse SendStatusesRequest(IRequest statusesRequest)
         {
-            return (StatusesResponse) SendAndGet(statusesRequest);
+            return (StatusesResponse)SendAndGet(statusesRequest);
         }
 
         public MessageResponse SendMessageRequest(IRequest messageRequest)
         {
-            return (MessageResponse) SendAndGet(messageRequest);
+            return (MessageResponse)SendAndGet(messageRequest);
         }
 
         public MessagesResponse SendMessagesRequest(IRequest messagesRequest)
         {
             return (MessagesResponse)SendAndGet(messagesRequest);
+        }
+
+        public FileUploadResponse SendFileUploadRequest(IRequest uploadRequest)
+        {
+            return (FileUploadResponse)SendAndGet(uploadRequest);
+        }
+
+        public FilesDownloadResponse SendFileDownloadRequest(IRequest downloadRequest)
+        {
+            return (FilesDownloadResponse)SendAndGet(downloadRequest);
         }
 
         public void Disconnect()

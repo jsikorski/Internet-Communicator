@@ -27,7 +27,8 @@
                     <ribbon:RibbonButton Name="NewMessagesWindow"
                                          Label="Message"
                                          LargeImageSource="../../Images/send_message_icon.png" />
-                    <ribbon:RibbonButton Label="File"
+                    <ribbon:RibbonButton Name="UploadFile"
+                                         Label="File"
                                          LargeImageSource="../../Images/send_file_icon.png" />
                 </ribbon:RibbonGroup>
             </ribbon:RibbonTab>
@@ -42,7 +43,7 @@
                 </ribbon:RibbonGroup>
             </ribbon:RibbonTab>
         </ribbon:Ribbon>
-        
+
         <ListView Grid.Row="1"
                   ItemsSource="{Binding Contacts}"
                   SelectedIndex="{Binding SelectedContactIndex, Mode=OneWayToSource}"

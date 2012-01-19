@@ -150,7 +150,7 @@ namespace Server
                 {
                     FileUploadHandler(request);
                 }
-                else if (request.ToString() == "Protocol.FileTransfer.FileDownloadRequest")
+                else if (request.ToString() == "Protocol.FileTransfer.FilesDownloadRequest")
                 {
                     FileDownloadHandler();
                 }

@@ -64,18 +64,27 @@ namespace Client.Features.Communicator
             ExecutePureCommand<LoadContacts>();
             ExecutePureCommand<StartRequestingForContacts>();
             ExecutePureCommand<StartRequestingForMessages>();
+            ExecutePureCommand<StartRequestingForFiles>();
         }
 
         protected override void OnDeactivate(bool close)
         {
             ExecutePureCommand<StopRequestingForContacts>();
             ExecutePureCommand<StopRequestingForMessages>();
+            ExecutePureCommand<StopRequestingForFiles>();
             base.OnDeactivate(close);
         }
 
         public void NewMessagesWindow()
         {
             ICommand command = _container.Resolve<NewMessagesWindow>(
+                new UniqueTypeParameter(SelectedContact.Number));
+            CommandInvoker.Execute(command);
+        }
+
+        public void UploadFile()
+        {
+            ICommand command = _container.Resolve<UploadFile>(
                 new UniqueTypeParameter(SelectedContact.Number));
             CommandInvoker.Execute(command);
         }
