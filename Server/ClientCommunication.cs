@@ -167,10 +167,19 @@ namespace Server
 
         private void MessagesHandler()
         {
-            var messages = _messages[_clientNumber];
-            _messages[_clientNumber] = null;
+            MessagesResponse response;
+            
+            if (_messages[_clientNumber] == null)
+            {
+                response = new MessagesResponse(new List<Message>());
+            }
+            else
+            {
+                var messages = _messages[_clientNumber];
+                _messages[_clientNumber] = null;
+                response = new MessagesResponse(messages);
+            }
 
-            var response = new MessagesResponse(messages);
             SendReponse(response);
         }
 
