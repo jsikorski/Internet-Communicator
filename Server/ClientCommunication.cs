@@ -97,6 +97,7 @@ namespace Server
                         {
                             _clientNumber = loginRequest.Number;
                             _activeConnections.Add(loginRequest.Number, _clientStream);
+                            _messages.Add(_clientNumber, null);
                             SendReponse(new LoginResponse() { WasSuccessfull = true });
                             reader.Close();
                             command.Dispose();
@@ -167,19 +168,9 @@ namespace Server
 
         private void MessagesHandler()
         {
-            MessagesResponse response;
-            
-            if (_messages[_clientNumber] == null)
-            {
-                response = new MessagesResponse(new List<Message>());
-            }
-            else
-            {
-                var messages = _messages[_clientNumber];
-                _messages[_clientNumber] = null;
-                response = new MessagesResponse(messages);
-            }
-
+            var messages = _messages[_clientNumber];
+            _messages[_clientNumber] = new List<Message>();
+            var response = new MessagesResponse(messages);
             SendReponse(response);
         }
 
@@ -193,36 +184,17 @@ namespace Server
             var messageRequest = (MessageRequest)request;
             SendReponse(new MessageResponse());
 
-            if (messageRequest.ReceiversNumbers.Count() == 1)
-            {
-                var receiver = messageRequest.ReceiversNumbers.First();
-                if(_messages[receiver] == null)
-                {
-                    _messages[receiver] = new List<Message>();
-                }
-
-                var message = new Message(_clientNumber, receiver, DateTime.UtcNow, messageRequest.Text);
-                
-                _messages[receiver].Add(message);
-            }
-            else if (messageRequest.ReceiversNumbers.Count() > 1)
-            {
-                // tu będzie inaczej, bo obsługa konferencji wymaga od nas albo
-                // zmiany w message, albo innego typu message
                 foreach (var receiver in messageRequest.ReceiversNumbers)
                 {
-                    if (_messages[receiver] == null)
+                    if(!_messages.ContainsKey(receiver))
                     {
-                        _messages[receiver] = new List<Message>();
+                        _messages.Add(receiver, new List<Message>());
                     }
 
                     var message = new Message(_clientNumber, receiver, DateTime.UtcNow, messageRequest.Text);
 
                     _messages[receiver].Add(message);
                 }
-            }
-                
-            
         }
 
         private void StatusHandler(IRequest request)
