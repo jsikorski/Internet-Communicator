@@ -164,7 +164,7 @@ namespace Server
                 }
                 else if (request.ToString() == "Protocol.Statuses.StatusesRequest")
                 {
-                    StatusHandler(request);
+                    StatusHandler(request); 
                 }
                 else if (request.ToString() == "Protocol.Login.LogoutRequest")
                 {
