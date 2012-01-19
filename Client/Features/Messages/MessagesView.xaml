@@ -25,9 +25,9 @@
                             <Label HorizontalAlignment="Right"
                                    Content="{Binding Date}" />
                             <Label HorizontalAlignment="Right"
-                                   Content="Sender number:" />
+                                   Content="Sender:" />
                             <Label HorizontalAlignment="Right"
-                                   Content="{Binding SenderNumber}" />
+                                   Content="{Binding Sender}" />
                         </StackPanel>
 
                         <TextBlock Text="{Binding Content, Mode=OneWay}"
@@ -48,7 +48,7 @@
 
             <TextBox Grid.Column="0"
                      TextWrapping="Wrap"
-                     Text="{Binding MessageContent, Mode=TwoWay}" />
+                     Text="{Binding MessageContent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
             <StackPanel Grid.Column="1"
                         Margin="10">

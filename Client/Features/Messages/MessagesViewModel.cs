@@ -22,8 +22,9 @@ namespace Client.Features.Messages
         private readonly ICurrentContext _currentContext;
         private readonly IContainer _container;
 
-        public BindableCollection<MessageViewModel> Messages { get; set; }
         public int ConnectedContactNumber { get; private set; }
+
+        public BindableCollection<MessageViewModel> Messages { get; set; }
 
         private string _messageContent;
         public string MessageContent
@@ -32,8 +33,14 @@ namespace Client.Features.Messages
             set
             {
                 _messageContent = value;
+                NotifyOfPropertyChange(() => CanSendMessage);
                 NotifyOfPropertyChange(() => MessageContent);
             }
+        }
+
+        public bool CanSendMessage
+        {
+            get { return !string.IsNullOrEmpty(MessageContent); }
         }
 
         public MessagesViewModel(
