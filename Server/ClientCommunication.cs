@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
+using Common.Messages;
 using MySql.Data.MySqlClient;
 using Protocol;
 using Protocol.Login;
@@ -20,14 +21,16 @@ namespace Server
         private readonly NetworkStream _clientStream;
         private readonly IFormatter _formatter;
         private readonly Dictionary<int, NetworkStream> _activeConnections;
+        private Dictionary<int, List<Message>> _messages;
         private int _clientNumber = -1;
 
-        public ClientCommunication(TcpClient client, Dictionary<int, NetworkStream> connections)
+        public ClientCommunication(TcpClient client, Dictionary<int, NetworkStream> connections, Dictionary<int, List<Message>> messages)
         {
             _tcpClient = client;
             _clientStream = _tcpClient.GetStream();
             _activeConnections = connections;
             _formatter = new BinaryFormatter();
+            _messages = messages;
 
             Communication();
         }
@@ -140,6 +143,10 @@ namespace Server
                 {
                     MessageHandler(request);
                 }
+                else if (request.ToString() == "Protocol.Messages.MessagesRequest")
+                {
+                    MessagesHandler();
+                }
                 else if (request.ToString() == "Protocol.Statuses.StatusesRequest")
                 {
                     StatusHandler(request);
@@ -158,6 +165,15 @@ namespace Server
             }
         }
 
+        private void MessagesHandler()
+        {
+            var messages = _messages[_clientNumber];
+            _messages[_clientNumber] = null;
+
+            var response = new MessagesResponse(messages);
+            SendReponse(response);
+        }
+
         private void FileUploadHandler(IRequest request)
         {
             throw new NotImplementedException();
@@ -166,19 +182,38 @@ namespace Server
         private void MessageHandler(IRequest request)
         {
             var messageRequest = (MessageRequest)request;
-            var messageResponse = new MessageResponse
-            {
-//                ReceiversNumbers = messageRequest.ReceiversNumbers,
-//                Sender = messageRequest.Sender,
-//                Text = messageRequest.Text
-            };
+            SendReponse(new MessageResponse());
 
-
-            foreach (var receiver in messageRequest.ReceiversNumbers)
+            if (messageRequest.ReceiversNumbers.Count() == 1)
             {
-                var connection = _activeConnections[receiver];
-                SendReponse(messageResponse);
+                var receiver = messageRequest.ReceiversNumbers.First();
+                if(_messages[receiver] == null)
+                {
+                    _messages[receiver] = new List<Message>();
+                }
+
+                var message = new Message(_clientNumber, receiver, DateTime.UtcNow, messageRequest.Text);
+                
+                _messages[receiver].Add(message);
             }
+            else if (messageRequest.ReceiversNumbers.Count() > 1)
+            {
+                // tu będzie inaczej, bo obsługa konferencji wymaga od nas albo
+                // zmiany w message, albo innego typu message
+                foreach (var receiver in messageRequest.ReceiversNumbers)
+                {
+                    if (_messages[receiver] == null)
+                    {
+                        _messages[receiver] = new List<Message>();
+                    }
+
+                    var message = new Message(_clientNumber, receiver, DateTime.UtcNow, messageRequest.Text);
+
+                    _messages[receiver].Add(message);
+                }
+            }
+                
+            
         }
 
         private void StatusHandler(IRequest request)

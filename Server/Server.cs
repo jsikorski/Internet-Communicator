@@ -2,6 +2,7 @@
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
+using Common.Messages;
 using Protocol;
 
 namespace Server
@@ -11,11 +12,13 @@ namespace Server
         private readonly TcpListener _tcpListener;
         private readonly Thread _listenThread;
         private readonly Dictionary<int, NetworkStream> _activeConnections;
+        private readonly Dictionary<int, List<Message>> _messages;
 
         public Server()
         {
             _tcpListener = new TcpListener(IPAddress.Any, Ports.ServerListeningPort);
             _activeConnections = new Dictionary<int, NetworkStream>();
+            _messages = new Dictionary<int, List<Message>>();
             _listenThread = new Thread(new ThreadStart(ListenForClients));
             _listenThread.Start();
         }
@@ -38,7 +41,7 @@ namespace Server
 
         private void ClientCommunicationHandler(object client)
         {
-            new ClientCommunication((TcpClient)client, _activeConnections);
+            new ClientCommunication((TcpClient)client, _activeConnections, _messages);
         }
     }
 }
