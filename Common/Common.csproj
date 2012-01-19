@@ -47,6 +47,7 @@
     <Compile Include="Contacts\ContactStoredData.cs" />
     <Compile Include="Hash\IHashService.cs" />
     <Compile Include="Hash\BCryptHashService.cs" />
+    <Compile Include="Messages\Message.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

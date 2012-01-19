@@ -168,9 +168,9 @@ namespace Server
             var messageRequest = (MessageRequest)request;
             var messageResponse = new MessageResponse
             {
-                ReceiversNumbers = messageRequest.ReceiversNumbers,
-                Sender = messageRequest.Sender,
-                Text = messageRequest.Text
+//                ReceiversNumbers = messageRequest.ReceiversNumbers,
+//                Sender = messageRequest.Sender,
+//                Text = messageRequest.Text
             };
 
 
@@ -196,12 +196,12 @@ namespace Server
 
         private void LogRequest(IRequest request, EndPoint remoteEndPoint)
         {
-            Console.Out.WriteLine(request.ToString() + " from " + remoteEndPoint);
+            Console.Out.WriteLine(request + " from " + remoteEndPoint);
         }
 
         private void LogRequest(IRequest request, EndPoint remoteEndPoint, int clientNumber)
         {
-            Console.Out.WriteLine(request.ToString() + " from user " + clientNumber + " at " + remoteEndPoint);
+            Console.Out.WriteLine(request + " from user " + clientNumber + " at " + remoteEndPoint);
         }
 
         private void SendReponse(IResponse response)

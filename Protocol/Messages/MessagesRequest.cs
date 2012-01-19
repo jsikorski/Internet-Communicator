@@ -6,8 +6,7 @@ using System.Text;
 namespace Protocol.Messages
 {
     [Serializable]
-    public class MessageResponse : IResponse
+    public class MessagesRequest : IRequest
     {
-        
     }
 }

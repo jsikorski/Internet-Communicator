@@ -41,6 +41,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Messages\MessageResponse.cs" />
+    <Compile Include="Messages\MessagesRequest.cs" />
+    <Compile Include="Messages\MessagesResponse.cs" />
     <Compile Include="Register\RegisterRequest.cs" />
     <Compile Include="Register\RegisterResponse.cs" />
     <Compile Include="Connection\ConnectionRequest.cs" />
