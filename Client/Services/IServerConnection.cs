@@ -14,6 +14,7 @@ namespace Client.Services
         LoginResponse SendLoginRequest(IRequest loginRequest);
         RegisterResponse SendRegisterRequest(IRequest registerRequest);
         StatusesResponse SendStatusesRequest(IRequest statusesRequest);
+        MessageResponse SendMessageRequest(IRequest messageRequest);
         MessagesResponse SendMessagesRequest(IRequest messagesRequest);
         void Disconnect();
     }

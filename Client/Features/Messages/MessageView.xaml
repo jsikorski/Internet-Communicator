@@ -41,9 +41,11 @@
         </ListView>
 
         <TextBox Grid.Row="1"
-                 TextWrapping="Wrap" />
+                 TextWrapping="Wrap" 
+                 Text="{Binding MessageContent, Mode=OneWayToSource}"/>
 
         <Button Grid.Row="2"
-                Content="Send" />
+                Content="Send"
+                Name="SendMessage"/>
     </Grid>
 </Window>

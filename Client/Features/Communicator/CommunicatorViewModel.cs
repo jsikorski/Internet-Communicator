@@ -110,7 +110,7 @@ namespace Client.Features.Communicator
         public void Handle(MessagesFounded message)
         {
             ICommand command = _container.Resolve<ServiceNewMessages>(
-                new UniqueTypeParameter(message.Messages));
+                new NamedParameter("messages", message.Messages));
             CommandInvoker.Execute(command);
         }
 

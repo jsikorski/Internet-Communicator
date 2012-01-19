@@ -88,6 +88,7 @@
     <Compile Include="Commands\NewRegister.cs" />
     <Compile Include="Commands\Register.cs" />
     <Compile Include="Commands\RemoveContact.cs" />
+    <Compile Include="Commands\SendMessage.cs" />
     <Compile Include="Commands\ServiceNewMessages.cs" />
     <Compile Include="Commands\StartRequestingForContacts.cs" />
     <Compile Include="Commands\StartRequestingForMessages.cs" />

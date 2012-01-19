@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
+using System.Runtime.InteropServices.ComTypes;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using Common.Contacts;
@@ -38,31 +39,41 @@ namespace Client.Services
 
         public LoginResponse SendLoginRequest(IRequest loginRequest)
         {
-            SendRequest(loginRequest);
-            return (LoginResponse) GetResponse();
+            return (LoginResponse) SendAndGet(loginRequest);
         }
 
         public RegisterResponse SendRegisterRequest(IRequest registerRequest)
         {
-            SendRequest(registerRequest);
-            return (RegisterResponse) GetResponse();
+            return (RegisterResponse) SendAndGet(registerRequest);
         }
 
         public StatusesResponse SendStatusesRequest(IRequest statusesRequest)
         {
-            SendRequest(statusesRequest);
-            return (StatusesResponse) GetResponse();
+            return (StatusesResponse) SendAndGet(statusesRequest);
+        }
+
+        public MessageResponse SendMessageRequest(IRequest messageRequest)
+        {
+            return (MessageResponse) SendAndGet(messageRequest);
         }
 
         public MessagesResponse SendMessagesRequest(IRequest messagesRequest)
         {
-            SendRequest(messagesRequest);
-            return (MessagesResponse) GetResponse();
+            return (MessagesResponse)SendAndGet(messagesRequest);
         }
 
         public void Disconnect()
         {
             _server.Close();
+        }
+
+        private IResponse SendAndGet(IRequest request)
+        {
+            lock (_serverStream)
+            {
+                SendRequest(request);
+                return GetResponse();
+            }
         }
 
         private void SendRequest(IRequest request)
@@ -72,7 +83,7 @@ namespace Client.Services
 
         private IResponse GetResponse()
         {
-            var response = (IResponse) _formatter.Deserialize(_serverStream);
+            var response = (IResponse)_formatter.Deserialize(_serverStream);
             return response;
         }
     }
