@@ -26,20 +26,20 @@
                 <ribbon:RibbonGroup Header="Sending">
                     <ribbon:RibbonButton Name="NewMessagesWindow"
                                          Label="Message"
-                                         LargeImageSource="../../Images/send_message_icon.png" />
+                                         LargeImageSource="/Images/send_message_icon.png" />
                     <ribbon:RibbonButton Name="UploadFile"
                                          Label="File"
-                                         LargeImageSource="../../Images/send_file_icon.png" />
+                                         LargeImageSource="/Images/send_file_icon.png" />
                 </ribbon:RibbonGroup>
             </ribbon:RibbonTab>
             <ribbon:RibbonTab Header="Contacts">
                 <ribbon:RibbonGroup Header="Contacts list">
                     <ribbon:RibbonButton Name="NewContact"
                                          Label="Add"
-                                         LargeImageSource="../../Images/add_contact_icon.png" />
+                                         LargeImageSource="/Images/add_contact_icon.png" />
                     <ribbon:RibbonButton Name="RemoveContact"
                                          Label="Remove"
-                                         LargeImageSource="../../Images/remove_contact_icon.png" />
+                                         LargeImageSource="/Images/remove_contact_icon.png" />
                 </ribbon:RibbonGroup>
             </ribbon:RibbonTab>
         </ribbon:Ribbon>

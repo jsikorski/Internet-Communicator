@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Windows;
 using Autofac;
+using Caliburn.Micro;
+using Client.Messages;
 using Client.Utils;
 using Common.Files;
 
@@ -9,14 +11,14 @@ namespace Client.Commands.Files
     public class ServiceNewFiles : ICommand
     {
         private readonly IEnumerable<File> _files;
-        private readonly IContainer _container;
+        private readonly IEventAggregator _eventAggregator;
 
         public ServiceNewFiles(
-            IEnumerable<File> files,
-            IContainer container)
+            IEnumerable<File> files, 
+            IEventAggregator eventAggregator)
         {
             _files = files;
-            _container = container;
+            _eventAggregator = eventAggregator;
         }
 
         public void Execute()
@@ -30,8 +32,7 @@ namespace Client.Commands.Files
                     continue;
                 }
 
-                //ICommand command = _container.Resolve<DownloadFile>(new UniqueTypeParameter(file));
-                
+                _eventAggregator.Publish(new FileDownloadAccepted(file));
             }
         }
     }

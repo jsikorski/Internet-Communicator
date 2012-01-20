@@ -1,0 +1,12 @@
+﻿<Window x:Class="Client.Features.Files.DownloadFileView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:extToolkit="http://schemas.microsoft.com/winfx/2006/xaml/presentation/toolkit/extended"
+        Title="DownloadFileView"
+        Style="{StaticResource SmallWindowStyle}">
+    <extToolkit:BusyIndicator IsBusy="{Binding IsBusy}"
+                              BusyContent="Downloading file... Please wait.">
+        <Grid Height="100">
+        </Grid>
+    </extToolkit:BusyIndicator>
+</Window>

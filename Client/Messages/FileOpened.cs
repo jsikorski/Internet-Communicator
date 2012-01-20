@@ -2,17 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Client.Features.Files;
 using Common.Files;
 
 namespace Client.Messages
 {
     public class FileOpened
     {
-        public File File { get; private set; }
+        public FileBasicInfo FileInfo { get; private set; }
 
-        public FileOpened(File file)
+        public FileOpened(FileBasicInfo fileInfo)
         {
-            File = file;
+            FileInfo = fileInfo;
         }
     }
 }

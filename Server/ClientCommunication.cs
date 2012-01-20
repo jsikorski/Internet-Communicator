@@ -184,8 +184,10 @@ namespace Server
         {
             var files = _files[_clientNumber];
             _files[_clientNumber] = new List<File>();
-            var response = new FilesDownloadResponse(files);
-            SendReponse(response);
+            
+            // MODIFIED ////////////////////////////////////
+            //var response = new FilesDownloadResponse(files);
+            //SendReponse(response);
         }
 
         private void MessagesHandler()

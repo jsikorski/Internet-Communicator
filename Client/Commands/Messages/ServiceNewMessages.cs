@@ -13,16 +13,16 @@ namespace Client.Commands.Messages
     {
         private readonly IEnumerable<Message> _messages;
         private readonly ICurrentContext _currentContext;
-        private readonly Func<int, NewMessagesWindow> _messagesWindowFactory;
+        private readonly Func<int, NewMessagesWindow> _newMessagesWindowFactory;
 
         public ServiceNewMessages(
             IEnumerable<Message> messages,
             ICurrentContext currentContext,
-            Func<int, NewMessagesWindow> messagesWindowFactory)
+            Func<int, NewMessagesWindow> newMessagesWindowFactory)
         {
             _messages = messages;
             _currentContext = currentContext;
-            _messagesWindowFactory = messagesWindowFactory;
+            _newMessagesWindowFactory = newMessagesWindowFactory;
         }
 
         public void Execute()
@@ -33,7 +33,7 @@ namespace Client.Commands.Messages
 
                 if (!_currentContext.MessageWindows.ContainsKey(senderNumber))
                 {
-                    ICommand command = _messagesWindowFactory(senderNumber);
+                    ICommand command = _newMessagesWindowFactory(senderNumber);
                     CommandInvoker.Execute(command);
                 }
 

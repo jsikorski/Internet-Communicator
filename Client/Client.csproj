@@ -87,7 +87,7 @@
     <Compile Include="Commands\Contacts\NewContact.cs" />
     <Compile Include="Commands\Messages\NewMessagesWindow.cs" />
     <Compile Include="Commands\User\NewRegister.cs" />
-    <Compile Include="Commands\OpenFile.cs" />
+    <Compile Include="Commands\Files\OpenFile.cs" />
     <Compile Include="Commands\User\Register.cs" />
     <Compile Include="Commands\Contacts\RemoveContact.cs" />
     <Compile Include="Commands\Messages\SendMessage.cs" />
@@ -112,6 +112,11 @@
     <Compile Include="Features\Contacts\NewContactView.xaml.cs">
       <DependentUpon>NewContactView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Features\Files\FileBasicInfo.cs" />
+    <Compile Include="Features\Files\UploadFileView.xaml.cs">
+      <DependentUpon>UploadFileView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Features\Files\UploadFileViewModel.cs" />
     <Compile Include="Features\Login\LoginInformations.cs" />
     <Compile Include="Features\Login\LoginView.xaml.cs">
       <DependentUpon>LoginView.xaml</DependentUpon>
@@ -136,7 +141,7 @@
     <Compile Include="Messages\ContactRemoved.cs" />
     <Compile Include="Messages\ContactsDataReceived.cs" />
     <Compile Include="Messages\ContactsLoaded.cs" />
-    <Compile Include="Messages\FileFounded.cs" />
+    <Compile Include="Messages\FilesFounded.cs" />
     <Compile Include="Messages\FileOpened.cs" />
     <Compile Include="Messages\Logged.cs" />
     <Compile Include="Messages\MessagesFounded.cs" />
@@ -164,6 +169,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Features\Contacts\NewContactView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Features\Files\UploadFileView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -33,7 +33,7 @@ namespace Client.Commands.Messages
             if (!_currentContext.MessageWindows.ContainsKey(_connectedContactNumber))
             {
                 _currentContext.MessageWindows.Add(_connectedContactNumber, messagesViewModel);
-                _windowManager.ShowWindow(messagesViewModel);
+                Caliburn.Micro.Execute.OnUIThread(() => _windowManager.ShowWindow(messagesViewModel));
             }
         }
     }

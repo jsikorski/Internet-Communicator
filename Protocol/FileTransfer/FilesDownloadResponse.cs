@@ -9,11 +9,11 @@ namespace Protocol.FileTransfer
     [Serializable]
     public class FilesDownloadResponse : IResponse
     {
-        public IEnumerable<File> Files { get; private set; }
+        public IEnumerable<FileHeader> FileHeaders { get; private set; }
 
-        public FilesDownloadResponse(IEnumerable<File> files)
+        public FilesDownloadResponse(IEnumerable<FileHeader> files)
         {
-            Files = files;
+            FileHeaders = files;
         }
     }
 }

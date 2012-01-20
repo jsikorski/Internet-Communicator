@@ -2,8 +2,10 @@
 using System.Linq;
 using System.Timers;
 using Autofac;
+using Caliburn.Micro;
 using Client.Context;
 using Client.Insrastructure;
+using Client.Messages;
 using Client.Services;
 using Common.Files;
 using Protocol.FileTransfer;
@@ -14,16 +16,16 @@ namespace Client.Commands.Files
     {
         private readonly IServerConnection _serverConnection;
         private readonly ICurrentContext _currentContext;
-        private readonly IContainer _container;
+        private readonly IEventAggregator _eventAggregator;
 
         public StartRequestingForFiles(
             IServerConnection serverConnection,
             ICurrentContext currentContext,
-            IContainer container)
+            IEventAggregator eventAggregator)
         {
             _serverConnection = serverConnection;
             _currentContext = currentContext;
-            _container = container;
+            _eventAggregator = eventAggregator;
         }
 
         public void Execute()
@@ -39,11 +41,9 @@ namespace Client.Commands.Files
         {
             FilesDownloadResponse response = _serverConnection.SendFileDownloadRequest(new FilesDownloadRequest());
 
-            if (response.Files.Any())
+            if (response.FileHeaders.Any())
             {
-                ICommand command = _container.Resolve<ServiceNewFiles>(
-                    new TypedParameter(typeof(IEnumerable<File>), response.Files));
-                CommandInvoker.Invoke(command);
+                _eventAggregator.Publish(new FilesFounded(response.FileHeaders));
             }
         }
     }

@@ -1,27 +1,30 @@
-﻿using Client.Services;
+﻿using Client.Features.Files;
+using Client.Services;
+using Protocol.FileTransfer;
 
 namespace Client.Commands.Files
 {
     public class UploadFile : ICommand
     {
-        private readonly int _receiverNumber;
         private readonly IServerConnection _serverConnection;
+        private readonly int _receiverNumber;
+        private readonly FileBasicInfo _fileBasicInfo;
 
         public UploadFile(
-            int receiverNumber, 
-            IServerConnection serverConnection)
+            IServerConnection serverConnection,
+            int receiverNumber,
+            FileBasicInfo fileBasicInfo)
         {
-            _receiverNumber = receiverNumber;
             _serverConnection = serverConnection;
+            _receiverNumber = receiverNumber;
+            _fileBasicInfo = fileBasicInfo;
         }
 
         public void Execute()
         {
-            
-
-            //byte[] fileBytes = File.ReadAllBytes(openFileDialog.FileName);
-            //var request = new FileUploadRequest(openFileDialog.FileName, fileBytes, _receiverNumber);
-            //_serverConnection.SendFileUploadRequest(request);
+            var request = new FileUploadRequest(_fileBasicInfo.FileName, 
+                _fileBasicInfo.FileBytes, _receiverNumber);
+            _serverConnection.SendFileUploadRequest(request);
         }
     }
 }

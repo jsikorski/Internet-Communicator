@@ -7,6 +7,7 @@ using Client.Commands.Contacts;
 using Client.Commands.Files;
 using Client.Commands.Messages;
 using Client.Features.Contacts;
+using Client.Features.Files;
 using Client.Features.Messages;
 using Client.Insrastructure;
 using Client.Messages;
@@ -14,17 +15,24 @@ using Client.Services;
 using Client.Utils;
 using Common.Contacts;
 using System.Linq;
+using Common.Files;
+using Protocol.FileTransfer;
 using Message = Common.Messages.Message;
 
 namespace Client.Features.Communicator
 {
     public class CommunicatorViewModel : Screen, IHandle<ContactAdded>,
-        IHandle<ContactsDataReceived>, IHandle<ContactsLoaded>, IHandle<MessagesFounded>
+        IHandle<ContactsDataReceived>, IHandle<ContactsLoaded>, IHandle<MessagesFounded>,
+        IHandle<FileOpened>, IHandle<FilesFounded>, IHandle<FileDownloadAccepted>
     {
         private readonly IEventAggregator _eventAggregator;
         private readonly Func<int, NewMessagesWindow> _newMessagesWindowFactory;
         private readonly Func<int, RemoveContact> _removeContactFactory;
         private readonly Func<IEnumerable<Message>, ServiceNewMessages> _serviceNewMessagesFactory;
+        private readonly Func<int, FileBasicInfo, UploadFile> _uploadFileFactory;
+        private readonly Func<IEnumerable<FileHeader>, ServiceNewFiles> _serviceNewFilesFactory;
+        private readonly Func<File, DownloadFile> _downloadFileFactory;
+        private readonly IWindowManager _windowManager;
         private readonly IContainer _container;
 
         public BindableCollection<ContactViewModel> Contacts { get; set; }
@@ -37,6 +45,7 @@ namespace Client.Features.Communicator
                 _selectedContact = value;
                 NotifyOfPropertyChange(() => CanRemoveContact);
                 NotifyOfPropertyChange(() => CanNewMessagesWindow);
+                NotifyOfPropertyChange(() => CanUploadFile);
                 NotifyOfPropertyChange(() => SelectedContact);
             }
         }
@@ -52,11 +61,20 @@ namespace Client.Features.Communicator
             get { return SelectedContact != null; }
         }
 
+        public bool CanUploadFile
+        {
+            get { return SelectedContact != null; }
+        }
+
         public CommunicatorViewModel(
             IEventAggregator eventAggregator,
-            Func<int, NewMessagesWindow> newMessagesWindowFactory, 
-            Func<int, RemoveContact> removeContactFactory, 
-            Func<IEnumerable<Message>, ServiceNewMessages> serviceNewMessagesFactory, 
+            Func<int, NewMessagesWindow> newMessagesWindowFactory,
+            Func<int, RemoveContact> removeContactFactory,
+            Func<IEnumerable<Message>, ServiceNewMessages> serviceNewMessagesFactory,
+            Func<int, FileBasicInfo, UploadFile> uploadFileFactory,
+            Func<IEnumerable<FileHeader>, ServiceNewFiles> serviceNewFilesFactory,
+            Func<File, DownloadFile> downloadFileFactory,
+            IWindowManager windowManager,
             IContainer container)
         {
             base.DisplayName = "Internet communicator";
@@ -65,11 +83,15 @@ namespace Client.Features.Communicator
             _newMessagesWindowFactory = newMessagesWindowFactory;
             _removeContactFactory = removeContactFactory;
             _serviceNewMessagesFactory = serviceNewMessagesFactory;
+            _uploadFileFactory = uploadFileFactory;
+            _serviceNewFilesFactory = serviceNewFilesFactory;
+            _downloadFileFactory = downloadFileFactory;
+            _windowManager = windowManager;
             _container = container;
 
             Contacts = new BindableCollection<ContactViewModel>();
             _eventAggregator.Subscribe(this);
-            
+
         }
 
         protected override void OnActivate()
@@ -97,9 +119,7 @@ namespace Client.Features.Communicator
 
         public void UploadFile()
         {
-            //ICommand command = _container.Resolve<UploadFile>(
-            //    new UniqueTypeParameter(SelectedContact.Number));
-            //CommandInvoker.Execute(command);
+            ExecutePureCommand<OpenFile>();
         }
 
         public void NewContact()
@@ -133,10 +153,34 @@ namespace Client.Features.Communicator
             }
         }
 
+        public void Handle(FileOpened message)
+        {
+            var uploadFileViewModel = _container.Resolve<UploadFileViewModel>();
+            _windowManager.ShowWindow(uploadFileViewModel);
+
+            ICommand command = _uploadFileFactory(SelectedContact.Number, message.FileInfo);
+            CommandInvoker.InvokeBusy(command, uploadFileViewModel, e => uploadFileViewModel.TryClose());
+        }
+
         public void Handle(MessagesFounded message)
         {
             ICommand command = _serviceNewMessagesFactory(message.Messages);
-            CommandInvoker.Execute(command);
+            CommandInvoker.Invoke(command);
+        }
+
+        public void Handle(FilesFounded message)
+        {
+            ICommand command = _serviceNewFilesFactory(message.Files);
+            CommandInvoker.Invoke(command);
+        }
+
+        public void Handle(FileDownloadAccepted message)
+        {
+            var downloadFileViewModel = _container.Resolve<DownloadFileViewModel>();
+            _windowManager.ShowWindow(downloadFileViewModel);
+
+            ICommand command = _downloadFileFactory(message.File);
+            CommandInvoker.InvokeBusy(command, downloadFileViewModel, e => downloadFileViewModel.TryClose());
         }
 
         private void ExecutePureCommand<T>() where T : ICommand
