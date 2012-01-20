@@ -5,7 +5,8 @@ using System.Text;
 
 namespace Client.Messages
 {
-    class FileFounded
+    public class FileFounded
     {
+        
     }
 }

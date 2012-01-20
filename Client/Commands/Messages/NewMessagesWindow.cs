@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Autofac;
+﻿using Autofac;
 using Caliburn.Micro;
 using Client.Context;
 using Client.Features.Messages;
 using Client.Utils;
 
-namespace Client.Commands
+namespace Client.Commands.Messages
 {
     public class NewMessagesWindow : ICommand
     {

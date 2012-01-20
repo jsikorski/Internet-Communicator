@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Client.Context;
+﻿using Client.Context;
 
-namespace Client.Commands
+namespace Client.Commands.Files
 {
     public class StopRequestingForFiles : ICommand
     {

@@ -1,8 +1,7 @@
 ﻿using Caliburn.Micro;
 using Client.Features.Register;
-using Client.Features.Registration;
 
-namespace Client.Commands
+namespace Client.Commands.User
 {
     public class NewRegister : ICommand
     {

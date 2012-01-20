@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using System.Timers;
 using Caliburn.Micro;
 using Client.Context;
@@ -9,7 +6,7 @@ using Client.Messages;
 using Client.Services;
 using Protocol.Messages;
 
-namespace Client.Commands
+namespace Client.Commands.Messages
 {
     public class StartRequestingForMessages : ICommand
     {

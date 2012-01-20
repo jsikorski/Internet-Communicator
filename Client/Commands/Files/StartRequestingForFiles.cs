@@ -1,18 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Timers;
 using Autofac;
 using Client.Context;
 using Client.Insrastructure;
-using Client.Messages;
 using Client.Services;
-using Client.Utils;
 using Common.Files;
 using Protocol.FileTransfer;
 
-namespace Client.Commands
+namespace Client.Commands.Files
 {
     public class StartRequestingForFiles : ICommand
     {

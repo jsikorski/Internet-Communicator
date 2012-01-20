@@ -1,6 +1,8 @@
-﻿using Autofac;
+﻿using System;
+using Autofac;
 using Caliburn.Micro;
 using Client.Commands;
+using Client.Commands.Connection;
 using Client.Features.Login;
 using Client.Features.Messages;
 using Client.Insrastructure;
@@ -15,8 +17,8 @@ namespace Client
         private readonly IValidator _addressValidator;
         private readonly IWindowManager _windowManager;
         private readonly LoginViewModel _loginViewModel;
-        private readonly IContainer _container;
         private readonly IEventAggregator _eventAggregator;
+        private readonly Func<string, Connect> _connectFactory;
 
         private string _serverAddress;
         public string ServerAddress
@@ -52,16 +54,16 @@ namespace Client
             IValidator addressValidator,
             IWindowManager windowManager,
             LoginViewModel loginViewModel,
-            IContainer container, 
-            IEventAggregator eventAggregator)
+            IEventAggregator eventAggregator,
+            Func<string, Connect> connectFactory)
         {
             base.DisplayName = "Internet communicator";
 
             _addressValidator = addressValidator;
             _windowManager = windowManager;
             _loginViewModel = loginViewModel;
-            _container = container;
             _eventAggregator = eventAggregator;
+            _connectFactory = connectFactory;
 
             #if DEBUG
                 ServerAddress = "127.0.0.1";
@@ -71,7 +73,7 @@ namespace Client
         public void Connect()
         {
             _eventAggregator.Subscribe(this);
-            ICommand connect = _container.Resolve<Connect>(new UniqueTypeParameter(ServerAddress));
+            ICommand connect = _connectFactory(ServerAddress);
             CommandInvoker.InvokeBusy(connect, this);
         }
 

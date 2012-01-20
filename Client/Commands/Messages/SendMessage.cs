@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Client.Services;
+﻿using Client.Services;
 using Protocol.Messages;
 
-namespace Client.Commands
+namespace Client.Commands.Messages
 {
     public class SendMessage : ICommand
     {

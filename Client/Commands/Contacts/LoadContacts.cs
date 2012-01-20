@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
 using Caliburn.Micro;
 using Client.Messages;
 using Client.Services;
 using Common.Contacts;
 
-namespace Client.Commands
+namespace Client.Commands.Contacts
 {
     public class LoadContacts : ICommand
     {

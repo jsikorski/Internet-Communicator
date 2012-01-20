@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using Autofac;
 using Client.Context;
 using Client.Features.Messages;
@@ -9,7 +6,7 @@ using Client.Insrastructure;
 using Client.Utils;
 using Common.Messages;
 
-namespace Client.Commands
+namespace Client.Commands.Messages
 {
     public class ServiceNewMessages : ICommand
     {

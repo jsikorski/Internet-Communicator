@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows;
 using Caliburn.Micro;
 using Client.Context;
 using Client.Features.Login;
@@ -11,7 +7,7 @@ using Client.Services;
 using Common.Hash;
 using Protocol.Login;
 
-namespace Client.Commands
+namespace Client.Commands.User
 {
     public class Login : ICommand
     {

@@ -3,6 +3,7 @@ using System.Windows;
 using Autofac;
 using Caliburn.Micro;
 using Client.Commands;
+using Client.Commands.User;
 using Client.Features.Communicator;
 using Client.Insrastructure;
 using Client.Messages;
@@ -83,7 +84,7 @@ namespace Client.Features.Login
                                             Password = Password
                                         };
 
-            ICommand login = _container.Resolve<Commands.Login>(new UniqueTypeParameter(loginInformations));
+            ICommand login = _container.Resolve<Commands.User.Login>(new UniqueTypeParameter(loginInformations));
             CommandInvoker.InvokeBusy(login, this);
         }
 

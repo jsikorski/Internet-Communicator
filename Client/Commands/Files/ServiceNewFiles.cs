@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Windows;
 using Autofac;
 using Client.Utils;
 using Common.Files;
 
-namespace Client.Commands
+namespace Client.Commands.Files
 {
     public class ServiceNewFiles : ICommand
     {

@@ -7,6 +7,7 @@ using System.Text;
 using Autofac;
 using Caliburn.Micro;
 using Client.Commands;
+using Client.Commands.Messages;
 using Client.Context;
 using Client.Features.Login;
 using Client.Insrastructure;

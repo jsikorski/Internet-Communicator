@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows;
 using Caliburn.Micro;
 using Client.Features.Registration;
 using Client.Messages;
@@ -10,7 +6,7 @@ using Client.Services;
 using Common.Hash;
 using Protocol.Register;
 
-namespace Client.Commands
+namespace Client.Commands.User
 {
     public class Register : ICommand
     {

@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
 using Client.Features.Contacts;
 
-namespace Client.Commands
+namespace Client.Commands.Contacts
 {
     public class NewContact : ICommand
     {

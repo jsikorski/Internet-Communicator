@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Common.Files;
+﻿using Common.Files;
 using Microsoft.Win32;
 
-namespace Client.Commands
+namespace Client.Commands.Files
 {
     public class DownloadFile : ICommand
     {

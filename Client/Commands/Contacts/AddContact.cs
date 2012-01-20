@@ -1,17 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Windows;
 using Caliburn.Micro;
 using Client.Messages;
 using Client.Services;
 using Common.Contacts;
 using Protocol.Statuses;
 
-namespace Client.Commands
+namespace Client.Commands.Contacts
 {
-    public class AddContact : ICommand
+    public abstract class AddContact : ICommand
     {
         private readonly IEventAggregator _eventAggregator;
         private readonly IContactsProvider _contactsProvider;

@@ -74,7 +74,7 @@ namespace Client.Features.Register
         {
             _eventAggregator.Subscribe(this);
             var registerInfomations = new RegisterInformations(Password, PasswordConfirmation);
-            ICommand register = _container.Resolve<Commands.Register>(new UniqueTypeParameter(registerInfomations));
+            ICommand register = _container.Resolve<Commands.User.Register>(new UniqueTypeParameter(registerInfomations));
             CommandInvoker.InvokeBusy(register, this);
         }
 

@@ -5,6 +5,7 @@ using System.Text;
 using Autofac;
 using Caliburn.Micro;
 using Client.Commands;
+using Client.Commands.Contacts;
 using Client.Insrastructure;
 using Client.Messages;
 using Client.Utils;

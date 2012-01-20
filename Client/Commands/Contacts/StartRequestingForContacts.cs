@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
+﻿using System.Collections.Generic;
 using System.Timers;
 using Caliburn.Micro;
 using Client.Context;
@@ -11,7 +7,7 @@ using Client.Services;
 using Common.Contacts;
 using Timer = System.Timers.Timer;
 
-namespace Client.Commands
+namespace Client.Commands.Contacts
 {
     public class StartRequestingForContacts : ICommand
     {
