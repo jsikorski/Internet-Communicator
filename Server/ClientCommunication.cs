@@ -14,7 +14,7 @@ using Protocol.Login;
 using Protocol.Messages;
 using Protocol.Register;
 using Protocol.Statuses;
-
+ 
 namespace Server
 {
     class ClientCommunication
