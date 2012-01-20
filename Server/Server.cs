@@ -14,14 +14,14 @@ namespace Server
         private readonly Thread _listenThread;
         private readonly Dictionary<int, NetworkStream> _activeConnections;
         private readonly Dictionary<int, List<Message>> _messages;
-        private readonly Dictionary<int, List<File>> _files;
+        private readonly Dictionary<int, List<GuidedFile>> _files;
 
         public Server()
         {
             _tcpListener = new TcpListener(IPAddress.Any, Ports.ServerListeningPort);
             _activeConnections = new Dictionary<int, NetworkStream>();
             _messages = new Dictionary<int, List<Message>>();
-            _files = new Dictionary<int, List<File>>();
+            _files = new Dictionary<int, List<GuidedFile>>();
             _listenThread = new Thread(new ThreadStart(ListenForClients));
             _listenThread.Start();
         }

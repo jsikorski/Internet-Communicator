@@ -10,9 +10,9 @@ namespace Common.Files
     {
         public Guid Guid { get; private set; }
         public string FileName { get; private set; }
-        public string Sender { get; private set; }
+        public int Sender { get; private set; }
 
-        public FileHeader(Guid guid, string fileName, string sender)
+        public FileHeader(Guid guid, string fileName, int sender)
         {
             Guid = guid;
             Sender = sender;

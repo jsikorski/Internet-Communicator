@@ -24,10 +24,10 @@ namespace Server
         private readonly IFormatter _formatter;
         private readonly Dictionary<int, NetworkStream> _activeConnections;
         private Dictionary<int, List<Message>> _messages;
-        private Dictionary<int, List<File>> _files;
+        private Dictionary<int, List<GuidedFile>> _files;
         private int _clientNumber = -1;
 
-        public ClientCommunication(TcpClient client, Dictionary<int, NetworkStream> connections, Dictionary<int, List<Message>> messages, Dictionary<int, List<File>> files)
+        public ClientCommunication(TcpClient client, Dictionary<int, NetworkStream> connections, Dictionary<int, List<Message>> messages, Dictionary<int, List<GuidedFile>> files)
         {
             _tcpClient = client;
             _clientStream = _tcpClient.GetStream();
@@ -105,7 +105,7 @@ namespace Server
                             if (!_messages.ContainsKey(_clientNumber))
                                 _messages.Add(_clientNumber, new List<Message>());
                             if (!_files.ContainsKey(_clientNumber))
-                                _files.Add(_clientNumber, new List<File>());
+                                _files.Add(_clientNumber, new List<GuidedFile>());
                             
                             SendReponse(new LoginResponse() { WasSuccessfull = true });
                             
@@ -150,9 +150,13 @@ namespace Server
                 {
                     FileUploadHandler(request);
                 }
+                else if (request.ToString() == "Protocol.FileTransfer.FileDownloadRequest")
+                {
+                    FileDownloadHandler(request);
+                }
                 else if (request.ToString() == "Protocol.FileTransfer.FilesDownloadRequest")
                 {
-                    FileDownloadHandler();
+                    FilesDownloadHandler();
                 }
                 else if (request.ToString() == "Protocol.Messages.MessageRequest")
                 {
@@ -180,14 +184,36 @@ namespace Server
             }
         }
 
-        private void FileDownloadHandler()
+        private void FileDownloadHandler(IRequest request)
         {
-            var files = _files[_clientNumber];
-            _files[_clientNumber] = new List<File>();
+            var fileDownloadRequest = (FileDownloadRequest) request;
+            File fileToDownload = null;
+
+            foreach (var file in _files[_clientNumber])
+            {
+                if (file.Guid == fileDownloadRequest.FileGuid)
+                {
+                    fileToDownload = file.File;
+                    _files[_clientNumber].Remove(file);
+                }
+                break;
+            }
+
+            var response = new FileDownloadResponse(fileToDownload);
+            SendReponse(response);
+        }
+
+        private void FilesDownloadHandler()
+        {
+            var fileHeaders = new List<FileHeader>();
+
+            foreach (var file in _files[_clientNumber])
+            {
+                fileHeaders.Add(new FileHeader(file.Guid, file.File.OriginalName, file.File.SenderNumber));
+            }
             
-            // MODIFIED ////////////////////////////////////
-            //var response = new FilesDownloadResponse(files);
-            //SendReponse(response);
+            var response = new FilesDownloadResponse(fileHeaders);
+            SendReponse(response);
         }
 
         private void MessagesHandler()
@@ -205,10 +231,10 @@ namespace Server
             
             if (!_files.ContainsKey(uploadRequest.ReceiverNumber))
             {
-                _files.Add(uploadRequest.ReceiverNumber, new List<File>());
+                _files.Add(uploadRequest.ReceiverNumber, new List<GuidedFile>());
             }
 
-            var file = new File(uploadRequest.OriginalName, uploadRequest.FileBytes, _clientNumber);
+            var file = new GuidedFile(new File(uploadRequest.OriginalName, uploadRequest.FileBytes, _clientNumber), Guid.NewGuid());
             _files[uploadRequest.ReceiverNumber].Add(file);
         }
 
