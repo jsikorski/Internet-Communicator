@@ -25,10 +25,12 @@ namespace Server
         private readonly Dictionary<int, NetworkStream> _activeConnections;
         private Dictionary<int, List<Message>> _messages;
         private Dictionary<int, List<GuidedFile>> _files;
+        private List<GuidedFile> _filesToDownload;
         private int _clientNumber = -1;
 
         public ClientCommunication(TcpClient client, Dictionary<int, NetworkStream> connections, Dictionary<int, List<Message>> messages, Dictionary<int, List<GuidedFile>> files)
         {
+            _filesToDownload = new List<GuidedFile>();
             _tcpClient = client;
             _clientStream = _tcpClient.GetStream();
             _activeConnections = connections;
@@ -189,12 +191,12 @@ namespace Server
             var fileDownloadRequest = (FileDownloadRequest) request;
             File fileToDownload = null;
 
-            foreach (var file in _files[_clientNumber])
+            foreach (var file in _filesToDownload)
             {
                 if (file.Guid == fileDownloadRequest.FileGuid)
                 {
                     fileToDownload = file.File;
-                    _files[_clientNumber].Remove(file);
+                    _filesToDownload.Remove(file);
                 }
                 break;
             }
@@ -210,6 +212,8 @@ namespace Server
             foreach (var file in _files[_clientNumber])
             {
                 fileHeaders.Add(new FileHeader(file.Guid, file.File.OriginalName, file.File.SenderNumber));
+                _files[_clientNumber].Remove(file);
+                _filesToDownload.Add(file);
             }
             
             var response = new FilesDownloadResponse(fileHeaders);
