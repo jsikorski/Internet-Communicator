@@ -112,6 +112,10 @@
     <Compile Include="Features\Contacts\NewContactView.xaml.cs">
       <DependentUpon>NewContactView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Features\Files\DownloadFileView.xaml.cs">
+      <DependentUpon>DownloadFileView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Features\Files\DownloadFileViewModel.cs" />
     <Compile Include="Features\Files\FileBasicInfo.cs" />
     <Compile Include="Features\Files\UploadFileView.xaml.cs">
       <DependentUpon>UploadFileView.xaml</DependentUpon>
@@ -141,6 +145,7 @@
     <Compile Include="Messages\ContactRemoved.cs" />
     <Compile Include="Messages\ContactsDataReceived.cs" />
     <Compile Include="Messages\ContactsLoaded.cs" />
+    <Compile Include="Messages\FileDownloadAccepted.cs" />
     <Compile Include="Messages\FilesFounded.cs" />
     <Compile Include="Messages\FileOpened.cs" />
     <Compile Include="Messages\Logged.cs" />
@@ -169,6 +174,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Features\Contacts\NewContactView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Features\Files\DownloadFileView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

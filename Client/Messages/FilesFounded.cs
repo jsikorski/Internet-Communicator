@@ -8,11 +8,11 @@ namespace Client.Messages
 {
     public class FilesFounded
     {
-        public IEnumerable<FileHeader> Files { get; private set; }
+        public IEnumerable<FileHeader> FilesHeaders { get; private set; }
 
         public FilesFounded(IEnumerable<FileHeader> files)
         {
-            Files = files;
+            FilesHeaders = files;
         }
     }
 }

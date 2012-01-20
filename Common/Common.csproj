@@ -46,6 +46,7 @@
     <Compile Include="Contacts\Contact.cs" />
     <Compile Include="Contacts\ContactStoredData.cs" />
     <Compile Include="Files\File.cs" />
+    <Compile Include="Files\FileHeader.cs" />
     <Compile Include="Hash\IHashService.cs" />
     <Compile Include="Hash\BCryptHashService.cs" />
     <Compile Include="Messages\Message.cs" />

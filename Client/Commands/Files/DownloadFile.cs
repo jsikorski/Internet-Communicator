@@ -7,14 +7,14 @@ namespace Client.Commands.Files
 {
     public class DownloadFile : ICommand
     {
-        private readonly File _file;
+        private readonly FileHeader _fileHeader;
         private readonly IServerConnection _serverConnection;
 
         public DownloadFile(
-            File file, 
+            FileHeader fileHeader, 
             IServerConnection serverConnection)
         {
-            _file = file;
+            _fileHeader = fileHeader;
             _serverConnection = serverConnection;
         }
 

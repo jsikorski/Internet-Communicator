@@ -8,11 +8,11 @@ namespace Client.Messages
 {
     public class FileDownloadAccepted
     {
-       public File File { get; private set; }
+       public FileHeader FileHeader { get; private set; }
 
-       public FileDownloadAccepted(File file)
+       public FileDownloadAccepted(FileHeader fileHeader)
        {
-           File = file;
+           FileHeader = fileHeader;
        }
     }
 }

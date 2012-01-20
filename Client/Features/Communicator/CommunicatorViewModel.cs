@@ -31,7 +31,7 @@ namespace Client.Features.Communicator
         private readonly Func<IEnumerable<Message>, ServiceNewMessages> _serviceNewMessagesFactory;
         private readonly Func<int, FileBasicInfo, UploadFile> _uploadFileFactory;
         private readonly Func<IEnumerable<FileHeader>, ServiceNewFiles> _serviceNewFilesFactory;
-        private readonly Func<File, DownloadFile> _downloadFileFactory;
+        private readonly Func<FileHeader, DownloadFile> _downloadFileFactory;
         private readonly IWindowManager _windowManager;
         private readonly IContainer _container;
 
@@ -73,7 +73,7 @@ namespace Client.Features.Communicator
             Func<IEnumerable<Message>, ServiceNewMessages> serviceNewMessagesFactory,
             Func<int, FileBasicInfo, UploadFile> uploadFileFactory,
             Func<IEnumerable<FileHeader>, ServiceNewFiles> serviceNewFilesFactory,
-            Func<File, DownloadFile> downloadFileFactory,
+            Func<FileHeader, DownloadFile> downloadFileFactory,
             IWindowManager windowManager,
             IContainer container)
         {
@@ -170,7 +170,7 @@ namespace Client.Features.Communicator
 
         public void Handle(FilesFounded message)
         {
-            ICommand command = _serviceNewFilesFactory(message.Files);
+            ICommand command = _serviceNewFilesFactory(message.FilesHeaders);
             CommandInvoker.Invoke(command);
         }
 
@@ -179,7 +179,7 @@ namespace Client.Features.Communicator
             var downloadFileViewModel = _container.Resolve<DownloadFileViewModel>();
             _windowManager.ShowWindow(downloadFileViewModel);
 
-            ICommand command = _downloadFileFactory(message.File);
+            ICommand command = _downloadFileFactory(message.FileHeader);
             CommandInvoker.InvokeBusy(command, downloadFileViewModel, e => downloadFileViewModel.TryClose());
         }
 

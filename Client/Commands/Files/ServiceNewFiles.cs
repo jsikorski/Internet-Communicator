@@ -10,29 +10,29 @@ namespace Client.Commands.Files
 {
     public class ServiceNewFiles : ICommand
     {
-        private readonly IEnumerable<File> _files;
+        private readonly IEnumerable<FileHeader> _filesHeaders;
         private readonly IEventAggregator _eventAggregator;
 
         public ServiceNewFiles(
-            IEnumerable<File> files, 
+            IEnumerable<FileHeader> filesHeaders, 
             IEventAggregator eventAggregator)
         {
-            _files = files;
+            _filesHeaders = filesHeaders;
             _eventAggregator = eventAggregator;
         }
 
         public void Execute()
         {
-            foreach (var file in _files)
+            foreach (var fileHeader in _filesHeaders)
             {
                 if (MessageBoxService.ShowQuestion(
                     string.Format("Do you want to download file {0} from user {1}?", 
-                    file.OriginalName, file.SenderNumber)) != MessageBoxResult.Yes)
+                    fileHeader.FileName, fileHeader.Sender)) != MessageBoxResult.Yes)
                 {
                     continue;
                 }
 
-                _eventAggregator.Publish(new FileDownloadAccepted(file));
+                _eventAggregator.Publish(new FileDownloadAccepted(fileHeader));
             }
         }
     }
