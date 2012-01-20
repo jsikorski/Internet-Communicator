@@ -68,9 +68,14 @@ namespace Client.Services
             return (FileUploadResponse)SendAndGet(uploadRequest);
         }
 
-        public FilesDownloadResponse SendFileDownloadRequest(IRequest downloadRequest)
+        public FilesDownloadResponse SendFilesDownloadRequest(IRequest filesDownloadRequest)
         {
-            return (FilesDownloadResponse)SendAndGet(downloadRequest);
+            return (FilesDownloadResponse)SendAndGet(filesDownloadRequest);
+        }
+
+        public FileDownloadResponse SendFileDownloadRequest(IRequest fileDownloadRequest)
+        {
+            return (FileDownloadResponse) SendAndGet(fileDownloadRequest);
         }
 
         public void Disconnect()

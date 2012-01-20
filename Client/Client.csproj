@@ -82,6 +82,7 @@
     <Compile Include="Commands\Connection\Connect.cs" />
     <Compile Include="Commands\Files\DownloadFile.cs" />
     <Compile Include="Commands\Contacts\LoadContacts.cs" />
+    <Compile Include="Commands\Files\SaveFile.cs" />
     <Compile Include="Commands\ICommand.cs" />
     <Compile Include="Commands\User\Login.cs" />
     <Compile Include="Commands\Contacts\NewContact.cs" />
@@ -146,6 +147,7 @@
     <Compile Include="Messages\ContactsDataReceived.cs" />
     <Compile Include="Messages\ContactsLoaded.cs" />
     <Compile Include="Messages\FileDownloadAccepted.cs" />
+    <Compile Include="Messages\FileDownloaded.cs" />
     <Compile Include="Messages\FilesFounded.cs" />
     <Compile Include="Messages\FileOpened.cs" />
     <Compile Include="Messages\Logged.cs" />

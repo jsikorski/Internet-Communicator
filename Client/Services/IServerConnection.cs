@@ -18,7 +18,8 @@ namespace Client.Services
         MessageResponse SendMessageRequest(IRequest messageRequest);
         MessagesResponse SendMessagesRequest(IRequest messagesRequest);
         FileUploadResponse SendFileUploadRequest(IRequest uploadRequest);
-        FilesDownloadResponse SendFileDownloadRequest(IRequest downloadRequest);
+        FilesDownloadResponse SendFilesDownloadRequest(IRequest filesDownloadRequest);
+        FileDownloadResponse SendFileDownloadRequest(IRequest fileDownloadRequest);
         void Disconnect();
     }
 }

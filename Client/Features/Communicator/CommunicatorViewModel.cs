@@ -23,7 +23,7 @@ namespace Client.Features.Communicator
 {
     public class CommunicatorViewModel : Screen, IHandle<ContactAdded>,
         IHandle<ContactsDataReceived>, IHandle<ContactsLoaded>, IHandle<MessagesFounded>,
-        IHandle<FileOpened>, IHandle<FilesFounded>, IHandle<FileDownloadAccepted>
+        IHandle<FileOpened>, IHandle<FilesFounded>, IHandle<FileDownloadAccepted>, IHandle<FileDownloaded>
     {
         private readonly IEventAggregator _eventAggregator;
         private readonly Func<int, NewMessagesWindow> _newMessagesWindowFactory;
@@ -32,6 +32,7 @@ namespace Client.Features.Communicator
         private readonly Func<int, FileBasicInfo, UploadFile> _uploadFileFactory;
         private readonly Func<IEnumerable<FileHeader>, ServiceNewFiles> _serviceNewFilesFactory;
         private readonly Func<FileHeader, DownloadFile> _downloadFileFactory;
+        private readonly Func<File, SaveFile> _saveFileFactory;
         private readonly IWindowManager _windowManager;
         private readonly IContainer _container;
 
@@ -74,6 +75,7 @@ namespace Client.Features.Communicator
             Func<int, FileBasicInfo, UploadFile> uploadFileFactory,
             Func<IEnumerable<FileHeader>, ServiceNewFiles> serviceNewFilesFactory,
             Func<FileHeader, DownloadFile> downloadFileFactory,
+            Func<File, SaveFile> saveFileFactory, 
             IWindowManager windowManager,
             IContainer container)
         {
@@ -86,6 +88,7 @@ namespace Client.Features.Communicator
             _uploadFileFactory = uploadFileFactory;
             _serviceNewFilesFactory = serviceNewFilesFactory;
             _downloadFileFactory = downloadFileFactory;
+            _saveFileFactory = saveFileFactory;
             _windowManager = windowManager;
             _container = container;
 
@@ -181,6 +184,12 @@ namespace Client.Features.Communicator
 
             ICommand command = _downloadFileFactory(message.FileHeader);
             CommandInvoker.InvokeBusy(command, downloadFileViewModel, e => downloadFileViewModel.TryClose());
+        }
+
+        public void Handle(FileDownloaded message)
+        {
+            ICommand command = _saveFileFactory(message.File);
+            CommandInvoker.Invoke(command);
         }
 
         private void ExecutePureCommand<T>() where T : ICommand

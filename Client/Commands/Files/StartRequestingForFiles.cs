@@ -39,7 +39,7 @@ namespace Client.Commands.Files
 
         private void UpdateDownloads(object sender, ElapsedEventArgs elapsedEventArgs)
         {
-            FilesDownloadResponse response = _serverConnection.SendFileDownloadRequest(new FilesDownloadRequest());
+            FilesDownloadResponse response = _serverConnection.SendFilesDownloadRequest(new FilesDownloadRequest());
 
             if (response.FileHeaders.Any())
             {
