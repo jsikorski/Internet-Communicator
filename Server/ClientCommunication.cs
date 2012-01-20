@@ -201,13 +201,13 @@ namespace Server
             var uploadRequest = (FileUploadRequest) request;
             SendReponse(new FileUploadResponse());
             
-            if (!_files.ContainsKey(uploadRequest.Receiver))
+            if (!_files.ContainsKey(uploadRequest.ReceiverNumber))
             {
-                _files.Add(uploadRequest.Receiver, new List<File>());
+                _files.Add(uploadRequest.ReceiverNumber, new List<File>());
             }
 
             var file = new File(uploadRequest.OriginalName, uploadRequest.FileBytes, _clientNumber);
-            _files[uploadRequest.Receiver].Add(file);
+            _files[uploadRequest.ReceiverNumber].Add(file);
         }
 
         private void MessageHandler(IRequest request)

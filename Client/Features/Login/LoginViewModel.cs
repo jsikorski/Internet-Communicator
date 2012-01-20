@@ -17,7 +17,8 @@ namespace Client.Features.Login
         private readonly IWindowManager _windowManager;
         private readonly CommunicatorViewModel _communicatorViewModel;
         private readonly IEventAggregator _eventAggregator;
-        private readonly IContainer _container;
+        private readonly Func<LoginInformations, Commands.User.Login> _loginFactory;
+        private readonly Func<Screen, NewRegister> _newRegisterFactory;
 
         private string _number;
         public string Number
@@ -64,15 +65,17 @@ namespace Client.Features.Login
         public LoginViewModel(
             IWindowManager windowManager,
             CommunicatorViewModel communicatorViewModel,
-            IEventAggregator eventAggregator,
-            IContainer container)
+            IEventAggregator eventAggregator, 
+            Func<LoginInformations, Commands.User.Login> loginFactory,
+            Func<Screen, NewRegister> newRegisterFactory)
         {
             base.DisplayName = "Internet communicator";
 
             _windowManager = windowManager;
             _communicatorViewModel = communicatorViewModel;
             _eventAggregator = eventAggregator;
-            _container = container;
+            _loginFactory = loginFactory;
+            _newRegisterFactory = newRegisterFactory;
         }
 
         public void Login()
@@ -84,13 +87,13 @@ namespace Client.Features.Login
                                             Password = Password
                                         };
 
-            ICommand login = _container.Resolve<Commands.User.Login>(new UniqueTypeParameter(loginInformations));
+            ICommand login = _loginFactory(loginInformations);
             CommandInvoker.InvokeBusy(login, this);
         }
 
         public void Register()
         {
-            ICommand newRegister = _container.Resolve<NewRegister>(new TypedParameter(typeof(Screen), this));
+            ICommand newRegister = _newRegisterFactory(this);
             CommandInvoker.Execute(newRegister);
             TryClose();
         }

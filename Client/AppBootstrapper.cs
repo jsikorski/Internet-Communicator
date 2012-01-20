@@ -6,6 +6,7 @@ using Client.Features.Communicator;
 using Client.Features.Login;
 using Client.Services;
 using Client.Utils;
+using Common.Contacts;
 using Common.Hash;
 
 namespace Client
@@ -56,6 +57,7 @@ namespace Client
 			containerBuilder.RegisterType<EventAggregator>().As<IEventAggregator>().SingleInstance();
 			containerBuilder.RegisterType<WindowManager>().As<IWindowManager>();
 			containerBuilder.RegisterType<BCryptHashService>().AsImplementedInterfaces();
+		    containerBuilder.RegisterType<ContactStoredData>().AsSelf();
 			containerBuilder.Register(cc => _container).ExternallyOwned();
 			return containerBuilder.Build();
 		}

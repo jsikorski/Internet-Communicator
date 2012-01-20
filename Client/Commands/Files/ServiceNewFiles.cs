@@ -30,7 +30,7 @@ namespace Client.Commands.Files
                     continue;
                 }
 
-                ICommand command = _container.Resolve<DownloadFile>(new UniqueTypeParameter(file));
+                //ICommand command = _container.Resolve<DownloadFile>(new UniqueTypeParameter(file));
                 
             }
         }

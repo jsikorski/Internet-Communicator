@@ -21,7 +21,7 @@ namespace Client.Features.Messages
     public class MessagesViewModel : Screen
     {
         private readonly ICurrentContext _currentContext;
-        private readonly IContainer _container;
+        private readonly Func<MessageRequest, SendMessage> _sendMessageFactory;
 
         public int ConnectedContactNumber { get; private set; }
 
@@ -46,14 +46,15 @@ namespace Client.Features.Messages
 
         public MessagesViewModel(
             ICurrentContext currentContext,
-            int connectedContactNumber,
-            IContainer container)
+            Func<MessageRequest, SendMessage> sendMessageFactory, 
+            int connectedContactNumber)
         {
             base.DisplayName = connectedContactNumber.ToString(CultureInfo.InvariantCulture);
 
             ConnectedContactNumber = connectedContactNumber;
             _currentContext = currentContext;
-            _container = container;
+            _sendMessageFactory = sendMessageFactory;
+
             Messages = new BindableCollection<MessageViewModel>();
         }
 
@@ -67,7 +68,7 @@ namespace Client.Features.Messages
             int loggedUserNumber = _currentContext.LoggedUserNumber;
 
             var messageRequest = new MessageRequest(loggedUserNumber, ConnectedContactNumber, MessageContent);
-            ICommand command = _container.Resolve<SendMessage>(new UniqueTypeParameter(messageRequest));
+            ICommand command = _sendMessageFactory(messageRequest);
             CommandInvoker.Invoke(command);
 
             var myMessage = new Message(0, DateTime.Now, MessageContent);

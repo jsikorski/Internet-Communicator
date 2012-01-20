@@ -9,7 +9,7 @@ using Protocol.Statuses;
 
 namespace Client.Commands.Contacts
 {
-    public abstract class AddContact : ICommand
+    public class AddContact : ICommand
     {
         private readonly IEventAggregator _eventAggregator;
         private readonly IContactsProvider _contactsProvider;

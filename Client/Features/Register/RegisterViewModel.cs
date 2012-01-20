@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using Autofac;
 using Caliburn.Micro;
 using Client.Commands;
@@ -12,8 +13,8 @@ namespace Client.Features.Register
     public class RegisterViewModel : Screen, IBusyScope, IHandle<Registered>
     {
         private readonly IWindowManager _windowManager;
-        private readonly IContainer _container;
         private readonly IEventAggregator _eventAggregator;
+        private readonly Func<RegisterInformations, Commands.User.Register> _registerFactory;
         private Screen _returnViewModel;
 
         private string _password;
@@ -60,21 +61,21 @@ namespace Client.Features.Register
 
         public RegisterViewModel(
             IWindowManager windowManager,
-            IContainer container,
-            IEventAggregator eventAggregator)
+            IEventAggregator eventAggregator,
+            Func<RegisterInformations, Commands.User.Register> registerFactory)
         {
             base.DisplayName = "Internet communicator";
 
             _windowManager = windowManager;
-            _container = container;
             _eventAggregator = eventAggregator;
+            _registerFactory = registerFactory;
         }
 
         public void Register()
         {
             _eventAggregator.Subscribe(this);
             var registerInfomations = new RegisterInformations(Password, PasswordConfirmation);
-            ICommand register = _container.Resolve<Commands.User.Register>(new UniqueTypeParameter(registerInfomations));
+            ICommand register = _registerFactory(registerInfomations);
             CommandInvoker.InvokeBusy(register, this);
         }
 

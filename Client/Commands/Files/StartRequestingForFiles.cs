@@ -29,7 +29,7 @@ namespace Client.Commands.Files
         public void Execute()
         {
             var gettingFilesTimer = new Timer(2000) { AutoReset = true };
-            _currentContext.GettingContactsTimer = gettingFilesTimer;
+            _currentContext.GettingFilesTimer = gettingFilesTimer;
 
             gettingFilesTimer.Elapsed += UpdateDownloads;
             gettingFilesTimer.Start();

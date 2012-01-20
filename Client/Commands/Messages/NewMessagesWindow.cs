@@ -1,4 +1,5 @@
-﻿using Autofac;
+﻿using System;
+using Autofac;
 using Caliburn.Micro;
 using Client.Context;
 using Client.Features.Messages;
@@ -11,24 +12,23 @@ namespace Client.Commands.Messages
         private readonly IWindowManager _windowManager;
         private readonly ICurrentContext _currentContext;
         private readonly int _connectedContactNumber;
-        private readonly IContainer _container;
+        private readonly Func<int, MessagesViewModel> _messageViewModelFactory;
 
         public NewMessagesWindow(
             IWindowManager windowManager,
             ICurrentContext currentContext,
-            int connectedContactNumber,
-            IContainer container)
+            Func<int, MessagesViewModel> messagesViewModelFactory,
+            int connectedContactNumber)
         {
             _windowManager = windowManager;
             _currentContext = currentContext;
             _connectedContactNumber = connectedContactNumber;
-            _container = container;
+            _messageViewModelFactory = messagesViewModelFactory;
         }
 
         public void Execute()
         {
-            var messagesViewModel = _container.Resolve<MessagesViewModel>(
-                new UniqueTypeParameter(_connectedContactNumber));
+            var messagesViewModel = _messageViewModelFactory(_connectedContactNumber);
 
             if (!_currentContext.MessageWindows.ContainsKey(_connectedContactNumber))
             {

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Autofac;
 using Caliburn.Micro;
 using Client.Commands;
 using Client.Commands.Contacts;
@@ -16,7 +15,7 @@ namespace Client.Features.Contacts
     public class NewContactViewModel : Screen, IBusyScope, IHandle<ContactAdded>
     {
         private readonly IEventAggregator _eventAggregator;
-        private readonly IContainer _container;
+        private readonly Func<ContactStoredData, AddContact> _addContactFactory;
 
         private string _name;
         public string Name
@@ -59,11 +58,11 @@ namespace Client.Features.Contacts
 
         public NewContactViewModel(
             IEventAggregator eventAggregator,
-            IContainer container)
+            Func<ContactStoredData, AddContact> addContactFactory)
         {
             base.DisplayName = "Add new contact";
             _eventAggregator = eventAggregator;
-            _container = container;
+            _addContactFactory = addContactFactory;
         }
 
         public void Add()
@@ -74,7 +73,7 @@ namespace Client.Features.Contacts
                                       Name = Name,
                                       Number = Int32.Parse(Number)
                                   };
-            ICommand addContact = _container.Resolve<AddContact>(new UniqueTypeParameter(contactData));
+            ICommand addContact = _addContactFactory(contactData);
             CommandInvoker.InvokeBusy(addContact, this);
         }
 

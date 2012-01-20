@@ -14,6 +14,7 @@ using Client.Services;
 using Client.Utils;
 using Common.Contacts;
 using System.Linq;
+using Message = Common.Messages.Message;
 
 namespace Client.Features.Communicator
 {
@@ -21,6 +22,9 @@ namespace Client.Features.Communicator
         IHandle<ContactsDataReceived>, IHandle<ContactsLoaded>, IHandle<MessagesFounded>
     {
         private readonly IEventAggregator _eventAggregator;
+        private readonly Func<int, NewMessagesWindow> _newMessagesWindowFactory;
+        private readonly Func<int, RemoveContact> _removeContactFactory;
+        private readonly Func<IEnumerable<Message>, ServiceNewMessages> _serviceNewMessagesFactory;
         private readonly IContainer _container;
 
         public BindableCollection<ContactViewModel> Contacts { get; set; }
@@ -50,15 +54,22 @@ namespace Client.Features.Communicator
 
         public CommunicatorViewModel(
             IEventAggregator eventAggregator,
+            Func<int, NewMessagesWindow> newMessagesWindowFactory, 
+            Func<int, RemoveContact> removeContactFactory, 
+            Func<IEnumerable<Message>, ServiceNewMessages> serviceNewMessagesFactory, 
             IContainer container)
         {
             base.DisplayName = "Internet communicator";
 
             _eventAggregator = eventAggregator;
-            _eventAggregator.Subscribe(this);
-
+            _newMessagesWindowFactory = newMessagesWindowFactory;
+            _removeContactFactory = removeContactFactory;
+            _serviceNewMessagesFactory = serviceNewMessagesFactory;
             _container = container;
+
             Contacts = new BindableCollection<ContactViewModel>();
+            _eventAggregator.Subscribe(this);
+            
         }
 
         protected override void OnActivate()
@@ -80,16 +91,15 @@ namespace Client.Features.Communicator
 
         public void NewMessagesWindow()
         {
-            ICommand command = _container.Resolve<NewMessagesWindow>(
-                new UniqueTypeParameter(SelectedContact.Number));
+            ICommand command = _newMessagesWindowFactory(SelectedContact.Number);
             CommandInvoker.Execute(command);
         }
 
         public void UploadFile()
         {
-            ICommand command = _container.Resolve<UploadFile>(
-                new UniqueTypeParameter(SelectedContact.Number));
-            CommandInvoker.Execute(command);
+            //ICommand command = _container.Resolve<UploadFile>(
+            //    new UniqueTypeParameter(SelectedContact.Number));
+            //CommandInvoker.Execute(command);
         }
 
         public void NewContact()
@@ -99,8 +109,7 @@ namespace Client.Features.Communicator
 
         public IEnumerable<IResult> RemoveContact()
         {
-            ICommand removeContact = _container.Resolve<RemoveContact>(
-                new UniqueTypeParameter(SelectedContactIndex));
+            ICommand removeContact = _removeContactFactory(SelectedContactIndex);
             yield return new CommandResult(removeContact);
             Contacts.Remove(SelectedContact);
         }
@@ -126,8 +135,7 @@ namespace Client.Features.Communicator
 
         public void Handle(MessagesFounded message)
         {
-            ICommand command = _container.Resolve<ServiceNewMessages>(
-                new NamedParameter("messages", message.Messages));
+            ICommand command = _serviceNewMessagesFactory(message.Messages);
             CommandInvoker.Execute(command);
         }
 

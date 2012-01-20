@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using Caliburn.Micro;
 using Client.Messages;
-using Common.Files;
 using Microsoft.Win32;
+using File = Common.Files.File;
 
 namespace Client.Commands
 {
@@ -26,8 +27,9 @@ namespace Client.Commands
             string filePath = openFileDialog.FileName;
             if (!string.IsNullOrEmpty(filePath))
             {
-                var fileBytes = System.IO.File.ReadAllBytes(filePath);
-                var file = new File(filePath, fileBytes, 0);
+                string fileName = Path.GetFileName(openFileDialog.FileName);
+                byte[] fileBytes = System.IO.File.ReadAllBytes(filePath);
+                var file = new File(fileName, fileBytes, 0);
                 _eventAggregator.Publish(new FileOpened(file));
             }
         }

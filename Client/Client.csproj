@@ -156,7 +156,6 @@
     <Compile Include="IShell.cs" />
     <Compile Include="Utils\DigitOnlyTextBox.cs" />
     <Compile Include="Utils\MessageBoxService.cs" />
-    <Compile Include="Utils\UniqueTypeParameter.cs" />
     <Compile Include="Validators\AddressValidator.cs" />
     <Compile Include="Validators\IValidator.cs" />
     <Compile Include="Features\Login\LoginViewModel.cs" />

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Autofac;
 using Client.Context;
 using Client.Features.Messages;
@@ -12,16 +13,16 @@ namespace Client.Commands.Messages
     {
         private readonly IEnumerable<Message> _messages;
         private readonly ICurrentContext _currentContext;
-        private readonly IContainer _container;
+        private readonly Func<int, NewMessagesWindow> _messagesWindowFactory;
 
         public ServiceNewMessages(
             IEnumerable<Message> messages,
             ICurrentContext currentContext,
-            IContainer container)
+            Func<int, NewMessagesWindow> messagesWindowFactory)
         {
             _messages = messages;
             _currentContext = currentContext;
-            _container = container;
+            _messagesWindowFactory = messagesWindowFactory;
         }
 
         public void Execute()
@@ -32,8 +33,7 @@ namespace Client.Commands.Messages
 
                 if (!_currentContext.MessageWindows.ContainsKey(senderNumber))
                 {
-                    ICommand command = _container.Resolve<NewMessagesWindow>(
-                        new UniqueTypeParameter(senderNumber));
+                    ICommand command = _messagesWindowFactory(senderNumber);
                     CommandInvoker.Execute(command);
                 }
 
