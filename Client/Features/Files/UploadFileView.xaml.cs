@@ -20,6 +20,7 @@ namespace Client.Features.Files
     {
         public UploadFileView()
         {
+            InitializeComponent();
         }
     }
 }
