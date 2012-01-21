@@ -19,6 +19,7 @@ namespace Server
 
         public Server()
         {
+            _conferenceMessages = new Dictionary<int, List<ConferenceMessage>>();
             _tcpListener = new TcpListener(IPAddress.Any, Ports.ServerListeningPort);
             _activeConnections = new Dictionary<int, NetworkStream>();
             _messages = new Dictionary<int, List<Message>>();
