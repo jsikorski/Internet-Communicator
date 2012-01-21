@@ -27,9 +27,9 @@ namespace Server
         private Dictionary<int, List<GuidedFile>> _files;
         private List<GuidedFile> _filesToDownload;
         private int _clientNumber = -1;
-        private Dictionary<int, List<ConferenceMessage>> _conferenceMessages;
+        private Dictionary<int, List<ConferencialMessage>> _conferenceMessages;
 
-        public ClientCommunication(TcpClient client, Dictionary<int, NetworkStream> connections, Dictionary<int, List<Message>> messages, Dictionary<int, List<GuidedFile>> files, Dictionary<int, List<ConferenceMessage>> conferenceMessages)
+        public ClientCommunication(TcpClient client, Dictionary<int, NetworkStream> connections, Dictionary<int, List<Message>> messages, Dictionary<int, List<GuidedFile>> files, Dictionary<int, List<ConferencialMessage>> conferenceMessages)
         {
             _filesToDownload = new List<GuidedFile>();
             _tcpClient = client;
@@ -109,7 +109,7 @@ namespace Server
                             if (!_messages.ContainsKey(_clientNumber))
                                 _messages.Add(_clientNumber, new List<Message>());
                             if (!_conferenceMessages.ContainsKey(_clientNumber))
-                                _conferenceMessages.Add(_clientNumber, new List<ConferenceMessage>());
+                                _conferenceMessages.Add(_clientNumber, new List<ConferencialMessage>());
                             if (!_files.ContainsKey(_clientNumber))
                                 _files.Add(_clientNumber, new List<GuidedFile>());
                             
@@ -201,24 +201,24 @@ namespace Server
         private void ConferenceMessagesHandler()
         {
             var messages = _conferenceMessages[_clientNumber];
-            _conferenceMessages[_clientNumber] = new List<ConferenceMessage>();
-            var response = new ConferenceMessagesResponse(messages);
+            _conferenceMessages[_clientNumber] = new List<ConferencialMessage>();
+            var response = new ConferencialMessagesResponse(messages);
             SendReponse(response);
         }
 
         private void ConferenceMessageHandler(IRequest request)
         {
             var messageRequest = (ConferenceMessageRequest)request;
-            SendReponse(new ConferenceMessageResponse());
+            SendReponse(new ConferencialMessageResponse());
 
             foreach (var receiver in messageRequest.ReciversNumbers)
             {
                 if (!_conferenceMessages.ContainsKey(receiver))
                 {
-                    _conferenceMessages.Add(receiver, new List<ConferenceMessage>());
+                    _conferenceMessages.Add(receiver, new List<ConferencialMessage>());
                 }
 
-                var message = new ConferenceMessage(_clientNumber, 
+                var message = new ConferencialMessage(_clientNumber, 
                     DateTime.Now, messageRequest.Text, messageRequest.ReciversNumbers);
                 _conferenceMessages[receiver].Add(message);
             }

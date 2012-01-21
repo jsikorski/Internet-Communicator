@@ -57,7 +57,7 @@ namespace Client.Features.Messages
             Messages = new BindableCollection<ConferenceMessageViewModel>();
         }
 
-        public void AddMessage(ConferenceMessage message)
+        public void AddMessage(ConferencialMessage message)
         {
             Messages.Add(new ConferenceMessageViewModel(message, 
                 _numbersToNamesConverter.Convert(message.SenderNumber)));
@@ -69,7 +69,7 @@ namespace Client.Features.Messages
             ICommand command = _sendConferenceMessageFactory(messageData);
             CommandInvoker.Invoke(command);
 
-            var myMessage = new ConferenceMessage(0, DateTime.Now, MessageContent, null);
+            var myMessage = new ConferencialMessage(0, DateTime.Now, MessageContent, null);
             Messages.Add(new ConferenceMessageViewModel(myMessage, "Me"));
             MessageContent = string.Empty;
         }

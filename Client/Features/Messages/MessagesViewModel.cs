@@ -1,20 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Text;
-using Autofac;
 using Caliburn.Micro;
 using Client.Commands;
 using Client.Commands.Messages;
 using Client.Context;
-using Client.Features.Login;
 using Client.Insrastructure;
-using Client.Messages;
 using Client.Services;
-using Client.Utils;
-using Protocol.Messages;
 using Message = Common.Messages.Message;
 
 namespace Client.Features.Messages

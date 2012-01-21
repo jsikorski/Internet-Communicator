@@ -49,7 +49,7 @@
     <Compile Include="Files\FileHeader.cs" />
     <Compile Include="Hash\IHashService.cs" />
     <Compile Include="Hash\BCryptHashService.cs" />
-    <Compile Include="Messages\ConferenceMessage.cs" />
+    <Compile Include="Messages\ConferencialMessage.cs" />
     <Compile Include="Messages\Message.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

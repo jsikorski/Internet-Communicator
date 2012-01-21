@@ -89,9 +89,14 @@ namespace Client.Services
             return (FileDownloadResponse) SendAndGet(fileDownloadRequest);
         }
 
-        public ConferenceMessageResponse SendConferencialMessageRequest(IRequest messageRequest)
+        public ConferencialMessageResponse SendConferencialMessageRequest(IRequest messageRequest)
         {
-            return (ConferenceMessageResponse) SendAndGet(messageRequest);
+            return (ConferencialMessageResponse) SendAndGet(messageRequest);
+        }
+
+        public ConferencialMessagesResponse SendConferencialMessagesRequest(IRequest messagesRequest)
+        {
+            return (ConferencialMessagesResponse) SendAndGet(messagesRequest);
         }
 
         private IResponse SendAndGet(IRequest request)

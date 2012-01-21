@@ -12,6 +12,7 @@ using Client.Insrastructure;
 using Client.Messages;
 using System.Linq;
 using Common.Files;
+using Protocol.Messages;
 using Message = Common.Messages.Message;
 
 namespace Client.Features.Communicator
@@ -19,7 +20,7 @@ namespace Client.Features.Communicator
     public class CommunicatorViewModel : Screen, IHandle<ContactAdded>,
         IHandle<ContactsDataReceived>, IHandle<ContactsLoaded>, IHandle<MessagesFounded>,
         IHandle<FileOpened>, IHandle<FilesFounded>, IHandle<FileDownloadAccepted>,
-        IHandle<FileDownloaded>, IHandle<LoggedOut>
+        IHandle<FileDownloaded>, IHandle<LoggedOut>, IHandle<ConferencialMessagesFounded>
     {
         private readonly IEventAggregator _eventAggregator;
         private readonly Func<int, NewMessagesWindow> _newMessagesWindowFactory;
@@ -230,6 +231,11 @@ namespace Client.Features.Communicator
             var shellViewModel = _container.Resolve<ShellViewModel>();
             _windowManager.ShowWindow(shellViewModel);
             TryClose();
+        }
+
+        public void Handle(ConferencialMessagesFounded message)
+        {
+            throw new NotImplementedException();
         }
 
         private void ExecutePureCommand<T>() where T : ICommand

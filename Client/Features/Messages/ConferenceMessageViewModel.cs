@@ -8,7 +8,7 @@ namespace Client.Features.Messages
 {
     public class ConferenceMessageViewModel
     {
-        private readonly ConferenceMessage _message;
+        private readonly ConferencialMessage _message;
 
         public string Date 
         {
@@ -26,7 +26,7 @@ namespace Client.Features.Messages
             get { return _aggregatedSender; }
         }
 
-        public ConferenceMessageViewModel(ConferenceMessage message, string aggregatedSender)
+        public ConferenceMessageViewModel(ConferencialMessage message, string aggregatedSender)
         {
             _message = message;
             _aggregatedSender = aggregatedSender;

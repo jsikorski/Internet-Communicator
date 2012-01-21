@@ -46,9 +46,10 @@
     <Compile Include="FileTransfer\FilesDownloadResponse.cs" />
     <Compile Include="FileTransfer\FileUploadResponse.cs" />
     <Compile Include="Messages\ConferenceMessageRequest.cs" />
-    <Compile Include="Messages\ConferenceMessageResponse.cs" />
+    <Compile Include="Messages\ConferencialMessageResponse.cs" />
     <Compile Include="Messages\ConferenceMessagesRequest.cs" />
-    <Compile Include="Messages\ConferenceMessagesResponse.cs" />
+    <Compile Include="Messages\ConferencialMessagesFounded.cs" />
+    <Compile Include="Messages\ConferencialMessagesResponse.cs" />
     <Compile Include="Messages\MessageResponse.cs" />
     <Compile Include="Messages\MessagesRequest.cs" />
     <Compile Include="Messages\MessagesResponse.cs" />

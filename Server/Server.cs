@@ -14,12 +14,12 @@ namespace Server
         private readonly Thread _listenThread;
         private readonly Dictionary<int, NetworkStream> _activeConnections;
         private readonly Dictionary<int, List<Message>> _messages;
-        private readonly Dictionary<int, List<ConferenceMessage>> _conferenceMessages;
+        private readonly Dictionary<int, List<ConferencialMessage>> _conferenceMessages;
         private readonly Dictionary<int, List<GuidedFile>> _files;
 
         public Server()
         {
-            _conferenceMessages = new Dictionary<int, List<ConferenceMessage>>();
+            _conferenceMessages = new Dictionary<int, List<ConferencialMessage>>();
             _tcpListener = new TcpListener(IPAddress.Any, Ports.ServerListeningPort);
             _activeConnections = new Dictionary<int, NetworkStream>();
             _messages = new Dictionary<int, List<Message>>();

@@ -87,6 +87,7 @@
     <Compile Include="Commands\Messages\ConferencialWindowsEqualityComparer.cs" />
     <Compile Include="Commands\Messages\NewConferencialMessagesWindow.cs" />
     <Compile Include="Commands\Messages\SendConferencialMessage.cs" />
+    <Compile Include="Commands\Messages\StartRequestingForConferencialMessages.cs" />
     <Compile Include="Commands\User\Login.cs" />
     <Compile Include="Commands\Contacts\NewContact.cs" />
     <Compile Include="Commands\Messages\NewMessagesWindow.cs" />

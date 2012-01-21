@@ -7,11 +7,11 @@ using Common.Messages;
 namespace Protocol.Messages
 {
     [Serializable]
-    public class ConferenceMessagesResponse : IResponse
+    public class ConferencialMessagesResponse : IResponse
     {
-        public IEnumerable<ConferenceMessage> Messages { get; private set; }
+        public IEnumerable<ConferencialMessage> Messages { get; private set; }
 
-        public ConferenceMessagesResponse(IEnumerable<ConferenceMessage> messages)
+        public ConferencialMessagesResponse(IEnumerable<ConferencialMessage> messages)
         {
             Messages = messages;
         }
