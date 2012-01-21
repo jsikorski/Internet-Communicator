@@ -29,7 +29,7 @@ namespace Client.Commands.Messages
         {
             IEnumerable<int> collaboratorsNumbers = _conferencialMessageData
                 .ReceiversNumbers.Concat(new List<int> {_currentContext.LoggedUserNumber}).ToList();
-            var request = new ConferenceMessageRequest(_currentContext.LoggedUserNumber,
+            var request = new ConferencialMessageRequest(_currentContext.LoggedUserNumber,
                                                        _conferencialMessageData.Content,
                                                        collaboratorsNumbers);
 
