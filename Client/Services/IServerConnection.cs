@@ -11,6 +11,8 @@ namespace Client.Services
 {
     public interface IServerConnection
     {
+        bool IsConnected { get; }
+
         void Connect(string serverAddress);
         LoginResponse SendLoginRequest(IRequest loginRequest);
         RegisterResponse SendRegisterRequest(IRequest registerRequest);

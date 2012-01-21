@@ -17,12 +17,15 @@ using Protocol.Statuses;
 
 namespace Client.Services
 {
-    public class ServerConnection : IServerConnection
+    public class ServerConnection : IServerConnection, IDisposable
     {
         private TcpClient _server;
         private NetworkStream _serverStream;
 
         private readonly IFormatter _formatter;
+
+        private bool _isConnected;
+        public bool IsConnected { get { return _isConnected; } }
 
         public ServerConnection()
         {
@@ -31,11 +34,19 @@ namespace Client.Services
 
         public void Connect(string serverAddress)
         {
-            var serverEndPoint = new IPEndPoint(IPAddress.Parse(serverAddress), Ports.ServerListeningPort);
-            _server = new TcpClient();
-            _server.Connect(serverEndPoint);
-            _serverStream = _server.GetStream();
-            SendRequest(new ConnectionRequest());
+            try
+            {
+                var serverEndPoint = new IPEndPoint(IPAddress.Parse(serverAddress), Ports.ServerListeningPort);
+                _server = new TcpClient();
+                _server.Connect(serverEndPoint);
+                _serverStream = _server.GetStream();
+                SendRequest(new ConnectionRequest());
+                _isConnected = true;
+            }
+            catch (Exception)
+            {
+                throw new Exception("Cannot connect to server.");
+            }
         }
 
         public LoginResponse SendLoginRequest(IRequest loginRequest)
@@ -78,11 +89,6 @@ namespace Client.Services
             return (FileDownloadResponse) SendAndGet(fileDownloadRequest);
         }
 
-        public void Disconnect()
-        {
-            _server.Close();
-        }
-
         private IResponse SendAndGet(IRequest request)
         {
             lock (_serverStream)
@@ -117,6 +123,18 @@ namespace Client.Services
             }
 
             return response;
+        }
+        
+        public void Disconnect()
+        {
+            _server.Close();
+            _isConnected = false;
+        }
+
+        public void Dispose()
+        {
+            _server.Close();
+            _serverStream.Dispose();
         }
     }
 }

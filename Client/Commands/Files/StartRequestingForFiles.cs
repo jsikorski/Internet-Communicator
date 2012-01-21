@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Timers;
 using Autofac;
 using Caliburn.Micro;
@@ -9,6 +11,7 @@ using Client.Messages;
 using Client.Services;
 using Common.Files;
 using Protocol.FileTransfer;
+using Timer = System.Timers.Timer;
 
 namespace Client.Commands.Files
 {
@@ -39,7 +42,17 @@ namespace Client.Commands.Files
 
         private void UpdateDownloads(object sender, ElapsedEventArgs elapsedEventArgs)
         {
-            FilesDownloadResponse response = _serverConnection.SendFilesDownloadRequest(new FilesDownloadRequest());
+            FilesDownloadResponse response = null;
+
+            try
+            {
+                response = _serverConnection.SendFilesDownloadRequest(new FilesDownloadRequest());
+            }
+            catch (Exception)
+            {
+                Thread.CurrentThread.Abort();
+                return;
+            }
 
             if (response.FileHeaders.Any())
             {

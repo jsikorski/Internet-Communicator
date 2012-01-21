@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading;
 using System.Timers;
 using Caliburn.Micro;
 using Client.Context;
@@ -36,7 +38,17 @@ namespace Client.Commands.Contacts
 
         private void UpdateContacts(object sender, ElapsedEventArgs elapsedEventArgs)
         {
-            IEnumerable<Contact> contacts = _contactsProvider.GetAll();
+            IEnumerable<Contact> contacts;
+            try
+            {
+                contacts  = _contactsProvider.GetAll();;
+            }
+            catch (Exception)
+            {
+                Thread.CurrentThread.Abort();
+                return;
+            }
+
             _eventAggregator.Publish(new ContactsDataReceived(contacts, false));
         }
     }

@@ -6,7 +6,8 @@
                      SizeToContent="Height"
                      WindowStartupLocation="CenterScreen"
                      xmlns:ribbon="clr-namespace:Microsoft.Windows.Controls.Ribbon;assembly=RibbonControlsLibrary"
-                     xmlns:Converters="clr-namespace:Client.Converters">
+                     xmlns:Converters="clr-namespace:Client.Converters"
+                     xmlns:cal="http://www.caliburnproject.org">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -17,8 +18,10 @@
         <ribbon:Ribbon Grid.Row="0">
             <ribbon:Ribbon.ApplicationMenu>
                 <ribbon:RibbonApplicationMenu>
-                    <ribbon:RibbonApplicationMenuItem Header="Loggout" />
-                    <ribbon:RibbonApplicationMenuItem Header="Exit" />
+                    <ribbon:RibbonApplicationMenuItem cal:Message.Attach="Logout"
+                                                      Header="Logout" />
+                    <ribbon:RibbonApplicationMenuItem cal:Message.Attach="Exit"
+                                                      Header="Exit" />
                 </ribbon:RibbonApplicationMenu>
             </ribbon:Ribbon.ApplicationMenu>
 
