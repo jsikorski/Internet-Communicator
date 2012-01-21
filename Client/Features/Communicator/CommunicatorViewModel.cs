@@ -7,6 +7,7 @@ using Client.Commands.Contacts;
 using Client.Commands.Files;
 using Client.Commands.Messages;
 using Client.Commands.User;
+using Client.Context;
 using Client.Features.Files;
 using Client.Insrastructure;
 using Client.Messages;
@@ -23,6 +24,8 @@ namespace Client.Features.Communicator
         IHandle<FileOpened>, IHandle<FilesFounded>, IHandle<FileDownloadAccepted>,
         IHandle<FileDownloaded>, IHandle<LoggedOut>, IHandle<ConferencialMessagesFounded>
     {
+        private const string CommunicatorViewModelTitleFormat = "Internet communicator ({0})";
+
         private readonly IEventAggregator _eventAggregator;
         private readonly Func<int, NewMessagesWindow> _newMessagesWindowFactory;
         private readonly Func<int, RemoveContact> _removeContactFactory;
@@ -82,12 +85,14 @@ namespace Client.Features.Communicator
             Func<IEnumerable<FileHeader>, ServiceNewFiles> serviceNewFilesFactory,
             Func<FileHeader, DownloadFile> downloadFileFactory,
             Func<File, SaveFile> saveFileFactory,
-            Func<IEnumerable<int>, NewConferencialMessagesWindow> newConferencialMessagewWindowFactory, 
-            Func<IEnumerable<ConferencialMessage>, ServiceNewConferencialMessages> serviceNewConferencialMessagesFactory, 
+            Func<IEnumerable<int>, NewConferencialMessagesWindow> newConferencialMessagewWindowFactory,
+            Func<IEnumerable<ConferencialMessage>, ServiceNewConferencialMessages> serviceNewConferencialMessagesFactory,
             IWindowManager windowManager,
+            ICurrentContext currentContext,
             IContainer container)
         {
-            base.DisplayName = "Internet communicator";
+            base.DisplayName = string.Format(
+                CommunicatorViewModelTitleFormat, currentContext.LoggedUserNumber);
 
             _eventAggregator = eventAggregator;
             _newMessagesWindowFactory = newMessagesWindowFactory;

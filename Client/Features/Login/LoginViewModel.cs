@@ -15,10 +15,10 @@ namespace Client.Features.Login
     public class LoginViewModel : Screen, IHandle<Logged>, IBusyScope
     {
         private readonly IWindowManager _windowManager;
-        private readonly CommunicatorViewModel _communicatorViewModel;
         private readonly IEventAggregator _eventAggregator;
         private readonly Func<LoginInformations, Commands.User.Login> _loginFactory;
         private readonly Func<Screen, NewRegister> _newRegisterFactory;
+        private readonly IContainer _container;
 
         private string _number;
         public string Number
@@ -64,18 +64,18 @@ namespace Client.Features.Login
 
         public LoginViewModel(
             IWindowManager windowManager,
-            CommunicatorViewModel communicatorViewModel,
-            IEventAggregator eventAggregator, 
+            IEventAggregator eventAggregator,
             Func<LoginInformations, Commands.User.Login> loginFactory,
-            Func<Screen, NewRegister> newRegisterFactory)
+            Func<Screen, NewRegister> newRegisterFactory, 
+            IContainer container)
         {
             base.DisplayName = "Internet communicator";
 
             _windowManager = windowManager;
-            _communicatorViewModel = communicatorViewModel;
             _eventAggregator = eventAggregator;
             _loginFactory = loginFactory;
             _newRegisterFactory = newRegisterFactory;
+            _container = container;
         }
 
         public void Login()
@@ -101,7 +101,9 @@ namespace Client.Features.Login
         public void Handle(Logged message)
         {
             _eventAggregator.Unsubscribe(this);
-            _windowManager.ShowWindow(_communicatorViewModel);
+
+            var viewModel = _container.Resolve<CommunicatorViewModel>();
+            _windowManager.ShowWindow(viewModel);
             TryClose();
         }
     }
