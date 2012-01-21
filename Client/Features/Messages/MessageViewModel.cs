@@ -10,32 +10,24 @@ namespace Client.Features.Messages
     public class MessageViewModel
     {
         private readonly Message _message;
-        private readonly string _sender;
 
         public string Date 
         {
             get { return _message.Date.ToShortTimeString(); }
         }
 
-        public string Sender
-        {
-            get
-            {
-                if (!string.IsNullOrEmpty(_sender))
-                {
-                    return _sender;
-                }
-
-                return _message.SenderNumber.ToString(CultureInfo.InvariantCulture);
-            }
-        }
-        
         public string Content
         {
             get { return _message.Content; }
         }
 
-        public MessageViewModel(Message message, string sender = null)
+        private readonly string _sender;
+        public string Sender
+        {
+            get { return _sender; }
+        }
+
+        public MessageViewModel(Message message, string sender)
         {
             _message = message;
             _sender = sender;

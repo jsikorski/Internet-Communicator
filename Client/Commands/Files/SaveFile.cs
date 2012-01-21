@@ -20,13 +20,14 @@ namespace Client.Commands.Files
         public void Execute()
         {
             var saveFileDialog = new SaveFileDialog { FileName = _file.OriginalName };
+            saveFileDialog.ShowDialog();
 
             if (string.IsNullOrEmpty(saveFileDialog.FileName))
             {
                 return;
             }
 
-            using (var fileWriter = new FileStream(saveFileDialog.FileName, FileMode.CreateNew))
+            using (var fileWriter = new FileStream(saveFileDialog.FileName, FileMode.Create))
             {
                 fileWriter.Write(_file.FileBytes, 0, _file.FileBytes.Count());
             }
