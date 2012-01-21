@@ -10,8 +10,9 @@ namespace Server
     {
         static void Main(string[] args)
         {
-            Console.Out.WriteLine("Super hiper serwer komunikatora internetowego Sikorski & Stoiński");
-            Console.Out.WriteLine("Wersja 0.0001 alfa. 2012.");
+            Console.Out.WriteLine("Sikorski & Stoiński instant messaging");
+            Console.Out.WriteLine("v0.1 alpha");
+            Console.Out.WriteLine("");
             var server = new Server();
         }
     }
