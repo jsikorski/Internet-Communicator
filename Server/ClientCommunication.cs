@@ -172,11 +172,11 @@ namespace Server
                 {
                     MessagesHandler();
                 }
-                else if (request.ToString() == "Protocol.Messages.ConferenceMessageRequest")
+                else if (request.ToString() == "Protocol.Messages.ConferencialMessageRequest")
                 {
                     ConferenceMessageHandler(request);
                 }
-                else if (request.ToString() == "Protocol.Messages.ConferenceMessagesRequest")
+                else if (request.ToString() == "Protocol.Messages.ConferencialMessagesRequest")
                 {
                     ConferenceMessagesHandler();
                 }
@@ -208,7 +208,7 @@ namespace Server
 
         private void ConferenceMessageHandler(IRequest request)
         {
-            var messageRequest = (ConferenceMessageRequest)request;
+            var messageRequest = (ConferencialMessageRequest)request;
             SendReponse(new ConferencialMessageResponse());
 
             foreach (var receiver in messageRequest.ReciversNumbers)

@@ -44,7 +44,7 @@ namespace Client.Commands.Messages
 
             try
             {
-                response = _serverConnection.SendConferencialMessagesRequest(new ConferenceMessagesRequest());
+                response = _serverConnection.SendConferencialMessagesRequest(new ConferencialMessagesRequest());
             }
             catch (Exception)
             {
