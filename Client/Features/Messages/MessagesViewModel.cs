@@ -12,6 +12,7 @@ using Client.Context;
 using Client.Features.Login;
 using Client.Insrastructure;
 using Client.Messages;
+using Client.Services;
 using Client.Utils;
 using Protocol.Messages;
 using Message = Common.Messages.Message;
@@ -22,6 +23,7 @@ namespace Client.Features.Messages
     {
         private readonly ICurrentContext _currentContext;
         private readonly Func<MessageRequest, SendMessage> _sendMessageFactory;
+        private readonly INumbersToNamesConverter _numbersToNamesConverter;
 
         public int ConnectedContactNumber { get; private set; }
 
@@ -47,20 +49,23 @@ namespace Client.Features.Messages
         public MessagesViewModel(
             ICurrentContext currentContext,
             Func<MessageRequest, SendMessage> sendMessageFactory, 
+            INumbersToNamesConverter numbersToNamesConverter,
             int connectedContactNumber)
         {
-            base.DisplayName = connectedContactNumber.ToString(CultureInfo.InvariantCulture);
+            base.DisplayName = numbersToNamesConverter.Convert(connectedContactNumber);
 
             ConnectedContactNumber = connectedContactNumber;
             _currentContext = currentContext;
             _sendMessageFactory = sendMessageFactory;
+            _numbersToNamesConverter = numbersToNamesConverter;
 
             Messages = new BindableCollection<MessageViewModel>();
         }
 
         public void AddMessage(Message message)
         {
-            Messages.Add(new MessageViewModel(message));
+            Messages.Add(new MessageViewModel(message, 
+                _numbersToNamesConverter.Convert(message.SenderNumber)));
         }
 
         public void SendMessage()

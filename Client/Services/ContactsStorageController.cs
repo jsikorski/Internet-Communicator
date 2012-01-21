@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Runtime.Remoting.Contexts;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using Client.Context;
@@ -22,6 +24,7 @@ namespace Client.Services
             _currentContext = currentContext;
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public IEnumerable<ContactStoredData> Load()
         {
             string path = string.Format(FilesPathFormat, 
@@ -41,6 +44,7 @@ namespace Client.Services
             }
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void Store(IEnumerable<ContactStoredData> contactsData)
         {
             string path = string.Format(FilesPathFormat, 

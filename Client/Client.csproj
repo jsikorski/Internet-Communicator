@@ -153,8 +153,10 @@
     <Compile Include="Messages\Logged.cs" />
     <Compile Include="Messages\MessagesFounded.cs" />
     <Compile Include="Messages\Registered.cs" />
+    <Compile Include="Services\NumbersToNamesConverter.cs" />
     <Compile Include="Services\ContactsProvider.cs" />
     <Compile Include="Services\ContactsStorageController.cs" />
+    <Compile Include="Services\INumbersToNamesConverter.cs" />
     <Compile Include="Services\IContactsProvider.cs" />
     <Compile Include="Services\IContactsStorageController.cs" />
     <Compile Include="Services\IServerConnection.cs" />
