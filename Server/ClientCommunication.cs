@@ -56,11 +56,13 @@ namespace Server
                 Console.Out.WriteLine(_tcpClient.Client.RemoteEndPoint + " connection ended. Reason: " + e.Message);
                 if (_clientNumber != -1)
                 {
-                    _activeConnections.Remove(_clientNumber);
+                    lock (_activeConnections)
+                    {
+                        _activeConnections.Remove(_clientNumber);
+                    }
                 }
                 _clientStream.Close();
                 _tcpClient.Close();
-                return;
             }
         }
 
@@ -104,14 +106,26 @@ namespace Server
                         if (reader["PasswordHash"].ToString() == loginRequest.PasswordHash)
                         {
                             _clientNumber = loginRequest.Number;
-                            _activeConnections.Add(loginRequest.Number, _clientStream);
+                            lock (_activeConnections)
+                            {
+                                _activeConnections.Add(loginRequest.Number, _clientStream);
+                            }
 
-                            if (!_messages.ContainsKey(_clientNumber))
-                                _messages.Add(_clientNumber, new List<Message>());
-                            if (!_conferenceMessages.ContainsKey(_clientNumber))
-                                _conferenceMessages.Add(_clientNumber, new List<ConferencialMessage>());
-                            if (!_files.ContainsKey(_clientNumber))
-                                _files.Add(_clientNumber, new List<GuidedFile>());
+                            lock (_messages)
+                            {
+                                if (!_messages.ContainsKey(_clientNumber))
+                                    _messages.Add(_clientNumber, new List<Message>());
+                            }
+                            lock (_conferenceMessages)
+                            {
+                                if (!_conferenceMessages.ContainsKey(_clientNumber))
+                                    _conferenceMessages.Add(_clientNumber, new List<ConferencialMessage>());
+                            }
+                            lock (_files)
+                            {
+                                if (!_files.ContainsKey(_clientNumber))
+                                    _files.Add(_clientNumber, new List<GuidedFile>());
+                            }
 
                             SendReponse(new LoginResponse() { WasSuccessfull = true });
 
@@ -186,7 +200,10 @@ namespace Server
                 }
                 else if (request.ToString() == "Protocol.Login.LogoutRequest")
                 {
-                    _activeConnections.Remove(_clientNumber);
+                    lock (_activeConnections)
+                    {
+                        _activeConnections.Remove(_clientNumber);
+                    }
                     _clientStream.Close();
                     _tcpClient.Close();
                     return;
@@ -200,8 +217,14 @@ namespace Server
 
         private void ConferenceMessagesHandler()
         {
-            var messages = _conferenceMessages[_clientNumber];
-            _conferenceMessages[_clientNumber] = new List<ConferencialMessage>();
+            List<ConferencialMessage> messages;
+
+            lock (_conferenceMessages)
+            {
+                messages = _conferenceMessages[_clientNumber];
+                _conferenceMessages[_clientNumber] = new List<ConferencialMessage>();
+            }
+
             var response = new ConferencialMessagesResponse(messages);
             SendReponse(response);
         }
@@ -211,18 +234,22 @@ namespace Server
             var messageRequest = (ConferencialMessageRequest)request;
             SendReponse(new ConferencialMessageResponse());
 
-            foreach (var receiver in messageRequest.ReciversNumbers)
+            lock (_conferenceMessages)
             {
-                if (receiver == _clientNumber) continue;
-
-                if (!_conferenceMessages.ContainsKey(receiver))
+                foreach (var receiver in messageRequest.ReciversNumbers)
                 {
-                    _conferenceMessages.Add(receiver, new List<ConferencialMessage>());
-                }
+                    if (receiver == _clientNumber) continue;
 
-                var message = new ConferencialMessage(_clientNumber,
-                    DateTime.Now, messageRequest.Text, messageRequest.ReciversNumbers);
-                _conferenceMessages[receiver].Add(message);
+                    if (!_conferenceMessages.ContainsKey(receiver))
+                    {
+                        _conferenceMessages.Add(receiver, new List<ConferencialMessage>());
+                    }
+
+                    var message = new ConferencialMessage(_clientNumber,
+                                                          DateTime.Now, messageRequest.Text,
+                                                          messageRequest.ReciversNumbers);
+                    _conferenceMessages[receiver].Add(message);
+                }
             }
         }
 
@@ -250,16 +277,19 @@ namespace Server
             var files = new List<GuidedFile>();
             var fileHeaders = new List<FileHeader>();
 
-            foreach (var file in _files[_clientNumber])
+            lock (_files)
             {
-                files.Add(file);
-            }
+                foreach (var file in _files[_clientNumber])
+                {
+                    files.Add(file);
+                }
 
-            foreach (var file in files)
-            {
-                _files[_clientNumber].Remove(file);
-                _filesToDownload.Add(file);
-                fileHeaders.Add(new FileHeader(file.Guid, file.File.OriginalName, file.File.SenderNumber));
+                foreach (var file in files)
+                {
+                    _files[_clientNumber].Remove(file);
+                    _filesToDownload.Add(file);
+                    fileHeaders.Add(new FileHeader(file.Guid, file.File.OriginalName, file.File.SenderNumber));
+                }
             }
 
             var response = new FilesDownloadResponse(fileHeaders);
@@ -268,10 +298,13 @@ namespace Server
 
         private void MessagesHandler()
         {
-            var messages = _messages[_clientNumber];
-            _messages[_clientNumber] = new List<Message>();
-            var response = new MessagesResponse(messages);
-            SendReponse(response);
+            lock (_messages)
+            {
+                var messages = _messages[_clientNumber];
+                _messages[_clientNumber] = new List<Message>();
+                var response = new MessagesResponse(messages);
+                SendReponse(response);
+            }
         }
 
         private void FileUploadHandler(IRequest request)
@@ -279,13 +312,17 @@ namespace Server
             var uploadRequest = (FileUploadRequest)request;
             SendReponse(new FileUploadResponse());
 
-            if (!_files.ContainsKey(uploadRequest.ReceiverNumber))
+            lock (_files)
             {
-                _files.Add(uploadRequest.ReceiverNumber, new List<GuidedFile>());
-            }
+                if (!_files.ContainsKey(uploadRequest.ReceiverNumber))
+                {
+                    _files.Add(uploadRequest.ReceiverNumber, new List<GuidedFile>());
+                }
 
-            var file = new GuidedFile(new File(uploadRequest.OriginalName, uploadRequest.FileBytes, _clientNumber), Guid.NewGuid());
-            _files[uploadRequest.ReceiverNumber].Add(file);
+                var file = new GuidedFile(new File(uploadRequest.OriginalName, uploadRequest.FileBytes, _clientNumber),
+                                          Guid.NewGuid());
+                _files[uploadRequest.ReceiverNumber].Add(file);
+            }
         }
 
         private void MessageHandler(IRequest request)
@@ -295,13 +332,16 @@ namespace Server
 
             var receiverNumber = messageRequest.ReciverNumber;
 
-            if (!_messages.ContainsKey(receiverNumber))
+            lock (_messages)
             {
-                _messages.Add(receiverNumber, new List<Message>());
-            }
+                if (!_messages.ContainsKey(receiverNumber))
+                {
+                    _messages.Add(receiverNumber, new List<Message>());
+                }
 
-            var message = new Message(_clientNumber, DateTime.Now, messageRequest.Text);
-            _messages[receiverNumber].Add(message);
+                var message = new Message(_clientNumber, DateTime.Now, messageRequest.Text);
+                _messages[receiverNumber].Add(message);
+            }
         }
 
         private void StatusHandler(IRequest request)
@@ -309,9 +349,12 @@ namespace Server
             var statusRequest = (StatusesRequest)request;
             var statusResponse = new StatusesResponse { Contacts = statusRequest.Contacts };
 
-            foreach (var contact in statusResponse.Contacts)
+            lock (_activeConnections)
             {
-                contact.IsAvailable = _activeConnections.Any(ac => ac.Key == contact.ContactStoredData.Number);
+                foreach (var contact in statusResponse.Contacts)
+                {
+                    contact.IsAvailable = _activeConnections.Any(ac => ac.Key == contact.ContactStoredData.Number);
+                }
             }
 
             SendReponse(statusResponse);
