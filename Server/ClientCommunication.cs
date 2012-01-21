@@ -213,6 +213,8 @@ namespace Server
 
             foreach (var receiver in messageRequest.ReciversNumbers)
             {
+                if (receiver == _clientNumber) continue;
+
                 if (!_conferenceMessages.ContainsKey(receiver))
                 {
                     _conferenceMessages.Add(receiver, new List<ConferencialMessage>());
