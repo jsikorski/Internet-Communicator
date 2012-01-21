@@ -30,9 +30,9 @@ namespace Client.Commands.Messages
         {
             var messagesViewModel = _messageViewModelFactory(_connectedContactNumber);
 
-            if (!_currentContext.MessageWindows.ContainsKey(_connectedContactNumber))
+            if (!_currentContext.MessagesWindows.ContainsKey(_connectedContactNumber))
             {
-                _currentContext.MessageWindows.Add(_connectedContactNumber, messagesViewModel);
+                _currentContext.MessagesWindows.Add(_connectedContactNumber, messagesViewModel);
                 Caliburn.Micro.Execute.OnUIThread(() => _windowManager.ShowWindow(messagesViewModel));
             }
         }

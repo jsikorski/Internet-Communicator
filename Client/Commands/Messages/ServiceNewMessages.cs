@@ -31,13 +31,13 @@ namespace Client.Commands.Messages
             {
                 int senderNumber = message.SenderNumber;
 
-                if (!_currentContext.MessageWindows.ContainsKey(senderNumber))
+                if (!_currentContext.MessagesWindows.ContainsKey(senderNumber))
                 {
                     ICommand command = _newMessagesWindowFactory(senderNumber);
                     CommandInvoker.Execute(command);
                 }
 
-                MessagesViewModel messagesViewModel = _currentContext.MessageWindows[senderNumber];
+                MessagesViewModel messagesViewModel = _currentContext.MessagesWindows[senderNumber];
                 messagesViewModel.AddMessage(message);
             }
         }

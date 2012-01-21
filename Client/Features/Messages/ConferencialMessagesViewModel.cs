@@ -1,33 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
 using System.Linq;
 using System.Text;
-using Autofac;
 using Caliburn.Micro;
 using Client.Commands;
 using Client.Commands.Messages;
 using Client.Context;
-using Client.Features.Login;
 using Client.Insrastructure;
-using Client.Messages;
 using Client.Services;
-using Client.Utils;
+using Common.Messages;
 using Protocol.Messages;
 using Message = Common.Messages.Message;
 
 namespace Client.Features.Messages
 {
-    public class MessagesViewModel : Screen
+    public class ConferencialMessagesViewModel : Screen
     {
         private readonly ICurrentContext _currentContext;
         private readonly Func<MessageRequest, SendMessage> _sendMessageFactory;
         private readonly INumbersToNamesConverter _numbersToNamesConverter;
 
-        public int ConnectedContactNumber { get; private set; }
+        public IEnumerable<int> ConnectedContactsNumber { get; private set; }
 
-        public BindableCollection<MessageViewModel> Messages { get; set; }
+        public BindableCollection<ConferenceMessageViewModel> Messages { get; set; }
 
         private string _messageContent;
         public string MessageContent
@@ -46,25 +41,25 @@ namespace Client.Features.Messages
             get { return !string.IsNullOrEmpty(MessageContent); }
         }
 
-        public MessagesViewModel(
+        public ConferencialMessagesViewModel(
             ICurrentContext currentContext,
             Func<MessageRequest, SendMessage> sendMessageFactory, 
             INumbersToNamesConverter numbersToNamesConverter,
-            int connectedContactNumber)
+            IEnumerable<int> connectedContactNumbers)
         {
-            base.DisplayName = numbersToNamesConverter.Convert(connectedContactNumber);
+            base.DisplayName = numbersToNamesConverter.ConvertGroup(connectedContactNumbers);
 
-            ConnectedContactNumber = connectedContactNumber;
+            ConnectedContactsNumber = connectedContactNumbers;
             _currentContext = currentContext;
             _sendMessageFactory = sendMessageFactory;
             _numbersToNamesConverter = numbersToNamesConverter;
 
-            Messages = new BindableCollection<MessageViewModel>();
+            Messages = new BindableCollection<ConferenceMessageViewModel>();
         }
 
-        public void AddMessage(Message message)
+        public void AddMessage(ConferenceMessage message)
         {
-            Messages.Add(new MessageViewModel(message, 
+            Messages.Add(new ConferenceMessageViewModel(message, 
                 _numbersToNamesConverter.Convert(message.SenderNumber)));
         }
 
@@ -72,12 +67,12 @@ namespace Client.Features.Messages
         {
             int loggedUserNumber = _currentContext.LoggedUserNumber;
 
-            var messageRequest = new MessageRequest(loggedUserNumber, ConnectedContactNumber, MessageContent);
-            ICommand command = _sendMessageFactory(messageRequest);
-            CommandInvoker.Invoke(command);
+            var messageRequest = new ConferenceMessageRequest(loggedUserNumber, MessageContent, ConnectedContactsNumber);
+            //ICommand command = _sendMessageFactory(messageRequest);
+            //CommandInvoker.Invoke(command);
 
-            var myMessage = new Message(0, DateTime.Now, MessageContent);
-            Messages.Add(new MessageViewModel(myMessage, "Me"));
+            var myMessage = new ConferenceMessage(0, DateTime.Now, MessageContent, null);
+            Messages.Add(new ConferenceMessageViewModel(myMessage, "Me"));
             MessageContent = string.Empty;
         }
 
@@ -88,7 +83,7 @@ namespace Client.Features.Messages
 
         protected override void OnDeactivate(bool close)
         {
-            _currentContext.MessagesWindows.Remove(ConnectedContactNumber);
+            _currentContext.ConferencialMessagesWindows.Remove(ConnectedContactsNumber);
             base.OnDeactivate(close);
         }
     }

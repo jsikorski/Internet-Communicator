@@ -27,8 +27,11 @@
 
             <ribbon:RibbonTab Header="Messages">
                 <ribbon:RibbonGroup Header="Sending">
-                    <ribbon:RibbonButton Name="NewMessagesWindow"
+                    <ribbon:RibbonButton Name="OpenMessagesWindow"
                                          Label="Message"
+                                         LargeImageSource="/Images/send_message_icon.png" />
+                    <ribbon:RibbonButton Name="OpenConferencialMessagesWindow"
+                                         Label="Conferencial message"
                                          LargeImageSource="/Images/send_message_icon.png" />
                     <ribbon:RibbonButton Name="UploadFile"
                                          Label="File"
@@ -82,10 +85,10 @@
                     HorizontalAlignment="Right"
                     Margin="0 0 5 0">
             <Label Content="Name:" />
-            <Label Content="{Binding SelectedContact.Name}" />
+            <Label Content="{Binding SingleSelectedContact.Name}" />
 
             <Label Content="Number:" />
-            <Label Content="{Binding SelectedContact.Number}" />
+            <Label Content="{Binding SingleSelectedContact.Number}" />
         </StackPanel>
     </Grid>
 </ribbon:RibbonWindow>

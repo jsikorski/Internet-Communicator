@@ -8,5 +8,6 @@ namespace Client.Services
     public interface INumbersToNamesConverter
     {
         string Convert(int number);
+        string ConvertGroup(IEnumerable<int> numbers);
     }
 }

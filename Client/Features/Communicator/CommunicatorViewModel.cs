@@ -7,17 +7,11 @@ using Client.Commands.Contacts;
 using Client.Commands.Files;
 using Client.Commands.Messages;
 using Client.Commands.User;
-using Client.Features.Contacts;
 using Client.Features.Files;
-using Client.Features.Messages;
 using Client.Insrastructure;
 using Client.Messages;
-using Client.Services;
-using Client.Utils;
-using Common.Contacts;
 using System.Linq;
 using Common.Files;
-using Protocol.FileTransfer;
 using Message = Common.Messages.Message;
 
 namespace Client.Features.Communicator
@@ -35,6 +29,7 @@ namespace Client.Features.Communicator
         private readonly Func<IEnumerable<FileHeader>, ServiceNewFiles> _serviceNewFilesFactory;
         private readonly Func<FileHeader, DownloadFile> _downloadFileFactory;
         private readonly Func<File, SaveFile> _saveFileFactory;
+        private readonly Func<IEnumerable<int>, NewConferencialMessagesWindow> _newConferencialMessagewWindowFactory;
         private readonly IWindowManager _windowManager;
         private readonly IContainer _container;
 
@@ -42,27 +37,37 @@ namespace Client.Features.Communicator
 
         public int SelectedContactIndex { get; set; }
 
-        public bool CanNewMessagesWindow
+        public bool CanOpenMessagesWindow
         {
-            get { return SelectedContacts.Count() == 1; }
+            get { return SelectedContactsNumbers.Count() == 1; }
+        }
+
+        public bool CanOpenConferencialMessagesWindow
+        {
+            get { return SelectedContactsNumbers.Distinct().Count() > 1; }
         }
 
         public bool CanRemoveContact
         {
-            get { return SelectedContacts.Count() == 1; }
+            get { return SelectedContactsNumbers.Count() == 1; }
         }
 
         public bool CanUploadFile
         {
-            get { return SelectedContacts.Count() == 1; }
+            get { return SelectedContactsNumbers.Count() == 1; }
         }
 
-        public IEnumerable<ContactViewModel> SelectedContacts
+        public IEnumerable<int> SelectedContactsNumbers
         {
             get
             {
-                return Contacts.Where(contact => contact.IsSelected);
+                return Contacts.Where(contact => contact.IsSelected).Select(contact => contact.Number);
             }
+        }
+
+        public ContactViewModel SingleSelectedContact
+        {
+            get { return SelectedContactsNumbers.Count() == 1 ? Contacts.First(c => c.IsSelected) : null; }
         }
 
         public CommunicatorViewModel(
@@ -74,6 +79,7 @@ namespace Client.Features.Communicator
             Func<IEnumerable<FileHeader>, ServiceNewFiles> serviceNewFilesFactory,
             Func<FileHeader, DownloadFile> downloadFileFactory,
             Func<File, SaveFile> saveFileFactory,
+            Func<IEnumerable<int>, NewConferencialMessagesWindow> newConferencialMessagewWindowFactory,
             IWindowManager windowManager,
             IContainer container)
         {
@@ -87,6 +93,7 @@ namespace Client.Features.Communicator
             _serviceNewFilesFactory = serviceNewFilesFactory;
             _downloadFileFactory = downloadFileFactory;
             _saveFileFactory = saveFileFactory;
+            _newConferencialMessagewWindowFactory = newConferencialMessagewWindowFactory;
             _windowManager = windowManager;
             _container = container;
 
@@ -98,8 +105,10 @@ namespace Client.Features.Communicator
         public void ContactsListChanged()
         {
             NotifyOfPropertyChange(() => CanRemoveContact);
-            NotifyOfPropertyChange(() => CanNewMessagesWindow);
+            NotifyOfPropertyChange(() => CanOpenMessagesWindow);
             NotifyOfPropertyChange(() => CanUploadFile);
+            NotifyOfPropertyChange(() => CanOpenConferencialMessagesWindow);
+            NotifyOfPropertyChange(() => SingleSelectedContact);
         }
 
         protected override void OnActivate()
@@ -119,9 +128,15 @@ namespace Client.Features.Communicator
             base.OnDeactivate(close);
         }
 
-        public void NewMessagesWindow()
+        public void OpenMessagesWindow()
         {
-            ICommand command = _newMessagesWindowFactory(SelectedContacts.First().Number);
+            ICommand command = _newMessagesWindowFactory(SelectedContactsNumbers.First());
+            CommandInvoker.Execute(command);
+        }
+
+        public void OpenConferencialMessagesWindow()
+        {
+            ICommand command = _newConferencialMessagewWindowFactory(SelectedContactsNumbers.Distinct());
             CommandInvoker.Execute(command);
         }
 
@@ -149,7 +164,7 @@ namespace Client.Features.Communicator
         {
             ICommand removeContact = _removeContactFactory(SelectedContactIndex);
             yield return new CommandResult(removeContact);
-            Contacts.Remove(SelectedContacts.First());
+            Contacts.RemoveAt(SelectedContactIndex);
         }
 
         public void Handle(ContactAdded message)
@@ -176,7 +191,7 @@ namespace Client.Features.Communicator
             var uploadFileViewModel = _container.Resolve<UploadFileViewModel>();
             _windowManager.ShowWindow(uploadFileViewModel);
 
-            ICommand command = _uploadFileFactory(SelectedContacts.First().Number, message.FileInfo);
+            ICommand command = _uploadFileFactory(SelectedContactsNumbers.First(), message.FileInfo);
             CommandInvoker.InvokeBusy(command, uploadFileViewModel, e => uploadFileViewModel.TryClose());
         }
 
