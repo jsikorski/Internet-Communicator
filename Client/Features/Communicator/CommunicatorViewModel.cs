@@ -206,6 +206,9 @@ namespace Client.Features.Communicator
 
         public void Handle(LoggedOut message)
         {
+            _eventAggregator.Unsubscribe(this);
+            _container.BeginLifetimeScope();
+
             var shellViewModel = _container.Resolve<ShellViewModel>();
             _windowManager.ShowWindow(shellViewModel);
             TryClose();

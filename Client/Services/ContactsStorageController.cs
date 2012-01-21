@@ -24,10 +24,9 @@ namespace Client.Services
             _currentContext = currentContext;
         }
 
-        [MethodImpl(MethodImplOptions.Synchronized)]
         public IEnumerable<ContactStoredData> Load()
         {
-            string path = string.Format(FilesPathFormat, 
+            string path = string.Format(FilesPathFormat,
                 _currentContext.LoggedUserNumber.ToString(CultureInfo.InvariantCulture));
 
             if (!File.Exists(path))
@@ -36,24 +35,29 @@ namespace Client.Services
             }
             else
             {
-                using (var fileStream = new FileStream(path, FileMode.Open))
+                lock (typeof(ContactsStorageController))
                 {
-                    var binaryFormatter = new BinaryFormatter();
-                    return (IEnumerable<ContactStoredData>)binaryFormatter.Deserialize(fileStream);
+                    using (var fileStream = new FileStream(path, FileMode.Open))
+                    {
+                        var binaryFormatter = new BinaryFormatter();
+                        return (IEnumerable<ContactStoredData>)binaryFormatter.Deserialize(fileStream);
+                    }
                 }
             }
         }
 
-        [MethodImpl(MethodImplOptions.Synchronized)]
         public void Store(IEnumerable<ContactStoredData> contactsData)
         {
-            string path = string.Format(FilesPathFormat, 
+            string path = string.Format(FilesPathFormat,
                 _currentContext.LoggedUserNumber.ToString(CultureInfo.InvariantCulture));
 
-            using (var fileStream = new FileStream(path, FileMode.OpenOrCreate))
+            lock (typeof(ContactsStorageController))
             {
-                var binaryFormatter = new BinaryFormatter();
-                binaryFormatter.Serialize(fileStream, contactsData.ToList());
+                using (var fileStream = new FileStream(path, FileMode.OpenOrCreate))
+                {
+                    var binaryFormatter = new BinaryFormatter();
+                    binaryFormatter.Serialize(fileStream, contactsData.ToList());
+                }
             }
         }
     }
