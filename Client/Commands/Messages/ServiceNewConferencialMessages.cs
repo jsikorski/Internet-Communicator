@@ -30,7 +30,7 @@ namespace Client.Commands.Messages
             foreach (var conferencialMessage in _conferencialMessages)
             {
                 IEnumerable<int> collaboratorsNumbers =
-                    conferencialMessage.CollaboratorsNumbers.Where(number => number != _currentContext.LoggedUserNumber).ToList();
+                    conferencialMessage.CollaboratorsNumbers.Where(number => number != _currentContext.LoggedUserNumber).Distinct().ToList();
 
                 if (!_currentContext.ConferencialMessagesWindows.ContainsKey(collaboratorsNumbers))
                 {
