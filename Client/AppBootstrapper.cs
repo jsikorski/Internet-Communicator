@@ -71,7 +71,7 @@ namespace Client
 			containerBuilder.RegisterType<WindowManager>().As<IWindowManager>();
 			containerBuilder.RegisterType<BCryptHashService>().AsImplementedInterfaces();
 		    containerBuilder.RegisterType<ContactStoredData>().AsSelf();
-			containerBuilder.Register(cc => _container).ExternallyOwned();
+			containerBuilder.Register(cc => _container).ExternallyOwned(); 
 			return containerBuilder.Build();
 		}
 	}
