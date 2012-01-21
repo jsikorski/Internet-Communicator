@@ -6,6 +6,7 @@ using Client.Commands;
 using Client.Commands.Contacts;
 using Client.Commands.Files;
 using Client.Commands.Messages;
+using Client.Commands.User;
 using Client.Features.Contacts;
 using Client.Features.Files;
 using Client.Features.Messages;
@@ -23,7 +24,8 @@ namespace Client.Features.Communicator
 {
     public class CommunicatorViewModel : Screen, IHandle<ContactAdded>,
         IHandle<ContactsDataReceived>, IHandle<ContactsLoaded>, IHandle<MessagesFounded>,
-        IHandle<FileOpened>, IHandle<FilesFounded>, IHandle<FileDownloadAccepted>, IHandle<FileDownloaded>
+        IHandle<FileOpened>, IHandle<FilesFounded>, IHandle<FileDownloadAccepted>, 
+        IHandle<FileDownloaded>, IHandle<LoggedOut>
     {
         private readonly IEventAggregator _eventAggregator;
         private readonly Func<int, NewMessagesWindow> _newMessagesWindowFactory;
@@ -130,6 +132,16 @@ namespace Client.Features.Communicator
             ExecutePureCommand<NewContact>();
         }
 
+        public void Logout()
+        {
+            ExecutePureCommand<Logout>();
+        }
+
+        public void Exit()
+        {
+            TryClose();
+        }
+
         public IEnumerable<IResult> RemoveContact()
         {
             ICommand removeContact = _removeContactFactory(SelectedContactIndex);
@@ -190,6 +202,13 @@ namespace Client.Features.Communicator
         {
             ICommand command = _saveFileFactory(message.File);
             CommandInvoker.Invoke(command);
+        }
+
+        public void Handle(LoggedOut message)
+        {
+            var shellViewModel = _container.Resolve<ShellViewModel>();
+            _windowManager.ShowWindow(shellViewModel);
+            TryClose();
         }
 
         private void ExecutePureCommand<T>() where T : ICommand

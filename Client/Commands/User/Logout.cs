@@ -1,30 +1,30 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using Caliburn.Micro;
 using Client.Messages;
 using Client.Services;
 
-namespace Client.Commands.Connection
+namespace Client.Commands.User
 {
-    public class Connect : ICommand
+    public class Logout : ICommand
     {
         private readonly IServerConnection _serverConnection;
-        private readonly string _serverAddress;
         private readonly IEventAggregator _eventAggregator;
 
-        public Connect(
+        public Logout(
             IServerConnection serverConnection, 
-            string serverAddress, 
             IEventAggregator eventAggregator)
         {
             _serverConnection = serverConnection;
-            _serverAddress = serverAddress;
             _eventAggregator = eventAggregator;
         }
 
         public void Execute()
         {
-            _serverConnection.Connect(_serverAddress);
-            _eventAggregator.Publish(new Connected());
+            _serverConnection.Disconnect();
+            _eventAggregator.Publish(new LoggedOut());
         }
     }
 }

@@ -1,10 +1,13 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
+using System.Threading;
 using System.Timers;
 using Caliburn.Micro;
 using Client.Context;
 using Client.Messages;
 using Client.Services;
 using Protocol.Messages;
+using Timer = System.Timers.Timer;
 
 namespace Client.Commands.Messages
 {
@@ -35,7 +38,17 @@ namespace Client.Commands.Messages
 
         private void GetMessages(object sender, ElapsedEventArgs elapsedEventArgs)
         {
-            MessagesResponse response = _serverConnection.SendMessagesRequest(new MessagesRequest());
+            MessagesResponse response;
+
+            try
+            {
+                response = _serverConnection.SendMessagesRequest(new MessagesRequest());
+            }
+            catch (Exception)
+            {
+                Thread.CurrentThread.Abort();
+                return;
+            }
 
             if (response.Messages.Any())
             {

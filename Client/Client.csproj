@@ -87,6 +87,7 @@
     <Compile Include="Commands\User\Login.cs" />
     <Compile Include="Commands\Contacts\NewContact.cs" />
     <Compile Include="Commands\Messages\NewMessagesWindow.cs" />
+    <Compile Include="Commands\User\Logout.cs" />
     <Compile Include="Commands\User\NewRegister.cs" />
     <Compile Include="Commands\Files\OpenFile.cs" />
     <Compile Include="Commands\User\Register.cs" />
@@ -151,6 +152,7 @@
     <Compile Include="Messages\FilesFounded.cs" />
     <Compile Include="Messages\FileOpened.cs" />
     <Compile Include="Messages\Logged.cs" />
+    <Compile Include="Messages\LoggedOut.cs" />
     <Compile Include="Messages\MessagesFounded.cs" />
     <Compile Include="Messages\Registered.cs" />
     <Compile Include="Services\NumbersToNamesConverter.cs" />

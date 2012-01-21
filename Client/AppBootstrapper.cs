@@ -22,6 +22,7 @@ namespace Client
 	public class AppBootstrapper : Bootstrapper<IShell>
 	{
 		private IContainer _container;
+	    public IServerConnection ServerConnection { get; set; }
 
 		protected override void Configure()
 		{
@@ -44,6 +45,18 @@ namespace Client
             e.Handled = true;
         }
 
+        protected override void OnExit(object sender, EventArgs e)
+        {
+            var serverConnection = _container.Resolve<IServerConnection>();
+
+            if (serverConnection.IsConnected)
+            {
+                serverConnection.Disconnect();                
+            }
+
+            base.OnExit(sender, e);
+        }
+
 		private IContainer CreateContainer()
 		{
 			var containerBuilder = new ContainerBuilder();
@@ -53,7 +66,7 @@ namespace Client
 					PropertyWiringFlags.PreserveSetValues);
 			containerBuilder.RegisterInstance(new ServerConnection()).AsImplementedInterfaces();
 		    containerBuilder.RegisterInstance(new CurrentContext()).AsImplementedInterfaces();
-           
+
 			containerBuilder.RegisterType<EventAggregator>().As<IEventAggregator>().SingleInstance();
 			containerBuilder.RegisterType<WindowManager>().As<IWindowManager>();
 			containerBuilder.RegisterType<BCryptHashService>().AsImplementedInterfaces();
