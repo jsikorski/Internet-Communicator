@@ -94,12 +94,28 @@ namespace Client.Services
 
         private void SendRequest(IRequest request)
         {
-            _formatter.Serialize(_serverStream, request);
+            try
+            {
+                _formatter.Serialize(_serverStream, request);
+            }
+            catch (Exception)
+            {
+                throw new Exception("Cannot send request to server.");
+            }
         }
 
         private IResponse GetResponse()
         {
-            var response = (IResponse)_formatter.Deserialize(_serverStream);
+            IResponse response;
+            try
+            {
+                response = (IResponse)_formatter.Deserialize(_serverStream);
+            }
+            catch (Exception)
+            {
+                throw new Exception("Cannot get response from server.");
+            }
+
             return response;
         }
     }
