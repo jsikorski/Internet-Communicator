@@ -17,7 +17,7 @@ namespace Client.Features.Messages
     public class ConferencialMessagesViewModel : Screen
     {
         private readonly ICurrentContext _currentContext;
-        private readonly Func<ConferenceMessageRequest, SendConferencialMessage> _sendConferenceMessageFactory;
+        private readonly Func<ConferencialMessageData, SendConferencialMessage> _sendConferenceMessageFactory;
         private readonly INumbersToNamesConverter _numbersToNamesConverter;
 
         public IEnumerable<int> ConnectedContactsNumber { get; private set; }
@@ -43,7 +43,7 @@ namespace Client.Features.Messages
 
         public ConferencialMessagesViewModel(
             ICurrentContext currentContext,
-            Func<ConferenceMessageRequest, SendConferencialMessage> sendConferenceMessageFactory, 
+            Func<ConferencialMessageData, SendConferencialMessage> sendConferenceMessageFactory, 
             INumbersToNamesConverter numbersToNamesConverter,
             IEnumerable<int> connectedContactNumbers)
         {
@@ -65,11 +65,8 @@ namespace Client.Features.Messages
 
         public void SendMessage()
         {
-            int loggedUserNumber = _currentContext.LoggedUserNumber;
-
-            var messageRequest = new ConferenceMessageRequest(loggedUserNumber, 
-                MessageContent, ConnectedContactsNumber.ToList());
-            ICommand command = _sendConferenceMessageFactory(messageRequest);
+            var messageData = new ConferencialMessageData(ConnectedContactsNumber.ToList(), MessageContent);
+            ICommand command = _sendConferenceMessageFactory(messageData);
             CommandInvoker.Invoke(command);
 
             var myMessage = new ConferenceMessage(0, DateTime.Now, MessageContent, null);

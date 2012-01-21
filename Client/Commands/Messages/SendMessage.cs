@@ -1,4 +1,6 @@
-﻿using Client.Services;
+﻿using Client.Context;
+using Client.Features.Messages;
+using Client.Services;
 using Protocol.Messages;
 
 namespace Client.Commands.Messages
@@ -6,19 +8,26 @@ namespace Client.Commands.Messages
     public class SendMessage : ICommand
     {
         private readonly IServerConnection _serverConnection;
-        private readonly MessageRequest _messageRequest;
+        private readonly MessageData _messageData;
+        private readonly ICurrentContext _currentContext;
 
         public SendMessage(
             IServerConnection serverConnection,
-            MessageRequest messageRequest)
+            MessageData messageData,
+            ICurrentContext currentContext)
         {
             _serverConnection = serverConnection;
-            _messageRequest = messageRequest;
+            _messageData = messageData;
+            _currentContext = currentContext;
         }
 
         public void Execute()
         {
-            _serverConnection.SendMessageRequest(_messageRequest);
+            var request = new MessageRequest(_currentContext.LoggedUserNumber,
+                                             _messageData.ReceiverNumber,
+                                             _messageData.Content);
+
+            _serverConnection.SendMessageRequest(request);
         }
     }
 }

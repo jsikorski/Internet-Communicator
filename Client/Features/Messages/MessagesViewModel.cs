@@ -22,7 +22,7 @@ namespace Client.Features.Messages
     public class MessagesViewModel : Screen
     {
         private readonly ICurrentContext _currentContext;
-        private readonly Func<MessageRequest, SendMessage> _sendMessageFactory;
+        private readonly Func<MessageData, SendMessage> _sendMessageFactory;
         private readonly INumbersToNamesConverter _numbersToNamesConverter;
 
         public int ConnectedContactNumber { get; private set; }
@@ -48,7 +48,7 @@ namespace Client.Features.Messages
 
         public MessagesViewModel(
             ICurrentContext currentContext,
-            Func<MessageRequest, SendMessage> sendMessageFactory, 
+            Func<MessageData, SendMessage> sendMessageFactory, 
             INumbersToNamesConverter numbersToNamesConverter,
             int connectedContactNumber)
         {
@@ -70,9 +70,7 @@ namespace Client.Features.Messages
 
         public void SendMessage()
         {
-            int loggedUserNumber = _currentContext.LoggedUserNumber;
-
-            var messageRequest = new MessageRequest(loggedUserNumber, ConnectedContactNumber, MessageContent);
+            var messageRequest = new MessageData(ConnectedContactNumber, MessageContent);
             ICommand command = _sendMessageFactory(messageRequest);
             CommandInvoker.Invoke(command);
 

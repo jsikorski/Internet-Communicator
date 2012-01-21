@@ -131,10 +131,12 @@
       <DependentUpon>LoginView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Features\Messages\ConferenceMessageViewModel.cs" />
+    <Compile Include="Features\Messages\ConferencialMessageData.cs" />
     <Compile Include="Features\Messages\ConferencialMessagesView.xaml.cs">
       <DependentUpon>ConferencialMessagesView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Features\Messages\ConferencialMessagesViewModel.cs" />
+    <Compile Include="Features\Messages\MessageData.cs" />
     <Compile Include="Features\Messages\MessagesView.xaml.cs">
       <DependentUpon>MessagesView.xaml</DependentUpon>
     </Compile>
