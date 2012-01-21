@@ -17,7 +17,7 @@ namespace Client.Features.Messages
     public class ConferencialMessagesViewModel : Screen
     {
         private readonly ICurrentContext _currentContext;
-        private readonly Func<MessageRequest, SendMessage> _sendMessageFactory;
+        private readonly Func<ConferenceMessageRequest, SendConferencialMessage> _sendConferenceMessageFactory;
         private readonly INumbersToNamesConverter _numbersToNamesConverter;
 
         public IEnumerable<int> ConnectedContactsNumber { get; private set; }
@@ -43,7 +43,7 @@ namespace Client.Features.Messages
 
         public ConferencialMessagesViewModel(
             ICurrentContext currentContext,
-            Func<MessageRequest, SendMessage> sendMessageFactory, 
+            Func<ConferenceMessageRequest, SendConferencialMessage> sendConferenceMessageFactory, 
             INumbersToNamesConverter numbersToNamesConverter,
             IEnumerable<int> connectedContactNumbers)
         {
@@ -51,7 +51,7 @@ namespace Client.Features.Messages
 
             ConnectedContactsNumber = connectedContactNumbers;
             _currentContext = currentContext;
-            _sendMessageFactory = sendMessageFactory;
+            _sendConferenceMessageFactory = sendConferenceMessageFactory;
             _numbersToNamesConverter = numbersToNamesConverter;
 
             Messages = new BindableCollection<ConferenceMessageViewModel>();
@@ -67,9 +67,10 @@ namespace Client.Features.Messages
         {
             int loggedUserNumber = _currentContext.LoggedUserNumber;
 
-            var messageRequest = new ConferenceMessageRequest(loggedUserNumber, MessageContent, ConnectedContactsNumber);
-            //ICommand command = _sendMessageFactory(messageRequest);
-            //CommandInvoker.Invoke(command);
+            var messageRequest = new ConferenceMessageRequest(loggedUserNumber, 
+                MessageContent, ConnectedContactsNumber.ToList());
+            ICommand command = _sendConferenceMessageFactory(messageRequest);
+            CommandInvoker.Invoke(command);
 
             var myMessage = new ConferenceMessage(0, DateTime.Now, MessageContent, null);
             Messages.Add(new ConferenceMessageViewModel(myMessage, "Me"));

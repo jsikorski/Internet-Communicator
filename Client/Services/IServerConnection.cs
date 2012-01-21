@@ -22,6 +22,7 @@ namespace Client.Services
         FileUploadResponse SendFileUploadRequest(IRequest uploadRequest);
         FilesDownloadResponse SendFilesDownloadRequest(IRequest filesDownloadRequest);
         FileDownloadResponse SendFileDownloadRequest(IRequest fileDownloadRequest);
+        ConferenceMessageResponse SendConferencialMessageRequest(IRequest messageRequest);
         void Disconnect();
     }
 }
