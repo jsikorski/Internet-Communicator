@@ -14,7 +14,7 @@ using Protocol.Login;
 using Protocol.Messages;
 using Protocol.Register;
 using Protocol.Statuses;
- 
+
 namespace Server
 {
     class ClientCommunication
@@ -112,9 +112,9 @@ namespace Server
                                 _conferenceMessages.Add(_clientNumber, new List<ConferencialMessage>());
                             if (!_files.ContainsKey(_clientNumber))
                                 _files.Add(_clientNumber, new List<GuidedFile>());
-                            
+
                             SendReponse(new LoginResponse() { WasSuccessfull = true });
-                            
+
                             reader.Close();
                             command.Dispose();
                             sqlConnection.Close();
@@ -182,7 +182,7 @@ namespace Server
                 }
                 else if (request.ToString() == "Protocol.Statuses.StatusesRequest")
                 {
-                    StatusHandler(request); 
+                    StatusHandler(request);
                 }
                 else if (request.ToString() == "Protocol.Login.LogoutRequest")
                 {
@@ -220,7 +220,7 @@ namespace Server
                     _conferenceMessages.Add(receiver, new List<ConferencialMessage>());
                 }
 
-                var message = new ConferencialMessage(_clientNumber, 
+                var message = new ConferencialMessage(_clientNumber,
                     DateTime.Now, messageRequest.Text, messageRequest.ReciversNumbers);
                 _conferenceMessages[receiver].Add(message);
             }
@@ -228,20 +228,16 @@ namespace Server
 
         private void FileDownloadHandler(IRequest request)
         {
-            var fileDownloadRequest = (FileDownloadRequest) request;
+            var fileDownloadRequest = (FileDownloadRequest)request;
             GuidedFile fileToDownload = null;
 
             foreach (var file in _filesToDownload)
             {
-                // nie wiem ocb ale jest duzo nulli w _f :O
-                if (file != null)
+                if (file.Guid.Equals(fileDownloadRequest.FileGuid))
                 {
-                    if (file.Guid.Equals(fileDownloadRequest.FileGuid))
-                    {
-                        fileToDownload = file;
-                    }
-                    break;
+                    fileToDownload = file;
                 }
+                break;
             }
             _filesToDownload.Remove(fileToDownload);
 
@@ -265,7 +261,7 @@ namespace Server
                 _filesToDownload.Add(file);
                 fileHeaders.Add(new FileHeader(file.Guid, file.File.OriginalName, file.File.SenderNumber));
             }
-            
+
             var response = new FilesDownloadResponse(fileHeaders);
             SendReponse(response);
         }
@@ -280,9 +276,9 @@ namespace Server
 
         private void FileUploadHandler(IRequest request)
         {
-            var uploadRequest = (FileUploadRequest) request;
+            var uploadRequest = (FileUploadRequest)request;
             SendReponse(new FileUploadResponse());
-            
+
             if (!_files.ContainsKey(uploadRequest.ReceiverNumber))
             {
                 _files.Add(uploadRequest.ReceiverNumber, new List<GuidedFile>());
@@ -303,7 +299,7 @@ namespace Server
             {
                 _messages.Add(receiverNumber, new List<Message>());
             }
-            
+
             var message = new Message(_clientNumber, DateTime.Now, messageRequest.Text);
             _messages[receiverNumber].Add(message);
         }
