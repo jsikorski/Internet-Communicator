@@ -84,6 +84,8 @@
     <Compile Include="Commands\Contacts\LoadContacts.cs" />
     <Compile Include="Commands\Files\SaveFile.cs" />
     <Compile Include="Commands\ICommand.cs" />
+    <Compile Include="Commands\Messages\CloseAllConferencialMessagesWindows.cs" />
+    <Compile Include="Commands\Messages\CloseAllMessagesWindows.cs" />
     <Compile Include="Commands\Messages\ConferencialWindowsEqualityComparer.cs" />
     <Compile Include="Commands\Messages\NewConferencialMessagesWindow.cs" />
     <Compile Include="Commands\Messages\SendConferencialMessage.cs" />
