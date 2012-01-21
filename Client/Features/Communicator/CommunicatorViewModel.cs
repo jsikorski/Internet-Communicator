@@ -231,6 +231,9 @@ namespace Client.Features.Communicator
 
         public void Handle(LoggedOut message)
         {
+            ExecutePureCommand<CloseAllMessagesWindows>();
+            ExecutePureCommand<CloseAllConferencialMessagesWindows>();
+
             _eventAggregator.Unsubscribe(this);
             _container.BeginLifetimeScope();
 

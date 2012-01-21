@@ -18,10 +18,8 @@ namespace Client.Commands.Messages
 
         public void Execute()
         {
-            foreach (var conferencialMessagesViewModel in _currentContext.ConferencialMessagesWindows)
-            {
-                conferencialMessagesViewModel.Value.TryClose();
-            }
+            _currentContext.ConferencialMessagesWindows.ToList()
+                .ForEach(keyValuePair => keyValuePair.Value.TryClose());
         }
     }
 }
