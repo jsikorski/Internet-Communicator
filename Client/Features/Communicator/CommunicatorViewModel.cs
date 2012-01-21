@@ -24,7 +24,7 @@ namespace Client.Features.Communicator
 {
     public class CommunicatorViewModel : Screen, IHandle<ContactAdded>,
         IHandle<ContactsDataReceived>, IHandle<ContactsLoaded>, IHandle<MessagesFounded>,
-        IHandle<FileOpened>, IHandle<FilesFounded>, IHandle<FileDownloadAccepted>, 
+        IHandle<FileOpened>, IHandle<FilesFounded>, IHandle<FileDownloadAccepted>,
         IHandle<FileDownloaded>, IHandle<LoggedOut>
     {
         private readonly IEventAggregator _eventAggregator;
@@ -39,34 +39,30 @@ namespace Client.Features.Communicator
         private readonly IContainer _container;
 
         public BindableCollection<ContactViewModel> Contacts { get; set; }
-        private ContactViewModel _selectedContact;
-        public ContactViewModel SelectedContact
-        {
-            get { return _selectedContact; }
-            set
-            {
-                _selectedContact = value;
-                NotifyOfPropertyChange(() => CanRemoveContact);
-                NotifyOfPropertyChange(() => CanNewMessagesWindow);
-                NotifyOfPropertyChange(() => CanUploadFile);
-                NotifyOfPropertyChange(() => SelectedContact);
-            }
-        }
+
         public int SelectedContactIndex { get; set; }
 
         public bool CanNewMessagesWindow
         {
-            get { return SelectedContact != null; }
+            get { return SelectedContacts.Count() == 1; }
         }
 
         public bool CanRemoveContact
         {
-            get { return SelectedContact != null; }
+            get { return SelectedContacts.Count() == 1; }
         }
 
         public bool CanUploadFile
         {
-            get { return SelectedContact != null; }
+            get { return SelectedContacts.Count() == 1; }
+        }
+
+        public IEnumerable<ContactViewModel> SelectedContacts
+        {
+            get
+            {
+                return Contacts.Where(contact => contact.IsSelected);
+            }
         }
 
         public CommunicatorViewModel(
@@ -77,7 +73,7 @@ namespace Client.Features.Communicator
             Func<int, FileBasicInfo, UploadFile> uploadFileFactory,
             Func<IEnumerable<FileHeader>, ServiceNewFiles> serviceNewFilesFactory,
             Func<FileHeader, DownloadFile> downloadFileFactory,
-            Func<File, SaveFile> saveFileFactory, 
+            Func<File, SaveFile> saveFileFactory,
             IWindowManager windowManager,
             IContainer container)
         {
@@ -99,6 +95,13 @@ namespace Client.Features.Communicator
 
         }
 
+        public void ContactsListChanged()
+        {
+            NotifyOfPropertyChange(() => CanRemoveContact);
+            NotifyOfPropertyChange(() => CanNewMessagesWindow);
+            NotifyOfPropertyChange(() => CanUploadFile);
+        }
+
         protected override void OnActivate()
         {
             base.OnActivate();
@@ -118,7 +121,7 @@ namespace Client.Features.Communicator
 
         public void NewMessagesWindow()
         {
-            ICommand command = _newMessagesWindowFactory(SelectedContact.Number);
+            ICommand command = _newMessagesWindowFactory(SelectedContacts.First().Number);
             CommandInvoker.Execute(command);
         }
 
@@ -146,7 +149,7 @@ namespace Client.Features.Communicator
         {
             ICommand removeContact = _removeContactFactory(SelectedContactIndex);
             yield return new CommandResult(removeContact);
-            Contacts.Remove(SelectedContact);
+            Contacts.Remove(SelectedContacts.First());
         }
 
         public void Handle(ContactAdded message)
@@ -173,7 +176,7 @@ namespace Client.Features.Communicator
             var uploadFileViewModel = _container.Resolve<UploadFileViewModel>();
             _windowManager.ShowWindow(uploadFileViewModel);
 
-            ICommand command = _uploadFileFactory(SelectedContact.Number, message.FileInfo);
+            ICommand command = _uploadFileFactory(SelectedContacts.First().Number, message.FileInfo);
             CommandInvoker.InvokeBusy(command, uploadFileViewModel, e => uploadFileViewModel.TryClose());
         }
 

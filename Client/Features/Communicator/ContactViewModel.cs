@@ -31,6 +31,8 @@ namespace Client.Features.Communicator
             }
         }
 
+        public bool IsSelected { get; set; }
+
         public ContactViewModel(Contact contact)
         {
             Contact = contact;

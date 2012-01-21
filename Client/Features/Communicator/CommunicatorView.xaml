@@ -50,13 +50,20 @@
         <ListView Grid.Row="1"
                   ItemsSource="{Binding Contacts}"
                   SelectedIndex="{Binding SelectedContactIndex, Mode=OneWayToSource}"
-                  SelectedItem="{Binding SelectedContact, Mode=OneWayToSource}"
+                  SelectionMode="Multiple"
                   Width="Auto"
                   Height="500"
-                  Padding="3">
+                  Padding="3"
+                  cal:Message.Attach="[Event SelectionChanged] = [Action ContactsListChanged]">
             <ListView.Resources>
                 <Converters:AvailabilityToBrushConverter x:Key="AvailabilityToBrushConverter" />
             </ListView.Resources>
+            <ListView.ItemContainerStyle>
+                <Style TargetType="{x:Type ListViewItem}">
+                    <Setter Property="IsSelected"
+                            Value="{Binding IsSelected, Mode=OneWayToSource}" />
+                </Style>
+            </ListView.ItemContainerStyle>
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Margin="5 0 0 0"
