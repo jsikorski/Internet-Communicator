@@ -6,7 +6,7 @@ using Common.Messages;
 
 namespace Client.Features.Messages
 {
-    public class ConferenceMessageViewModel
+    public class ConferencialMessageViewModel
     {
         private readonly ConferencialMessage _message;
 
@@ -20,16 +20,16 @@ namespace Client.Features.Messages
             get { return _message.Content; }
         }
 
-        private readonly string _aggregatedSender;
-        public string AggregatedSender
+        private readonly string _sender;
+        public string Sender
         {
-            get { return _aggregatedSender; }
+            get { return _sender; }
         }
 
-        public ConferenceMessageViewModel(ConferencialMessage message, string aggregatedSender)
+        public ConferencialMessageViewModel(ConferencialMessage message, string sender)
         {
             _message = message;
-            _aggregatedSender = aggregatedSender;
+            _sender = sender;
         }
     }
 }

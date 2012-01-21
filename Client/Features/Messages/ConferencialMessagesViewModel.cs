@@ -22,7 +22,7 @@ namespace Client.Features.Messages
 
         public IEnumerable<int> ConnectedContactsNumber { get; private set; }
 
-        public BindableCollection<ConferenceMessageViewModel> Messages { get; set; }
+        public BindableCollection<ConferencialMessageViewModel> Messages { get; set; }
 
         private string _messageContent;
         public string MessageContent
@@ -54,12 +54,12 @@ namespace Client.Features.Messages
             _sendConferenceMessageFactory = sendConferenceMessageFactory;
             _numbersToNamesConverter = numbersToNamesConverter;
 
-            Messages = new BindableCollection<ConferenceMessageViewModel>();
+            Messages = new BindableCollection<ConferencialMessageViewModel>();
         }
 
         public void AddMessage(ConferencialMessage message)
         {
-            Messages.Add(new ConferenceMessageViewModel(message, 
+            Messages.Add(new ConferencialMessageViewModel(message, 
                 _numbersToNamesConverter.Convert(message.SenderNumber)));
         }
 
@@ -70,7 +70,7 @@ namespace Client.Features.Messages
             CommandInvoker.Invoke(command);
 
             var myMessage = new ConferencialMessage(0, DateTime.Now, MessageContent, null);
-            Messages.Add(new ConferenceMessageViewModel(myMessage, "Me"));
+            Messages.Add(new ConferencialMessageViewModel(myMessage, "Me"));
             MessageContent = string.Empty;
         }
 

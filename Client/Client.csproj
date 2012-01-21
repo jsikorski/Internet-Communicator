@@ -135,7 +135,7 @@
     <Compile Include="Features\Login\LoginView.xaml.cs">
       <DependentUpon>LoginView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Features\Messages\ConferenceMessageViewModel.cs" />
+    <Compile Include="Features\Messages\ConferencialMessageViewModel.cs" />
     <Compile Include="Features\Messages\ConferencialMessageData.cs" />
     <Compile Include="Features\Messages\ConferencialMessagesView.xaml.cs">
       <DependentUpon>ConferencialMessagesView.xaml</DependentUpon>
