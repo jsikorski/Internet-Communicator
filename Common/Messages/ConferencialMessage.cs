@@ -9,13 +9,13 @@ namespace Common.Messages
     public class ConferencialMessage
     {
         public int SenderNumber { get; private set; }
-        public IEnumerable<int> Collaborators { get; private set; }
+        public IEnumerable<int> CollaboratorsNumbers { get; private set; }
         public DateTime Date { get; private set; }
         public string Content { get; private set; }
 
         public ConferencialMessage(int senderNumber, DateTime dateTime, string content, IEnumerable<int> collaborators)
         {
-            Collaborators = collaborators;
+            CollaboratorsNumbers = collaborators;
             SenderNumber = senderNumber;
             Date = dateTime;
             Content = content;

@@ -12,6 +12,7 @@ using Client.Insrastructure;
 using Client.Messages;
 using System.Linq;
 using Common.Files;
+using Common.Messages;
 using Protocol.Messages;
 using Message = Common.Messages.Message;
 
@@ -33,6 +34,7 @@ namespace Client.Features.Communicator
         private readonly Func<IEnumerable<int>, NewConferencialMessagesWindow> _newConferencialMessagewWindowFactory;
         private readonly IWindowManager _windowManager;
         private readonly IContainer _container;
+        private readonly Func<IEnumerable<ConferencialMessage>, ServiceNewConferencialMessages> _serviceNewConferencialMessagesFactory;
 
         public BindableCollection<ContactViewModel> Contacts { get; set; }
 
@@ -80,7 +82,8 @@ namespace Client.Features.Communicator
             Func<IEnumerable<FileHeader>, ServiceNewFiles> serviceNewFilesFactory,
             Func<FileHeader, DownloadFile> downloadFileFactory,
             Func<File, SaveFile> saveFileFactory,
-            Func<IEnumerable<int>, NewConferencialMessagesWindow> newConferencialMessagewWindowFactory,
+            Func<IEnumerable<int>, NewConferencialMessagesWindow> newConferencialMessagewWindowFactory, 
+            Func<IEnumerable<ConferencialMessage>, ServiceNewConferencialMessages> serviceNewConferencialMessagesFactory, 
             IWindowManager windowManager,
             IContainer container)
         {
@@ -95,6 +98,7 @@ namespace Client.Features.Communicator
             _downloadFileFactory = downloadFileFactory;
             _saveFileFactory = saveFileFactory;
             _newConferencialMessagewWindowFactory = newConferencialMessagewWindowFactory;
+            _serviceNewConferencialMessagesFactory = serviceNewConferencialMessagesFactory;
             _windowManager = windowManager;
             _container = container;
 
@@ -119,10 +123,12 @@ namespace Client.Features.Communicator
             ExecutePureCommand<StartRequestingForContacts>();
             ExecutePureCommand<StartRequestingForMessages>();
             ExecutePureCommand<StartRequestingForFiles>();
+            ExecutePureCommand<StartRequestingForConferencialMessages>();
         }
 
         protected override void OnDeactivate(bool close)
         {
+            ExecutePureCommand<StopRequestingForConferencialMessages>();
             ExecutePureCommand<StopRequestingForContacts>();
             ExecutePureCommand<StopRequestingForMessages>();
             ExecutePureCommand<StopRequestingForFiles>();
@@ -235,7 +241,8 @@ namespace Client.Features.Communicator
 
         public void Handle(ConferencialMessagesFounded message)
         {
-            throw new NotImplementedException();
+            ICommand command = _serviceNewConferencialMessagesFactory(message.ConferencialsMessages);
+            CommandInvoker.Invoke(command);
         }
 
         private void ExecutePureCommand<T>() where T : ICommand

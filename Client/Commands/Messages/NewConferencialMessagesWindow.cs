@@ -33,9 +33,8 @@ namespace Client.Commands.Messages
 
             if (!_currentContext.ConferencialMessagesWindows.ContainsKey(_connectedNumbers))
             {
-                _windowManager.ShowWindow(viewModel);
-                Caliburn.Micro.Execute.OnUIThread(
-                    () => _currentContext.ConferencialMessagesWindows.Add(_connectedNumbers, viewModel));
+                Caliburn.Micro.Execute.OnUIThread(() => _windowManager.ShowWindow(viewModel));
+                _currentContext.ConferencialMessagesWindows.Add(_connectedNumbers, viewModel);
             }
         }
     }
