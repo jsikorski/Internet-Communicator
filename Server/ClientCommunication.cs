@@ -218,7 +218,8 @@ namespace Server
                     _conferenceMessages.Add(receiver, new List<ConferenceMessage>());
                 }
 
-                var message = new ConferenceMessage(_clientNumber, DateTime.Now, messageRequest.Text, messageRequest.ReciversNumbers);
+                var message = new ConferenceMessage(_clientNumber, 
+                    DateTime.Now, messageRequest.Text, messageRequest.ReciversNumbers);
                 _conferenceMessages[receiver].Add(message);
             }
         }
