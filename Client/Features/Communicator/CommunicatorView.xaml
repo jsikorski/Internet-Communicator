@@ -18,7 +18,7 @@
         <ribbon:Ribbon Grid.Row="0">
             <ribbon:Ribbon.ApplicationMenu>
                 <ribbon:RibbonApplicationMenu>
-                    <ribbon:RibbonApplicationMenuItem cal:Message.Attach="Logout"
+                    <ribbon:RibbonApplicationMenuItem cal:Message.Attach="Logout" 
                                                       Header="Logout" />
                     <ribbon:RibbonApplicationMenuItem cal:Message.Attach="Exit"
                                                       Header="Exit" />
