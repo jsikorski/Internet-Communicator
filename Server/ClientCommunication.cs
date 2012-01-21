@@ -226,31 +226,41 @@ namespace Server
         private void FileDownloadHandler(IRequest request)
         {
             var fileDownloadRequest = (FileDownloadRequest) request;
-            File fileToDownload = null;
+            GuidedFile fileToDownload = null;
 
             foreach (var file in _filesToDownload)
             {
-                if (file.Guid == fileDownloadRequest.FileGuid)
+                // nie wiem ocb ale jest duzo nulli w _f :O
+                if (file != null)
                 {
-                    fileToDownload = file.File;
-                    _filesToDownload.Remove(file);
+                    if (file.Guid.Equals(fileDownloadRequest.FileGuid))
+                    {
+                        fileToDownload = file;
+                    }
+                    break;
                 }
-                break;
             }
+            _filesToDownload.Remove(fileToDownload);
 
-            var response = new FileDownloadResponse(fileToDownload);
+            var response = new FileDownloadResponse(fileToDownload.File);
             SendReponse(response);
         }
 
         private void FilesDownloadHandler()
         {
+            var files = new List<GuidedFile>();
             var fileHeaders = new List<FileHeader>();
 
             foreach (var file in _files[_clientNumber])
             {
-                fileHeaders.Add(new FileHeader(file.Guid, file.File.OriginalName, file.File.SenderNumber));
+                files.Add(file);
+            }
+
+            foreach (var file in files)
+            {
                 _files[_clientNumber].Remove(file);
                 _filesToDownload.Add(file);
+                fileHeaders.Add(new FileHeader(file.Guid, file.File.OriginalName, file.File.SenderNumber));
             }
             
             var response = new FilesDownloadResponse(fileHeaders);
