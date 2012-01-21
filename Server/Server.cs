@@ -14,6 +14,7 @@ namespace Server
         private readonly Thread _listenThread;
         private readonly Dictionary<int, NetworkStream> _activeConnections;
         private readonly Dictionary<int, List<Message>> _messages;
+        private readonly Dictionary<int, List<ConferenceMessage>> _conferenceMessages;
         private readonly Dictionary<int, List<GuidedFile>> _files;
 
         public Server()
@@ -44,7 +45,7 @@ namespace Server
 
         private void ClientCommunicationHandler(object client)
         {
-            new ClientCommunication((TcpClient)client, _activeConnections, _messages, _files);
+            new ClientCommunication((TcpClient)client, _activeConnections, _messages, _files, _conferenceMessages);
         }
     }
 }
